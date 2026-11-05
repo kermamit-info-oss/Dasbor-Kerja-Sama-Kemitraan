@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dasbor Kerja Sama BGN - Versi Final Mobile & Desktop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF7FD; --bg-2:#E2F1FB; --surface:#FFFFFF; --surface-2:#F4FAFE; --text:#0B2540; --muted:#5A718A; --border:#D3E6F4;
+  --primary:#0EA5E9; --primary-strong:#0369A1; --primary-soft:#E0F2FE; --navy:#0B3B6F;
+  --ok:#059669; --ok-soft:#D1FAE5; --warn:#D97706; --warn-soft:#FEF3C7; --bad:#DC2626; --bad-soft:#FEE2E2; --mute-soft:#EEF2F6;
+  --shadow:0 1px 2px rgba(11,59,111,.06),0 8px 24px -12px rgba(11,59,111,.18);
+  --grid:#E3EEF7;
+  --c1:#0284C7; --c2:#14B8A6; --c3:#F59E0B; --c4:#8B5CF6; --c5:#EC4899; --c6:#64748B; --c7:#22C55E; --c8:#EF4444;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#06131F; --bg-2:#0A1C2D; --surface:#0D2235; --surface-2:#112A42; --text:#E4F1FB; --muted:#8EA8C0; --border:#1D3A55;
+    --primary:#38BDF8; --primary-strong:#7DD3FC; --primary-soft:#0C3350; --navy:#BAE6FD;
+    --ok:#34D399; --ok-soft:#073B2C; --warn:#FBBF24; --warn-soft:#3D2C05; --bad:#F87171; --bad-soft:#431414; --mute-soft:#18304A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -12px rgba(0,0,0,.55);
+    --grid:#17324B;
+    --c1:#38BDF8; --c2:#2DD4BF; --c3:#FBBF24; --c4:#A78BFA; --c5:#F472B6; --c6:#94A3B8; --c7:#4ADE80; --c8:#F87171;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#06131F; --bg-2:#0A1C2D; --surface:#0D2235; --surface-2:#112A42; --text:#E4F1FB; --muted:#8EA8C0; --border:#1D3A55;
+  --primary:#38BDF8; --primary-strong:#7DD3FC; --primary-soft:#0C3350; --navy:#BAE6FD;
+  --ok:#34D399; --ok-soft:#073B2C; --warn:#FBBF24; --warn-soft:#3D2C05; --bad:#F87171; --bad-soft:#431414; --mute-soft:#18304A;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -12px rgba(0,0,0,.55);
+  --grid:#17324B;
+  --c1:#38BDF8; --c2:#2DD4BF; --c3:#FBBF24; --c4:#A78BFA; --c5:#F472B6; --c6:#94A3B8; --c7:#4ADE80; --c8:#F87171;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;overflow-x:hidden}
+body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+a{color:var(--primary-strong)}
+.wrap{max-width:1320px;margin:0 auto;padding:0 24px}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,#0369A1 0%,#0EA5E9 55%,#7DD3FC 100%);color:#fff;padding:22px 0 84px}
+:root[data-theme="dark"] .hero{background:linear-gradient(120deg,#062A47 0%,#0B4A75 55%,#0E6FA3 100%)}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:18px 18px;mask-image:linear-gradient(90deg,transparent,#000 60%);opacity:.7}
+.hero::after{content:"";position:absolute;width:520px;height:520px;right:-140px;top:-220px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.28),transparent 65%)}
+.topbar{position:relative;z-index:1;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.logo-chip{background:#fff;border-radius:14px;padding:8px 14px;display:flex;align-items:center;box-shadow:0 6px 20px -8px rgba(0,0,0,.35);flex-shrink:0}
+.logo-chip img{height:44px;width:auto;display:block}
+.logo-fallback{display:none;font-weight:800;color:#0B3B6F;font-size:22px;letter-spacing:.04em}
+.deputi{border-left:1px solid rgba(255,255,255,.4);padding-left:14px;min-width:0}
+.deputi small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.85;font-weight:600}
+.deputi strong{display:block;font-size:15px;font-weight:700;line-height:1.3}
+.actions{display:flex;gap:8px;align-items:center}
+.theme-toggle{display:flex;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px;backdrop-filter:blur(6px)}
+.theme-toggle button{all:unset;cursor:pointer;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:600;color:#fff;opacity:.85}
+.theme-toggle button[aria-pressed="true"]{background:#fff;color:#0369A1;opacity:1}
+.theme-toggle button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.theme-toggle svg{width:15px;height:15px}
+.hero-title{position:relative;z-index:1;margin-top:34px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.hero-title h1{margin:0;font-size:clamp(22px,3.4vw,36px);line-height:1.2;font-weight:800;letter-spacing:-.02em;max-width:760px}
+.hero-title p{margin:8px 0 0;opacity:.9;max-width:640px;font-size:14px}
+.asof{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:10px 14px;font-size:12.5px;line-height:1.4}
+.asof b{display:block;font-size:15px}
+.sync-btn{all:unset;cursor:pointer;color:#fff;background:rgba(0,0,0,.25);padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;margin-top:6px;display:inline-flex;align-items:center;gap:6px;transition:background .2s}
+.sync-btn:hover,.sync-btn:active{background:rgba(0,0,0,.45)}
+
+/* LAYOUT */
+main{margin-top:-60px;position:relative;z-index:2;padding-bottom:40px}
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);transition:background .25s,border-color .25s}
+.kpi{padding:16px 18px;position:relative;overflow:hidden}
+.kpi .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--primary-soft);color:var(--primary-strong);margin-bottom:10px}
+.kpi .ic svg{width:18px;height:18px}
+.kpi .lbl{font-size:12px;color:var(--muted);font-weight:600}
+.kpi .val{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-top:2px;font-variant-numeric:tabular-nums}
+.kpi .sub{font-size:12px;color:var(--muted);margin-top:4px}
+.kpi .bar{height:6px;border-radius:99px;background:var(--mute-soft);margin-top:10px;overflow:hidden}
+.kpi .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-strong));border-radius:99px}
+.grid{display:grid;gap:14px;margin-top:14px}
+.g-2-1{grid-template-columns:2fr 1fr}
+.g-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.panel{padding:18px 20px}
+.panel h2{margin:0;font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+.panel .hint{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.section-title{display:flex;align-items:center;gap:10px;margin:30px 0 4px;font-size:18px;font-weight:800;letter-spacing:-.01em}
+.section-title::before{content:"";width:6px;height:22px;border-radius:4px;background:linear-gradient(var(--primary),var(--primary-strong))}
+.section-sub{margin:0 0 4px 16px;color:var(--muted);font-size:13px}
+
+/* CHARTS */
+svg text{font-family:inherit}
+.chart-wrap{position:relative;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tip{position:fixed;pointer-events:none;z-index:50;background:var(--text);color:var(--surface);font-size:12px;padding:7px 10px;border-radius:8px;opacity:0;transition:opacity .12s;max-width:260px;line-height:1.4;box-shadow:0 8px 24px -8px rgba(0,0,0,.4)}
+.tip b{font-weight:700}
+.donut-box{display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:center}
+.donut-box svg{flex-shrink:0}
+.dlegend{display:flex;flex-direction:column;gap:7px;flex:1;min-width:140px;font-size:12.5px}
+.dlegend div{display:flex;align-items:center;gap:8px}
+.dlegend i{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.dlegend span{flex:1;color:var(--muted)}
+.dlegend b{font-variant-numeric:tabular-nums}
+.hbars{display:flex;flex-direction:column;gap:9px}
+.hbar{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:4px 10px;align-items:center;font-size:12.5px}
+.hbar .nm{grid-column:1/-1;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbar .tr{height:10px;background:var(--mute-soft);border-radius:99px;overflow:hidden}
+.hbar .tr i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--primary-strong));transform-origin:left;animation:grow .8s cubic-bezier(.2,.8,.2,1) both}
+.hbar b{text-align:right;font-variant-numeric:tabular-nums}
+@keyframes grow{from{transform:scaleX(0)}}
+
+/* CHIPS */
+.chip{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.bad{background:var(--bad-soft);color:var(--bad)}
+.chip.info{background:var(--primary-soft);color:var(--primary-strong)}
+.chip.mute{background:var(--mute-soft);color:var(--muted)}
+
+/* EXPIRING */
+.exp-list{display:flex;flex-direction:column;gap:2px;max-height:300px;overflow-y:auto;margin:0 -8px;padding:0 8px}
+.exp-item{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed var(--border);font-size:13px}
+.exp-item:last-child{border-bottom:0}
+.exp-item .n{font-weight:600}
+.exp-item .d{color:var(--muted);font-size:12px}
+
+/* GANTT TIMELINE */
+.gantt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:14px;background:var(--surface-2)}
+.gantt{display:grid;min-width:max-content;font-size:12px}
+.g-cell{height:38px;border-bottom:1px solid var(--grid);display:flex;align-items:center;justify-content:center;position:relative}
+.g-label{position:sticky;left:0;z-index:2;background:var(--surface);justify-content:flex-start;padding:0 12px;gap:8px;border-right:1px solid var(--border);width:260px;max-width:55vw}
+.g-label .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;font-weight:500}
+.g-label .no{color:var(--muted);font-variant-numeric:tabular-nums;width:20px;flex-shrink:0}
+.g-head{height:auto;padding:6px 0;font-weight:700;color:var(--muted);background:var(--surface)}
+.g-month{justify-content:flex-start;padding-left:8px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--primary-strong);border-left:1px solid var(--border);background:var(--surface)}
+.g-day{width:22px;font-size:10px;color:var(--muted);flex-direction:column;line-height:1.1}
+.g-day.we{background:color-mix(in srgb,var(--mute-soft) 70%,transparent)}
+.g-day.today{background:color-mix(in srgb,var(--primary) 14%,transparent)}
+.g-day.today::after{content:"";position:absolute;top:0;bottom:-1px;left:50%;width:2px;margin-left:-1px;background:var(--primary)}
+.g-dot{width:14px;height:14px;border-radius:4px;background:var(--primary);box-shadow:0 2px 6px -2px var(--primary);position:relative;z-index:1}
+.g-dot.real{background:var(--ok);border-radius:50%;box-shadow:0 2px 6px -2px var(--ok);width:12px;height:12px;position:absolute;right:1px;bottom:3px;border:2px solid var(--surface);z-index:2}
+.g-dot.past{opacity:.55}
+.tl-filters{display:flex;gap:6px;flex-wrap:wrap}
+.pill{all:unset;cursor:pointer;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;background:var(--surface-2);border:1px solid var(--border);color:var(--muted)}
+.pill[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:#fff}
+.pill:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+
+/* TABLE */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.search{flex:1;min-width:200px;position:relative;width:100%}
+.search input{width:100%;padding:10px 12px 10px 38px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font:inherit;outline:none}
+.search input:focus{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 22%,transparent)}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+select{padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font:inherit;outline:none;cursor:pointer;max-width:100%}
+select:focus{border-color:var(--primary)}
+.count{font-size:12.5px;color:var(--muted);margin-left:auto}
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-height:620px;border:1px solid var(--border);border-radius:14px}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:720px}
+thead th{position:sticky;top:0;z-index:1;background:var(--surface-2);text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
+thead th[data-sort]:hover{color:var(--primary-strong)}
+thead th .ar{opacity:.4;margin-left:3px}
+thead th.sorted .ar{opacity:1;color:var(--primary-strong)}
+tbody td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+tbody tr.row{cursor:pointer;transition:background .12s}
+tbody tr.row:hover{background:var(--surface-2)}
+tbody tr.row.open{background:var(--primary-soft)}
+td.num{font-variant-numeric:tabular-nums;color:var(--muted);width:40px}
+td .inst{font-weight:600;min-width:160px}
+td .sm{color:var(--muted);font-size:12px}
+.doc-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:8px;background:var(--primary-soft);color:var(--primary-strong);text-decoration:none;font-size:12px;font-weight:600;white-space:nowrap}
+.doc-btn:hover{filter:brightness(.96)}
+.doc-btn svg{width:13px;height:13px}
+tr.detail td{background:var(--surface-2);padding:14px 16px 18px}
+.dgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 22px}
+.dgrid .full{grid-column:1/-1}
+.dgrid h4{margin:0 0 2px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.dgrid p{margin:0;white-space:pre-line;font-size:13px}
+.empty{padding:40px;text-align:center;color:var(--muted)}
+footer{padding:26px 0 36px;color:var(--muted);font-size:12px;text-align:center}
+
+/* RESPONSIVE DESIGNS (HP & TABLET) */
+@media (max-width:1100px){
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .g-2-1{grid-template-columns:1fr}
+  .g-3{grid-template-columns:1fr 1fr}
+}
+
+@media (max-width:768px){
+  .wrap{padding:0 14px}
+  .hero{padding-bottom:70px}
+  .topbar{flex-direction:row;justify-content:space-between;align-items:flex-start}
+  .brand{flex-direction:column;align-items:flex-start;gap:8px}
+  .deputi{border-left:0;padding-left:0}
+  .hero-title{margin-top:20px;flex-direction:column;align-items:flex-start;gap:14px}
+  .hero-title h1{font-size:22px}
+  .asof{width:100%;box-sizing:border-box}
+  
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .kpi{padding:12px 14px}
+  .kpi .val{font-size:22px}
+
+  .g-3{grid-template-columns:1fr}
+  .panel{padding:14px 16px}
+  .donut-box{flex-direction:column;align-items:center}
+  .dlegend{width:100%}
+  
+  .dgrid{grid-template-columns:1fr !important;}
+  .g-label{width:180px;max-width:45vw}
+  
+  .toolbar{flex-direction:column;align-items:stretch;gap:8px}
+  .toolbar select, .search input{width:100%;max-width:100%}
+  .count{margin-left:0;width:100%;text-align:right}
+}
+
+@media (max-width:480px){
+  .kpis{grid-template-columns:1fr}
+  .exp-item{flex-direction:column;gap:4px}
+  .exp-item > div:last-child{align-self:flex-start}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo-chip">
+          <img src="https://www.bgn.go.id/BGN_LOGO.png" alt="Logo Badan Gizi Nasional" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='logo-bgn.png'}else{this.style.display='none';this.nextElementSibling.style.display='block'}">
+          <span class="logo-fallback">BGN</span>
+        </div>
+        <div class="deputi">
+          <small>Badan Gizi Nasional</small>
+          <strong>Deputi Bidang Promosi dan Kerja Sama</strong>
+          <small style="letter-spacing:.04em;text-transform:none;font-weight:500">Direktorat Kerja Sama dan Kemitraan · Unit Kerja Sama dan Kemitraan</small>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="theme-toggle" role="group" aria-label="Pilih tema">
+          <button type="button" data-t="light" aria-pressed="false" title="Mode terang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>Terang</button>
+          <button type="button" data-t="dark" aria-pressed="false" title="Mode gelap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>Gelap</button>
+        </div>
+      </div>
+    </div>
+    <div class="hero-title">
+      <div>
+        <h1>Dasbor Kerja Sama &amp; Kemitraan</h1>
+        <p>Ringkasan Nota Kesepahaman (MoU), Perjanjian Kerja Sama (PKS), dan Agenda Kegiatan Unit Kerja Sama dan Kemitraan.</p>
+      </div>
+      <div class="asof">
+        Sumber Data: <b>Internal Kerja Sama dan Kemitraan</b>
+        <span id="asofToday" style="display:block; margin-top:2px;">Menghubungkan...</span>
+        <button class="sync-btn" onclick="fetchRealtimeData()">🔄 Sinkron Ulang</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="kpis" id="kpis"></section>
+
+  <div class="grid g-2-1">
+    <div class="card panel">
+      <div class="panel-head">
+        <div><h2>Perkembangan penandatanganan</h2><p class="hint">Jumlah MoU dan PKS yang ditandatangan per kuartal</p></div>
+        <div class="legend"><span><i style="background:var(--primary)"></i>MoU</span><span><i style="background:var(--navy)"></i>PKS</span><span><i style="background:transparent;border:2px solid var(--c3);border-radius:50%"></i>Kumulatif MoU</span></div>
+      </div>
+      <div class="chart-wrap" id="trend"></div>
+    </div>
+    <div class="card panel">
+      <div class="panel-head"><div><h2>Jenis instansi mitra</h2><p class="hint">Sebaran MoU berdasarkan kategori mitra</p></div></div>
+      <div class="donut-box" id="jenis"></div>
+    </div>
+  </div>
+
+  <div class="grid g-3">
+    <div class="card panel">
+      <div class="panel-head"><div><h2>Keberlanjutan MoU ke PKS</h2><p class="hint">Berapa MoU yang sudah ditindaklanjuti dengan PKS</p></div></div>
+      <div class="donut-box" id="pksStatus"></div>
+    </div>
+    <div class="card panel">
+      <div class="panel-head"><div><h2>Masa berlaku MoU</h2><p class="hint">Dihitung dari tanggal tanda tangan + jangka waktu</p></div></div>
+      <div class="donut-box" id="berlaku"></div>
+    </div>
+    <div class="card panel">
+      <div class="panel-head"><div><h2>Tingkat urgensi</h2><p class="hint">Level prioritas tindak lanjut MoU</p></div></div>
+      <div class="hbars" id="level"></div>
+    </div>
+  </div>
+
+  <div class="grid g-2-1">
+    <div class="card panel">
+      <div class="panel-head"><div><h2>Bidang kerja sama</h2><p class="hint">Topik MoU terbanyak (kolom "Tentang")</p></div></div>
+      <div class="hbars" id="bidang"></div>
+    </div>
+    <div class="card panel">
+      <div class="panel-head"><div><h2>Perlu perhatian</h2><p class="hint">MoU yang berakhir dalam 12 bulan ke depan</p></div></div>
+      <div class="exp-list" id="expiring"></div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Timeline kegiatan Oktober–Desember 2026</h2>
+  <p class="section-sub">Jadwal rencana dan realisasi pembahasan kerja sama. Garis biru = hari ini.</p>
+  <div class="card panel" style="margin-top:12px">
+    <div class="panel-head">
+      <div class="tl-filters" id="tlFilters"></div>
+      <div class="legend"><span><i style="background:var(--primary);border-radius:4px"></i>Rencana</span><span><i style="background:var(--ok);border-radius:50%"></i>Realisasi</span><span><i style="background:var(--mute-soft)"></i>Akhir pekan</span></div>
+    </div>
+    <div class="gantt-scroll" id="ganttScroll"><div class="gantt" id="gantt"></div></div>
+  </div>
+
+  <h2 class="section-title">Daftar Nota Kesepahaman (MoU)</h2>
+  <p class="section-sub">Klik baris untuk melihat detail, nomor, dan dokumen.</p>
+  <div class="card panel" style="margin-top:12px">
+    <div class="toolbar">
+      <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Cari instansi, judul, nomor, ruang lingkup…" aria-label="Cari MoU"></label>
+      <select id="fJenis" aria-label="Filter jenis instansi"></select>
+      <select id="fPks" aria-label="Filter status PKS"></select>
+      <select id="fTahun" aria-label="Filter tahun"></select>
+      <select id="fBerlaku" aria-label="Filter masa berlaku"></select>
+      <select id="fLevel" aria-label="Filter level"></select>
+      <span class="count" id="mouCount"></span>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr>
+        <th data-sort="no">No<span class="ar">↕</span></th>
+        <th data-sort="inst">Instansi<span class="ar">↕</span></th>
+        <th data-sort="jenis">Jenis<span class="ar">↕</span></th>
+        <th data-sort="tgl">Tanggal<span class="ar">↕</span></th>
+        <th>Bidang</th>
+        <th data-sort="end">Masa berlaku<span class="ar">↕</span></th>
+        <th>PKS</th>
+        <th>Dokumen</th>
+      </tr></thead>
+      <tbody id="mouBody"></tbody>
+    </table></div>
+  </div>
+
+  <h2 class="section-title">Daftar Perjanjian Kerja Sama (PKS)</h2>
+  <p class="section-sub">Perjanjian turunan yang sudah ditandatangani.</p>
+  <div class="card panel" style="margin-top:12px">
+    <div class="toolbar">
+      <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q2" type="search" placeholder="Cari instansi, nomor, unit kerja…" aria-label="Cari PKS"></label>
+      <span class="count" id="pksCount"></span>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>No</th><th>Instansi</th><th>Jenis</th><th>Tanggal</th><th>Nomor</th><th>Unit kerja</th><th>Dokumen</th></tr></thead>
+      <tbody id="pksBody"></tbody>
+    </table></div>
+  </div>
+</main>
+
+<footer class="wrap">Badan Gizi Nasional · Deputi Bidang Promosi dan Kerja Sama · Direktorat Kerja Sama dan Kemitraan</footer>
+<div class="tip" id="tip"></div>
+
+<!-- MODAL POPUP DETAIL MOU (KHUSUS TAMPILAN MOBILE) -->
+<div id="mouModal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:16px;">
+  <div style="background:var(--surface); color:var(--text); width:100%; max-width:550px; max-height:85vh; border-radius:18px; border:1px solid var(--border); overflow-y:auto; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.3); position:relative;">
+    <button onclick="closeMouModal()" style="position:absolute; right:14px; top:14px; border:none; background:var(--mute-soft); color:var(--text); width:32px; height:32px; border-radius:50%; font-weight:bold; cursor:pointer; font-size:16px;">✕</button>
+    <h3 style="margin-top:0; padding-right:30px; font-size:16px; color:var(--primary-strong);">Detail Nota Kesepahaman</h3>
+    <hr style="border:0; border-top:1px solid var(--border); margin:12px 0;">
+    <div id="modalContent" class="dgrid" style="grid-template-columns:1fr !important; gap:12px;"></div>
+  </div>
+</div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbwXXcQKoGNZ-Kv5uVGbWIQv6MVem-NUtsqiVQ7U5G4d1hDX_4vVs8bKFwGuqyqsN3iORA/exec";
+let DATA = { mou: [], pks: [], timeline: [], tlStart: "2026-10-19", tlDays: 74 };
+
+/* ----- SINKRONISASI TEMA TERANG / GELAP (LANGSUNG AKTIF) ----- */
+(function setupTheme() {
+  const root = document.documentElement;
+  let saved = null; 
+  try { saved = localStorage.getItem('bgn-theme'); } catch(e){}
+  
+  function applyTheme(t) {
+    root.setAttribute('data-theme', t);
+    document.querySelectorAll('.theme-toggle button').forEach(b => {
+      b.setAttribute('aria-pressed', b.dataset.t === t);
+    });
+    try { localStorage.setItem('bgn-theme', t); } catch(e){}
+  }
+
+  const sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(saved === 'light' || saved === 'dark' ? saved : (sysDark ? 'dark' : 'light'));
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.theme-toggle button').forEach(b => {
+      b.addEventListener('click', (e) => {
+        e.preventDefault();
+        applyTheme(b.dataset.t);
+      });
+    });
+  });
+})();
+
+async function fetchRealtimeData() {
+  const statusEl = document.getElementById("asofToday");
+  if(statusEl) statusEl.innerHTML = "<span style='color:var(--warn)'>Menghubungkan...</span>";
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'GET',
+      mode: 'cors',
+      redirect: 'follow'
+    });
+
+    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+    const data = await response.json();
+    handleDataResponse(data);
+  } catch (error) {
+    console.error("Detail Error Sinkronisasi:", error);
+    if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Gagal sinkron. Cek koneksi.</span>";
+  }
+}
+
+function extractUrl(val) {
+  if (!val) return null;
+  val = String(val).trim();
+  if (/^https?:\/\//i.test(val)) return val;
+  const match = val.match(/(https?:\/\/[^\s"'<>]+)/i);
+  return match ? match[1] : null;
+}
+
+function parseGoogleDate(v) {
+  if (!v) return null;
+  const s = String(v).trim();
+  if (!s || s === '-' || s.toLowerCase() === 'null') return null;
+  
+  if (s.includes('T')) return new Date(s.split('T')[0] + 'T00:00:00');
+  if (s.includes('-')) {
+    const parts = s.split(' ')[0].split('-');
+    if (parts.length === 3) {
+      if (parts[0].length === 4) return new Date(`${parts[0]}-${parts[1].padStart(2,'0')}-${parts[2].padStart(2,'0')}T00:00:00`);
+      return new Date(`${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}T00:00:00`);
+    }
+  }
+  if (s.includes('/')) {
+    const p = s.split('/');
+    if(p.length === 3) {
+      if (p[2].length === 4) return new Date(`${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}T00:00:00`);
+      if (p[0].length === 4) return new Date(`${p[0]}-${p[1].padStart(2,'0')}-${p[2].padStart(2,'0')}T00:00:00`);
+    }
+  }
+  
+  const blnMap = {'jan':1,'feb':2,'mar':3,'apr':4,'mei':5,'jun':6,'jul':7,'agu':8,'aug':8,'sep':9,'okt':10,'oct':10,'nov':11,'des':12,'dec':12};
+  const m = s.match(/(\d{1,2})\s+([a-zA-Z]+)\s+(\d{4})/);
+  if (m) {
+    const mi = blnMap[m[2].toLowerCase().slice(0,3)];
+    if (mi) return new Date(`${m[3]}-${String(mi).padStart(2,'0')}-${m[1].padStart(2,'0')}T00:00:00`);
+  }
+  
+  if (!isNaN(v) && Number(v) > 30000) {
+    const d = new Date((v - (25567 + 2)) * 86400 * 1000);
+    return new Date(d.toISOString().split('T')[0] + 'T00:00:00');
+  }
+  return null;
+}
+
+function handleDataResponse(resData) {
+  const statusEl = document.getElementById("asofToday");
+  const now = new Date();
+  const timeString = now.getHours().toString().padStart(2,'0') + ":" + now.getMinutes().toString().padStart(2,'0');
+  if(statusEl) statusEl.innerHTML = `<span style='color:var(--ok)'> Real-Time (${timeString})</span>`;
+
+  const getRows = arr => (Array.isArray(arr) && arr.length > 1) ? arr.slice(1) : [];
+
+  DATA.mou = getRows(resData.mou).map((r, i) => {
+    let linkDoc = extractUrl(r[8]) || extractUrl(r[4]) || extractUrl(r[2]);
+    let linkPks = extractUrl(r[12]);
+    let jenis = r[2] || "BELUM DIISI";
+    if (extractUrl(jenis)) jenis = "BELUM DIISI";
+
+    return {
+      no: r[0] || (i + 1),
+      nama: r[1] || "",
+      jenis: jenis,
+      d: parseGoogleDate(r[3]),
+      tgl: r[3] || "",
+      judul: r[4] || "",
+      nomor: r[5] || "",
+      tentang: r[6] || "",
+      jangka: r[7] || "",
+      file: r[8] || "",
+      url: linkDoc,
+      db: r[9] || "",
+      lingkup: r[10] || "",
+      pks: r[11] || "BELUM ADA PKS",
+      pksFile: r[12] || "",
+      pksUrl: linkPks,
+      ket: r[13] || "",
+      level: r[14] || "",
+      pemrakarsa: r[15] || "",
+      unit: r[16] || ""
+    };
+  }).filter(m => m.nama && !extractUrl(m.nama));
+
+  DATA.pks = getRows(resData.pks).map((r, i) => {
+    let pksUrl = extractUrl(r[6]);
+    return {
+      no: r[0] || (i + 1),
+      d: parseGoogleDate(r[1]),
+      tgl: r[1] || "",
+      instansi: r[2] || "",
+      jenis: r[3] || "",
+      nomor: r[4] || "",
+      unit: r[5] || "",
+      file: r[6] || "",
+      url: pksUrl,
+      db: r[7] || "",
+      ket: r[8] || ""
+    };
+  }).filter(p => p.instansi);
+
+  DATA.timeline = getRows(resData.timeline).map((r, i) => {
+    const parseIdx = val => {
+      if (val === null || val === undefined) return [];
+      return String(val).split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+    };
+    return {
+      no: r[0] || (i + 1),
+      kegiatan: r[1] || "",
+      materi: r[2] || "",
+      inisiator: r[3] || "",
+      level: r[4] || "",
+      status: r[5] || "Belum ada status",
+      rencana: parseIdx(r[6]),
+      realisasi: parseIdx(r[7])
+    };
+  }).filter(t => t.kegiatan && t.kegiatan.trim() !== "");
+
+  initApp();
+}
+
+// FUNGSI GLOBAL TUTUP MODAL
+window.closeMouModal = function() {
+  const m = document.getElementById('mouModal');
+  if(m) m.style.display = 'none';
+};
+
+function initApp() {
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const BLN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  const BLN_L = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const fmtD = d => (d && d instanceof Date && !isNaN(d)) ? `${d.getDate()} ${BLN[d.getMonth()]} ${d.getFullYear()}` : '—';
+  const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+  const isUrl = u => /^https?:\/\//i.test(u||'');
+
+  /* DERIVE DATA */
+  const shortName = n => String(n||'').replace(/^\s*(nota kesepahaman|mou|nk)\s+(antara\s+)?(bgn|badan gizi nasional)?\s*(dengan|dan)\s+/i,'').replace(/\s+/g,' ').trim() || n;
+  const normJenis = j => { j = (j||'').toUpperCase().trim(); return j ? j : 'BELUM DIISI'; };
+  const JENIS_LABEL = {'KEMENTRIAN/LEMBAGA':'Kementerian/Lembaga','KEMENTERIAN/LEMBAGA':'Kementerian/Lembaga','BUMN/BUMD':'BUMN/BUMD','ORMAS':'Ormas','SWASTA':'Swasta','PEMPROV/PEMDA':'Pemprov/Pemda','PERGURUAN TINGGI':'Perguruan Tinggi','INTERNASIONAL':'Internasional','BELUM DIISI':'Belum diisi'};
+  
+  function endDate(m){
+    const d = m.d; const j = (m.jangka||'').toLowerCase();
+    let r;
+    if ((r = j.match(/hingga\s+(\d{1,2})\s+([a-z]+)\s+(\d{4})/))) { const mi = BLN_L.findIndex(b => b.toLowerCase() === r[2]); if (mi >= 0) return new Date(+r[3], mi, +r[1]); }
+    if (!d || !(d instanceof Date) || isNaN(d)) return null;
+    if ((r = j.match(/(\d+)\s*tahun/))) { const e = new Date(d); e.setFullYear(e.getFullYear() + +r[1]); return e; }
+    if ((r = j.match(/(\d+)\s*bulan/))) { const e = new Date(d); e.setMonth(e.getMonth() + +r[1]); return e; }
+    return null;
+  }
+  const DAY = 864e5;
+  DATA.mou.forEach(m => {
+    m.inst = shortName(m.nama); m.J = normJenis(m.jenis); m.e = endDate(m);
+    m.hasPks = /sudah/i.test(m.pks); m.pksLbl = m.hasPks ? 'Sudah ada PKS' : (/belum/i.test(m.pks) ? 'Belum ada PKS' : 'Belum diisi');
+    if (!m.e) m.berlaku = 'Tidak diketahui';
+    else { const left = (m.e - TODAY) / DAY; m.left = left; m.berlaku = left < 0 ? 'Berakhir' : left <= 180 ? 'Segera berakhir' : 'Aktif'; }
+  });
+  DATA.pks.forEach(p => { p.inst = String(p.instansi).replace(/^PKS\s+(BGN\s+)?(dengan|dan)\s+/i,'').replace(/\s+dengan\s+BGN$/i,'').trim(); });
+  const MOU = DATA.mou, PKS = DATA.pks.filter(p => p.d || p.nomor !== '-');
+  const countBy = (arr, f) => arr.reduce((a, x) => { const k = f(x); a[k] = (a[k]||0) + 1; return a; }, {});
+
+  /* KPIS */
+  const ic = {
+    doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>',
+    hand:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.9-3.9a2 2 0 0 0-2.8 0l-.9.9a1 1 0 1 1-3-3l2.8-2.8a5 5 0 0 1 6 .8L21 7"/><path d="m21 3-2 2M3 3l2 2M3 14l6 6"/></svg>',
+    link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>',
+    cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>',
+    shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>',
+    alert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>'
+  };
+  const nPksLinked = MOU.filter(m => m.hasPks).length;
+  const thisYear = TODAY.getFullYear();
+  const nYear = MOU.filter(m => m.d && m.d.getFullYear() === thisYear).length;
+  const nAktif = MOU.filter(m => m.berlaku === 'Aktif' || m.berlaku === 'Segera berakhir').length;
+  const nUrgent = MOU.filter(m => /mendesak/i.test(m.level)).length;
+  const kpis = [
+    {i:'doc', l:'Total MoU', v:MOU.length, s:`${MOU.filter(m=>m.d).length} bertanggal · sejak ${fmtD(MOU.filter(m=>m.d).sort((a,b)=>a.d-b.d)[0]?.d)}`},
+    {i:'hand', l:'Total PKS', v:PKS.length, s:`${PKS.filter(p=>p.d&&p.d.getFullYear()===thisYear).length} ditandatangani tahun ${thisYear}`},
+    {i:'link', l:'MoU berlanjut ke PKS', v:nPksLinked, s:`${Math.round(nPksLinked/(MOU.length||1)*100)}% dari seluruh MoU`, bar:nPksLinked/(MOU.length||1)},
+    {i:'cal', l:`MoU tahun ${thisYear}`, v:nYear, s:`dari ${MOU.length} MoU tercatat`, bar:nYear/(MOU.length||1)},
+    {i:'shield', l:'MoU masih berlaku', v:nAktif, s:`${MOU.filter(m=>m.berlaku==='Segera berakhir').length} berakhir ≤ 6 bulan`, bar:nAktif/(MOU.length||1)},
+    {i:'alert', l:'Mendesak', v:nUrgent, s:`${MOU.filter(m=>/sangat/i.test(m.level)).length} sangat mendesak`}
+  ];
+  $('#kpis').innerHTML = kpis.map(k => `<div class="card kpi"><div class="ic">${ic[k.i]}</div><div class="lbl">${k.l}</div><div class="val" data-v="${k.v}">0</div><div class="sub">${esc(k.s)}</div>${k.bar!=null?`<div class="bar"><i style="width:${(k.bar*100).toFixed(1)}%"></i></div>`:''}</div>`).join('');
+  document.querySelectorAll('.kpi .val').forEach(el => { const t = +el.dataset.v, t0 = performance.now(); const step = n => { const p = Math.min(1,(n-t0)/700); el.textContent = Math.round(t*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(step); }; requestAnimationFrame(step); });
+
+  /* TOOLTIP */
+  const tip = $('#tip');
+  function showTip(e, html){ tip.innerHTML = html; tip.style.opacity = 1; moveTip(e); }
+  function moveTip(e){ const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8); tip.style.left = x + 'px'; tip.style.top = (e.clientY - tip.offsetHeight - 12) + 'px'; }
+  function hideTip(){ tip.style.opacity = 0; }
+  function bindTips(scope){ scope.querySelectorAll('[data-tip]').forEach(el => { el.addEventListener('mouseenter', e => showTip(e, el.dataset.tip)); el.addEventListener('mousemove', moveTip); el.addEventListener('mouseleave', hideTip); }); }
+
+  /* TREND CHART */
+  function renderTrend(){
+    const box = $('#trend'); const W = Math.max(300, box.clientWidth), H = 240, P = {l:34, r:38, t:14, b:34};
+    const qs = [
+      {y:2024, q:2, m:0, p:0}, {y:2024, q:3, m:0, p:0},
+      {y:2025, q:0, m:0, p:0}, {y:2025, q:1, m:0, p:0}, {y:2025, q:2, m:0, p:0}, {y:2025, q:3, m:0, p:0},
+      {y:2026, q:0, m:0, p:0}, {y:2026, q:1, m:0, p:0}, {y:2026, q:2, m:0, p:0}, {y:2026, q:3, m:0, p:0}
+    ];
+    const key = d => qs.findIndex(x => x.y === d.getFullYear() && x.q === Math.floor(d.getMonth()/3));
+    MOU.forEach(m => { if (m.d && m.d instanceof Date && !isNaN(m.d)) { const k = key(m.d); if (k >= 0) qs[k].m++; } });
+    PKS.forEach(p => { if (p.d && p.d instanceof Date && !isNaN(p.d)) { const k = key(p.d); if (k >= 0) qs[k].p++; } });
+    let cum = MOU.filter(m => !m.d).length; qs.forEach(x => { cum += x.m; x.c = cum; });
+    
+    const maxV = Math.max(24, Math.max(...qs.map(x => Math.max(x.m, x.p))) * 1.15);
+    const maxC = Math.max(MOU.length, 117);
+    const iw = W - P.l - P.r, ih = H - P.t - P.b, bw = iw / (qs.length||1), gw = Math.min(12, bw * .30);
+    const y = v => P.t + ih - v / maxV * ih; const yc = v => P.t + ih - v / maxC * ih;
+    
+    let s = `<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}" role="img" preserveAspectRatio="none">`;
+    const ticks = 4;
+    for (let i = 0; i <= ticks; i++) {
+      const v = Math.round(maxV / ticks * i); const yy = y(v);
+      s += `<line x1="${P.l}" x2="${W-P.r}" y1="${yy}" y2="${yy}" stroke="var(--grid)"/><text x="${P.l-8}" y="${yy+4}" text-anchor="end" font-size="10.5" fill="var(--muted)">${v}</text>`;
+      s += `<text x="${W-P.r+8}" y="${yc(maxC/ticks*i)+4}" font-size="10.5" fill="var(--c3)">${Math.round(maxC/ticks*i)}</text>`;
+    }
+    let line = '';
+    qs.forEach((x, i) => {
+      const cx = P.l + bw * i + bw / 2;
+      const t = `<b>Q${x.q+1} ${x.y}</b><br>MoU: ${x.m}<br>PKS: ${x.p}<br>Kumulatif MoU: ${x.c}`;
+      s += `<rect x="${P.l+bw*i}" y="${P.t}" width="${bw}" height="${ih}" fill="transparent" data-tip="${esc(t)}"/>`;
+      if (x.m > 0) s += `<rect x="${cx-gw-1}" y="${y(x.m)}" width="${gw}" height="${Math.max(0,P.t+ih-y(x.m))}" rx="3" fill="var(--primary)" pointer-events="none"/>`;
+      if (x.p > 0) s += `<rect x="${cx+1}" y="${y(x.p)}" width="${gw}" height="${Math.max(0,P.t+ih-y(x.p))}" rx="3" fill="var(--navy)" pointer-events="none"/>`;
+      s += `<text x="${cx}" y="${H-P.b+14}" text-anchor="middle" font-size="10" fill="var(--muted)">Q${x.q+1}</text>`;
+      if (x.q === 0 || i === 0) s += `<text x="${cx}" y="${H-P.b+27}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--text)">${x.y}</text>`;
+      line += `${i ? 'L' : 'M'}${cx},${yc(x.c)}`;
+    });
+    s += `<path d="${line}" fill="none" stroke="var(--c3)" stroke-width="2.5" stroke-linejoin="round" pointer-events="none"/>`;
+    qs.forEach((x, i) => { const cx = P.l + bw * i + bw / 2; s += `<circle cx="${cx}" cy="${yc(x.c)}" r="3.5" fill="var(--surface)" stroke="var(--c3)" stroke-width="2" pointer-events="none"/>`; });
+    box.innerHTML = s + '</svg>'; bindTips(box);
+  }
+
+  /* DONUT */
+  function donut(el, entries, center, colors){
+    const tot = entries.reduce((a, e) => a + e[1], 0) || 1, R = 65, r = 44, S = 150, c = S / 2;
+    let a0 = -Math.PI / 2, s = `<svg width="${S}" height="${S}" viewBox="0 0 ${S} ${S}" role="img">`;
+    entries.forEach((e, i) => {
+      const a1 = a0 + e[1] / tot * Math.PI * 2, large = a1 - a0 > Math.PI ? 1 : 0, gap = entries.length > 1 ? .012 : 0;
+      const p = (ang, rad) => `${c + rad * Math.cos(ang)},${c + rad * Math.sin(ang)}`;
+      const A = a0 + gap, B = a1 - gap;
+      s += e[1] / tot >= .9999 ? `<circle cx="${c}" cy="${c}" r="${(R+r)/2}" fill="none" stroke="${colors[i]}" stroke-width="${R-r}" data-tip="${esc(`<b>${e[0]}</b><br>${e[1]} (100%)`)}"/>`
+        : `<path d="M${p(A,R)} A${R},${R} 0 ${large} 1 ${p(B,R)} L${p(B,r)} A${r},${r} 0 ${large} 0 ${p(A,r)}Z" fill="${colors[i]}" data-tip="${esc(`<b>${e[0]}</b><br>${e[1]} MoU (${Math.round(e[1]/tot*100)}%)`)}" style="cursor:default"/>`;
+      a0 = a1;
+    });
+    s += `<text x="${c}" y="${c+2}" text-anchor="middle" font-size="24" font-weight="800" fill="var(--text)">${center[0]}</text><text x="${c}" y="${c+18}" text-anchor="middle" font-size="10.5" fill="var(--muted)">${center[1]}</text></svg>`;
+    el.innerHTML = s + `<div class="dlegend">${entries.map((e, i) => `<div><i style="background:${colors[i]}"></i><span>${esc(e[0])}</span><b>${e[1]}</b></div>`).join('')}</div>`;
+    bindTips(el);
+  }
+  const PAL = ['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)','var(--c7)','var(--c8)','var(--c6)'];
+  function renderDonuts(){
+    const j = Object.entries(countBy(MOU, m => JENIS_LABEL[m.J] || m.J)).sort((a, b) => (a[0]==='Belum diisi') - (b[0]==='Belum diisi') || b[1] - a[1]);
+    donut($('#jenis'), j, [MOU.length, 'MoU'], j.map((e, i) => e[0] === 'Belum diisi' ? 'var(--c6)' : PAL[i % PAL.length]));
+    const ps = countBy(MOU, m => m.pksLbl); const pe = ['Sudah ada PKS','Belum ada PKS','Belum diisi'].filter(k => ps[k]).map(k => [k, ps[k]]);
+    donut($('#pksStatus'), pe, [Math.round(nPksLinked/(MOU.length||1)*100) + '%', 'sudah PKS'], pe.map(e => e[0]==='Sudah ada PKS' ? 'var(--ok)' : e[0]==='Belum ada PKS' ? 'var(--c3)' : 'var(--c6)'));
+    const bl = countBy(MOU, m => m.berlaku); const order = ['Aktif','Segera berakhir','Berakhir','Tidak diketahui']; const be = order.filter(k => bl[k]).map(k => [k, bl[k]]);
+    const bc = {'Aktif':'var(--c1)','Segera berakhir':'var(--c3)','Berakhir':'var(--c8)','Tidak diketahui':'var(--c6)'};
+    donut($('#berlaku'), be, [nAktif, 'berlaku'], be.map(e => bc[e[0]]));
+  }
+  function hbars(el, entries){
+    const max = Math.max(1, ...entries.map(e => e[1]));
+    el.innerHTML = entries.map((e, i) => `<div class="hbar" title="${esc(e[0])}"><span class="nm">${esc(e[0])}</span><span class="tr"><i style="width:${e[1]/max*100}%;animation-delay:${i*40}ms${e[2]?';background:'+e[2]:''}"></i></span><b>${e[1]}</b></div>`).join('');
+  }
+  function renderBars(){
+    const lv = countBy(MOU, m => m.level || 'Belum ditentukan');
+    hbars($('#level'), ['Sangat Mendesak','Mendesak','Biasa','Belum ditentukan'].filter(k => lv[k]).map(k => [k, lv[k], k==='Sangat Mendesak'?'var(--bad)':k==='Mendesak'?'var(--c3)':k==='Biasa'?'':'var(--c6)']));
+    const normT = t => { t = (t||'').trim(); if (!t) return 'Belum dikategorikan'; if (/^sinergi(sitas)? tugas dan fungsi/i.test(t)) return 'Sinergi Tugas dan Fungsi'; if (/makan bergizi|program mbg/i.test(t)) return 'Sinergi Program MBG'; return t; };
+    const bt = Object.entries(countBy(MOU, m => normT(m.tentang))).sort((a, b) => (a[0]==='Belum dikategorikan') - (b[0]==='Belum dikategorikan') || b[1] - a[1]);
+    const top = bt.filter(e => e[0] !== 'Belum dikategorikan').slice(0, 12), rest = bt.filter(e => e[0] !== 'Belum dikategorikan').slice(12).reduce((a, e) => a + e[1], 0), un = bt.find(e => e[0] === 'Belum dikategorikan');
+    if (rest) top.push(['Topik lainnya', rest, 'var(--c6)']); if (un) top.push([un[0], un[1], 'var(--c6)']);
+    hbars($('#bidang'), top);
+  }
+  function renderExpiring(){
+    const lst = MOU.filter(m => m.e && m.left >= -90 && m.left <= 365).sort((a, b) => a.e - b.e);
+    $('#expiring').innerHTML = lst.length ? lst.map(m => {
+      const c = m.left < 0 ? 'bad' : m.left <= 180 ? 'warn' : 'info';
+      const t = m.left < 0 ? `Berakhir ${Math.round(-m.left)} hr lalu` : `${Math.round(m.left)} hr lagi`;
+      return `<div class="exp-item"><div><div class="n">${esc(m.inst)}</div><div class="d">Berakhir ${fmtD(m.e)}</div></div><div><span class="chip ${c}">${t}</span></div></div>`;
+    }).join('') : '<div class="empty">Tidak ada MoU yang berakhir dalam 12 bulan.</div>';
+  }
+
+  /* GANTT TIMELINE */
+  let tlFilter = 'Semua';
+  function renderGantt(){
+    const start = new Date(DATA.tlStart + 'T00:00:00'), N = DATA.tlDays;
+    const days = [...Array(N)].map((_, i) => { const d = new Date(start); d.setDate(d.getDate() + i); return d; });
+    const todayIdx = Math.round((TODAY - start) / DAY);
+    
+    const rows = DATA.timeline.filter(t => {
+      if (tlFilter === 'Semua') return true;
+      if (tlFilter === 'Dijadwalkan') return (t.rencana.length > 0 || t.realisasi.length > 0);
+      return (t.status || 'Belum ada status') === tlFilter;
+    });
+
+    const g = $('#gantt'); 
+    g.style.gridTemplateColumns = `minmax(180px, 260px) repeat(${N}, 22px)`;
+    
+    let h = `<div class="g-cell g-label g-head" style="grid-row:span 2">Kegiatan</div>`;
+    let i = 0; 
+    while (i < N) { 
+      const m = days[i].getMonth(); 
+      let j = i; 
+      while (j < N && days[j].getMonth() === m) j++; 
+      h += `<div class="g-cell g-month" style="grid-column:span ${j-i}">${BLN_L[m]} ${days[i].getFullYear()}</div>`; 
+      i = j; 
+    }
+    
+    const HARI = ['M','S','S','R','K','J','S'];
+    days.forEach((d, k) => { 
+      const we = d.getDay() === 0 || d.getDay() === 6; 
+      h += `<div class="g-cell g-day g-head${we?' we':''}${k===todayIdx?' today':''}"><span>${HARI[d.getDay()]}</span><b style="color:var(--text)">${d.getDate()}</b></div>`; 
+    });
+    
+    rows.forEach(t => {
+      const st = t.status ? `<span class="chip ${t.status==='Selesai'?'ok':t.status==='Usulan'?'mute':t.status==='Piloting'?'warn':'info'}">${esc(t.status)}</span>` : '';
+      const lt = `<b>${esc(t.kegiatan)}</b>${t.status?`<br>Status: ${esc(t.status)}`:''}${t.inisiator?`<br>Inisiator: ${esc(t.inisiator)}`:''}${t.materi?`<br>Materi: ${esc(t.materi)}`:''}`;
+      
+      h += `<div class="g-cell g-label" data-tip="${esc(lt)}"><span class="no">${t.no}</span><span class="t">${esc(t.kegiatan)}</span>${st}</div>`;
+      
+      days.forEach((d, k) => {
+        const we = d.getDay() === 0 || d.getDay() === 6;
+        const R = t.rencana.includes(k);
+        const X = t.realisasi.includes(k);
+        const tp = (R || X) ? `data-tip="${esc(`<b>${esc(t.kegiatan)}</b><br>${d.getDate()} ${BLN_L[d.getMonth()]} ${d.getFullYear()}<br>${R?'Rencana':''}${R&&X?' · ':''}${X?'Realisasi ✓':''}`)}"` : '';
+        
+        let dotsHtml = '';
+        if (R) dotsHtml += `<span class="g-dot${k<todayIdx&&!X?' past':''}"></span>`;
+        if (X) dotsHtml += `<span class="g-dot real"></span>`;
+
+        h += `<div class="g-cell g-day${we?' we':''}${k===todayIdx?' today':''}" ${tp}>${dotsHtml}</div>`;
+      });
+    });
+    
+    if (!rows.length) h += `<div class="empty" style="grid-column:1/-1">Tidak ada kegiatan pada filter ini.</div>`;
+    g.innerHTML = h; 
+    bindTips(g);
+    
+    const sc = $('#ganttScroll'); 
+    if (todayIdx > 6 && todayIdx < N) sc.scrollLeft = Math.max(0, (todayIdx - 6) * 22);
+  }
+
+  const stCounts = countBy(DATA.timeline, t => t.status || 'Belum ada status');
+  const tlOpts = ['Semua', 'Dijadwalkan', ...Object.keys(stCounts).sort((a, b) => stCounts[b] - stCounts[a])];
+  $('#tlFilters').innerHTML = tlOpts.map(o => `<button class="pill" type="button" aria-pressed="${o===tlFilter}" data-f="${esc(o)}">${esc(o)} <span style="opacity:.7">${o==='Semua'?DATA.timeline.length:o==='Dijadwalkan'?DATA.timeline.filter(t=>t.rencana.length||t.realisasi.length).length:stCounts[o]}</span></button>`).join('');
+  $('#tlFilters').addEventListener('click', e => { const b = e.target.closest('.pill'); if (!b) return; tlFilter = b.dataset.f; document.querySelectorAll('#tlFilters .pill').forEach(p => p.setAttribute('aria-pressed', p === b)); renderGantt(); });
+
+  /* TABLES */
+  const opt = (el, label, vals) => { el.innerHTML = `<option value="">${label}</option>` + vals.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join(''); };
+  opt($('#fJenis'), 'Semua jenis', [...new Set(MOU.map(m => JENIS_LABEL[m.J] || m.J))].sort());
+  opt($('#fPks'), 'Semua status PKS', ['Sudah ada PKS','Belum ada PKS','Belum diisi']);
+  opt($('#fTahun'), 'Semua tahun', [...new Set(MOU.filter(m => m.d).map(m => m.d.getFullYear()))].sort().map(String));
+  opt($('#fBerlaku'), 'Semua masa berlaku', ['Aktif','Segera berakhir','Berakhir','Tidak diketahui']);
+  opt($('#fLevel'), 'Semua level', [...new Set(MOU.map(m => m.level).filter(Boolean))].sort());
+
+  let sortK = 'no', sortDir = 1; const openRows = new Set();
+  const docIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></svg>';
+  const berlakuChip = m => `<span class="chip ${{'Aktif':'info','Segera berakhir':'warn','Berakhir':'bad'}[m.berlaku]||'mute'}">${m.berlaku}</span>${m.e?`<div class="sm" style="margin-top:3px">s.d. ${fmtD(m.e)}</div>`:''}`;
+
+  function renderMou(){
+    const q = $('#q').value.trim().toLowerCase(), 
+          fj = $('#fJenis').value, 
+          fp = $('#fPks').value, 
+          ft = $('#fTahun').value, 
+          fb = $('#fBerlaku').value,
+          fl = $('#fLevel').value;
+    
+    let rows = MOU.filter(m => (!fj || (JENIS_LABEL[m.J]||m.J) === fj) 
+      && (!fp || m.pksLbl === fp) 
+      && (!ft || (m.d && String(m.d.getFullYear()) === ft)) 
+      && (!fb || m.berlaku === fb)
+      && (!fl || m.level === fl)
+      && (!q || [m.nama, m.judul, m.nomor, m.lingkup, m.tentang, m.pemrakarsa, m.unit, m.level].join(' ').toLowerCase().includes(q)));
+    
+    const val = { 
+      no: m => isNaN(Number(m.no)) ? 0 : Number(m.no), 
+      inst: m => m.inst.toLowerCase(), 
+      jenis: m => m.J, 
+      tgl: m => m.d ? +m.d : 0, 
+      end: m => m.e ? +m.e : 9e15 
+    };
+    
+    rows.sort((a, b) => { const x = val[sortK](a), y = val[sortK](b); return (x > y ? 1 : x < y ? -1 : 0) * sortDir; });
+    $('#mouCount').textContent = `Menampilkan ${rows.length} dari ${MOU.length} MoU`;
+    document.querySelectorAll('thead th[data-sort]').forEach(th => { const on = th.dataset.sort === sortK; th.classList.toggle('sorted', on); th.querySelector('.ar').textContent = on ? (sortDir > 0 ? '↑' : '↓') : '↕'; });
+    
+    $('#mouBody').innerHTML = rows.length ? rows.map(m => {
+      const mId = String(m.no);
+      const open = openRows.has(mId);
+      const doc = isUrl(m.url) ? `<a class="doc-btn" href="${esc(m.url)}" target="_blank" rel="noopener">${docIcon}MoU</a>` : '<span class="sm">—</span>';
+      const pdoc = isUrl(m.pksUrl) ? ` <a class="doc-btn" href="${esc(m.pksUrl)}" target="_blank" rel="noopener">${docIcon}PKS</a>` : '';
+      
+      let r = `<tr class="row${open?' open':''}" data-no="${mId}" tabindex="0" aria-expanded="${open}">
+        <td class="num" data-no="${mId}">${m.no}</td>
+        <td data-no="${mId}">
+          <div class="inst" data-no="${mId}">${esc(m.inst)}</div>
+          ${m.judul?`<div class="sm" data-no="${mId}">${esc(m.judul.length>90?m.judul.slice(0,90)+'…':m.judul)}</div>`:''}
+        </td>
+        <td data-no="${mId}"><span class="sm" style="white-space:nowrap" data-no="${mId}">${esc(JENIS_LABEL[m.J]||m.J)}</span></td>
+        <td style="white-space:nowrap" data-no="${mId}">${m.d?fmtD(m.d):'<span class="sm">—</span>'}</td>
+        <td data-no="${mId}"><span class="sm" data-no="${mId}">${esc(m.tentang||'—')}</span></td>
+        <td data-no="${mId}">${berlakuChip(m)}</td>
+        <td data-no="${mId}"><span class="chip ${m.hasPks?'ok':m.pksLbl==='Belum ada PKS'?'warn':'mute'}" data-no="${mId}">${m.pksLbl}</span></td>
+        <td style="white-space:nowrap">${doc}${pdoc}</td>
+      </tr>`;
+      
+      if (open) r += `<tr class="detail"><td></td><td colspan="7"><div class="dgrid">
+        <div class="full"><h4>Judul</h4><p>${esc(m.judul||'—')}</p></div>
+        <div><h4>Nomor</h4><p>${esc(m.nomor||'—')}</p></div>
+        <div><h4>Jangka waktu</h4><p>${esc(m.jangka||'—')}</p></div>
+        <div><h4>Level</h4><p>${esc(m.level||'—')}</p></div>
+        <div><h4>Pemrakarsa</h4><p>${esc(m.pemrakarsa||'—')}</p></div>
+        <div><h4>Unit teknis pemrakarsa</h4><p>${esc(m.unit||'—')}</p></div>
+        <div><h4>DB Kermamit</h4><p>${esc(m.db||'—')}</p></div>
+        <div class="full"><h4>Ruang lingkup</h4><p>${esc(m.lingkup||'—')}</p></div>
+        ${m.ket?`<div class="full"><h4>Keterangan</h4><p>${esc(m.ket)}</p></div>`:''}
+        ${m.pksFile?`<div class="full"><h4>Dokumen PKS</h4><p>${isUrl(m.pksUrl)?`<a href="${esc(m.pksUrl)}" target="_blank" rel="noopener">${esc(m.pksFile)}</a>`:esc(m.pksFile)}</p></div>`:''}
+      </div></td></tr>`;
+      return r;
+    }).join('') : `<tr><td colspan="8" class="empty">Tidak ada MoU yang cocok dengan pencarian.</td></tr>`;
+  }
+
+  /* DETEKSI KLIK TERBISA/TOUCH DI HP DAN DESKTOP */
+  function handleRowClick(e) {
+    if (e.target.closest('a')) return; 
+    
+    const targetEl = e.target.closest('[data-no]');
+    if (!targetEl) return;
+    
+    const nId = String(targetEl.getAttribute('data-no'));
+    if (!nId) return;
+
+    const mData = DATA.mou.find(x => String(x.no) === nId);
+    if (!mData) return;
+    
+    if (window.innerWidth <= 768) {
+      let html = `
+        <div class="full"><h4>Instansi</h4><p><b>${esc(mData.inst)}</b></p></div>
+        <div class="full"><h4>Judul</h4><p>${esc(mData.judul||'—')}</p></div>
+        <div><h4>Nomor</h4><p>${esc(mData.nomor||'—')}</p></div>
+        <div><h4>Masa Berlaku</h4><p>${esc(mData.berlaku)} ${mData.e ? '(s.d. '+fmtD(mData.e)+')' : ''}</p></div>
+        <div><h4>Jangka Waktu</h4><p>${esc(mData.jangka||'—')}</p></div>
+        <div><h4>Level Prioritas</h4><p>${esc(mData.level||'—')}</p></div>
+        <div><h4>Pemrakarsa</h4><p>${esc(mData.pemrakarsa||'—')}</p></div>
+        <div><h4>Unit Teknis</h4><p>${esc(mData.unit||'—')}</p></div>
+        <div><h4>Status PKS</h4><p>${esc(mData.pksLbl)}</p></div>
+        <div><h4>DB Kermamit</h4><p>${esc(mData.db||'—')}</p></div>
+        <div class="full"><h4>Ruang Lingkup</h4><p>${esc(mData.lingkup||'—')}</p></div>
+        ${mData.ket ? `<div class="full"><h4>Keterangan</h4><p>${esc(mData.ket)}</p></div>` : ''}
+        <div class="full" style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+          ${isUrl(mData.url) ? `<a class="doc-btn" href="${esc(mData.url)}" target="_blank" rel="noopener">📄 Buka Dokumen MoU</a>` : ''}
+          ${isUrl(mData.pksUrl) ? `<a class="doc-btn" href="${esc(mData.pksUrl)}" target="_blank" rel="noopener">📄 Buka Dokumen PKS</a>` : ''}
+        </div>
+      `;
+      
+      const modalEl = document.getElementById('mouModal');
+      const contentEl = document.getElementById('modalContent');
+      if (modalEl && contentEl) {
+        contentEl.innerHTML = html;
+        modalEl.style.display = 'flex';
+      }
+    } else {
+      openRows.has(nId) ? openRows.delete(nId) : openRows.add(nId); 
+      renderMou(); 
+    }
+  }
+
+  const tbody = $('#mouBody');
+  if (tbody) {
+    tbody.onclick = handleRowClick;
+  }
+
+  $('#mouBody').onkeydown = function(e) {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr.row')) { 
+      e.preventDefault(); 
+      e.target.click(); 
+    } 
+  };
+
+  ['#q','#fJenis','#fPks','#fTahun','#fBerlaku','#fLevel'].forEach(s => $(s).addEventListener('input', renderMou));
+  document.querySelectorAll('thead th[data-sort]').forEach(th => th.addEventListener('click', () => { const k = th.dataset.sort; if (sortK === k) sortDir *= -1; else { sortK = k; sortDir = k === 'tgl' ? -1 : 1; } renderMou(); }));
+
+  function renderPks(){
+    const q = $('#q2').value.trim().toLowerCase();
+    const rows = DATA.pks.filter(p => !q || [p.instansi, p.nomor, p.unit, p.jenis, p.ket].join(' ').toLowerCase().includes(q));
+    $('#pksCount').textContent = `Menampilkan ${rows.length} dari ${DATA.pks.length} entri`;
+    $('#pksBody').innerHTML = rows.map(p => `<tr><td class="num">${p.no ?? '—'}</td><td><div class="inst">${esc(p.inst)}</div>${p.ket?`<div class="sm">${esc(p.ket)}</div>`:''}${/tdk|tidak/i.test(p.db)?' <span class="chip warn" style="margin-top:4px">Belum di DB</span>':''}</td><td><span class="sm" style="white-space:nowrap">${esc(JENIS_LABEL[(p.jenis||'').toUpperCase()]||p.jenis||'—')}</span></td><td style="white-space:nowrap">${p.d?fmtD(p.d):'<span class="sm">—</span>'}</td><td><span class="sm">${esc(p.nomor||'—')}</span></td><td>${esc(p.unit||'—')}</td><td>${isUrl(p.url)?`<a class="doc-btn" href="${esc(p.url)}" target="_blank" rel="noopener">${docIcon}Buka</a>`:`<span class="sm">${esc(p.file||'—')}</span>`}</td></tr>`).join('') || `<tr><td colspan="7" class="empty">Tidak ada PKS yang cocok.</td></tr>`;
+  }
+  $('#q2').addEventListener('input', renderPks);
+
+  function renderCharts(){ renderTrend(); renderDonuts(); }
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(renderTrend, 120); });
+  renderCharts(); renderBars(); renderExpiring(); renderGantt(); renderMou(); renderPks();
+}
+
+window.onload = fetchRealtimeData;
+</script>
+</body>
+</html>
