@@ -592,14 +592,14 @@ function initApp() {
   const thisYear = TODAY.getFullYear();
   const nYear = MOU.filter(m => m.d && m.d.getFullYear() === thisYear).length;
   const nAktif = MOU.filter(m => m.berlaku === 'Aktif' || m.berlaku === 'Segera berakhir').length;
-  const nUrgent = MOU.filter(m => /mendesak/i.test(m.level)).length;
+  const nUrgent = MOU.filter(m => /segera/i.test(m.level)).length;
   const kpis = [
     {i:'doc', l:'Total MoU', v:MOU.length, s:`${MOU.filter(m=>m.d).length} bertanggal · sejak ${fmtD(MOU.filter(m=>m.d).sort((a,b)=>a.d-b.d)[0]?.d)}`},
     {i:'hand', l:'Total PKS', v:PKS.length, s:`${PKS.filter(p=>p.d&&p.d.getFullYear()===thisYear).length} ditandatangani tahun ${thisYear}`},
     {i:'link', l:'MoU berlanjut ke PKS', v:nPksLinked, s:`${Math.round(nPksLinked/(MOU.length||1)*100)}% dari seluruh MoU`, bar:nPksLinked/(MOU.length||1)},
     {i:'cal', l:`MoU tahun ${thisYear}`, v:nYear, s:`dari ${MOU.length} MoU tercatat`, bar:nYear/(MOU.length||1)},
     {i:'shield', l:'MoU masih berlaku', v:nAktif, s:`${MOU.filter(m=>m.berlaku==='Segera berakhir').length} berakhir ≤ 6 bulan`, bar:nAktif/(MOU.length||1)},
-    {i:'alert', l:'Mendesak', v:nUrgent, s:`${MOU.filter(m=>/sangat/i.test(m.level)).length} sangat mendesak`}
+    {i:'alert', l:'Segera', v:nUrgent, s:`${MOU.filter(m=>/sangat/i.test(m.level)).length} Segera`}
   ];
   $('#kpis').innerHTML = kpis.map(k => `<div class="card kpi"><div class="ic">${ic[k.i]}</div><div class="lbl">${k.l}</div><div class="val" data-v="${k.v}">0</div><div class="sub">${esc(k.s)}</div>${k.bar!=null?`<div class="bar"><i style="width:${(k.bar*100).toFixed(1)}%"></i></div>`:''}</div>`).join('');
   document.querySelectorAll('.kpi .val').forEach(el => { const t = +el.dataset.v, t0 = performance.now(); const step = n => { const p = Math.min(1,(n-t0)/700); el.textContent = Math.round(t*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(step); }; requestAnimationFrame(step); });
@@ -684,7 +684,7 @@ function initApp() {
   }
   function renderBars(){
     const lv = countBy(MOU, m => m.level || 'Belum ditentukan');
-    hbars($('#level'), ['Sangat Mendesak','Mendesak','Biasa','Belum ditentukan'].filter(k => lv[k]).map(k => [k, lv[k], k==='Sangat Mendesak'?'var(--bad)':k==='Mendesak'?'var(--c3)':k==='Biasa'?'':'var(--c6)']));
+    hbars($('#level'), ['Segera','Segera','Biasa','Belum ditentukan'].filter(k => lv[k]).map(k => [k, lv[k], k==='Segera'?'var(--bad)':k==='Segera'?'var(--c3)':k==='Biasa'?'':'var(--c6)']));
     const normT = t => { t = (t||'').trim(); if (!t) return 'Belum dikategorikan'; if (/^sinergi(sitas)? tugas dan fungsi/i.test(t)) return 'Sinergi Tugas dan Fungsi'; if (/makan bergizi|program mbg/i.test(t)) return 'Sinergi Program MBG'; return t; };
     const bt = Object.entries(countBy(MOU, m => normT(m.tentang))).sort((a, b) => (a[0]==='Belum dikategorikan') - (b[0]==='Belum dikategorikan') || b[1] - a[1]);
     const top = bt.filter(e => e[0] !== 'Belum dikategorikan').slice(0, 12), rest = bt.filter(e => e[0] !== 'Belum dikategorikan').slice(12).reduce((a, e) => a + e[1], 0), un = bt.find(e => e[0] === 'Belum dikategorikan');
