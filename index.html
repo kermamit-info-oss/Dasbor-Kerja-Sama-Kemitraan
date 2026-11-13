@@ -298,7 +298,10 @@ footer{padding:26px 0 36px;color:var(--muted);font-size:12px;text-align:center}
       <div class="asof">
         Sumber Data: <b>Internal Kerja Sama dan Kemitraan</b>
         <span id="asofToday" style="display:block; margin-top:2px;"><span style="color:var(--warn)">Menghubungkan...</span></span>
-        <button class="sync-btn" onclick="fetchRealtimeData(true)">🔄 Sinkron Ulang</button>
+        <div style="display:flex; gap:6px; justify-content:flex-end; flex-wrap:wrap; margin-top:4px;">
+          <button class="sync-btn" onclick="fetchRealtimeData(true)">🔄 Sinkron Ulang</button>
+          <button class="sync-btn" onclick="exportStandaloneHTML()" title="Unduh salinan HTML beserta data terbaru di dalamnya">💾 Ekspor HTML</button>
+        </div>
       </div>
     </div>
   </div>
@@ -445,6 +448,28 @@ footer{padding:26px 0 36px;color:var(--muted);font-size:12px;text-align:center}
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbwXXcQKoGNZ-Kv5uVGbWIQv6MVem-NUtsqiVQ7U5G4d1hDX_4vVs8bKFwGuqyqsN3iORA/exec";
+const STORAGE_KEY = "BGN_DASBOR_WIB_DAILY_V1";
+let EMBEDDED_DATA = null;
+
+const DEFAULT_DATA = {
+  mou: [
+    ["No","Nama","Jenis","Tanggal","Judul","Nomor","Tentang","Jangka Waktu","File","DB","Lingkup","Status PKS","File PKS","Keterangan","Level","Pemrakarsa","Unit"],
+    [1,"Kementerian Kesehatan RI","KEMENTERIAN/LEMBAGA","2025-01-15","Nota Kesepahaman Sinergi Program Makan Bergizi Gratis","NK-01/BGN/2025","Sinergi Program MBG","3 Tahun","","Sudah","Intervensi gizi, standar keamanan pangan, dan edukasi kesehatan","Sudah ada PKS","","Aktif berjalan","Sangat Mendesak","Deputi Promosi & Kerja Sama","Direktorat Kerja Sama"]
+  ],
+  pks: [
+    ["No","Tanggal","Instansi","Jenis","Nomor","Unit Kerja","File","DB","Keterangan"],
+    [1,"2025-02-20","PKS BGN dengan Kementerian Kesehatan RI","KEMENTERIAN/LEMBAGA","PKS-01/BGN/2025","Direktorat Kerja Sama","","Sudah","Pengawasan Higiene Sanitasi SPPG"]
+  ],
+  timeline: [
+    ["No","Kegiatan","Materi","Inisiator","Level","Status","Rencana","Realisasi"],
+    [1,"Harmonisasi PKS Rantai Pasok","Draft PKS Komoditas Pangan","Direktorat Kemitraan","Mendesak","Berjalan","2,5,9","2,5"]
+  ],
+  kegiatan: [
+    ["Tanggal Teks","Tanggal","Mulai","Selesai","Undangan","Lampiran Undangan","Keterangan","Status","Kegiatan","PIC","Lokasi","Lampiran Laporan"],
+    ["13 Nov 2026","2026-11-13","09:00","11:30","Deputi Promosi & Kerja Sama","","Pembahasan finalisasi draf PKS","Terjadwal","Rapat Koordinasi Finalisasi Draf PKS","Tim Kermamit","Ruang Rapat BGN",""]
+  ]
+};
+
 let DATA = { mou: [], pks: [], timeline: [], kegiatan: [], tlStart: "2026-10-19", tlDays: 74 };
 
 /* ----- SINKRONISASI TEMA TERANG / GELAP ----- */
@@ -474,22 +499,112 @@ let DATA = { mou: [], pks: [], timeline: [], kegiatan: [], tlStart: "2026-10-19"
   });
 })();
 
-/* ----- KONEKSI REALTIME ANTI-MACET & ANTI-CORS ----- */
-async function fetchRealtimeData(forceRefresh = false) {
-  const statusEl = document.getElementById("asofToday");
-  if(statusEl) statusEl.innerHTML = "<span style='color:var(--warn)'>Menghubungkan...</span>";
+/* ----- HELPER TANGGAL & JAM WIB (PATOKAN JAM 00.00 WIB) ----- */
+function getTodayWIB() {
+  return new Date().toLocaleString("en-CA", { timeZone: "Asia/Jakarta" }).split(",")[0].trim();
+}
 
-  // Render kerangka UI/Kalender terlebih dahulu agar tidak blank saat menunggu data
+function getFormattedTimeWIB() {
+  const now = new Date();
+  const d = now.toLocaleDateString("id-ID", { timeZone: "Asia/Jakarta", day: "2-digit", month: "2-digit", year: "numeric" });
+  const t = now.toLocaleTimeString("id-ID", { timeZone: "Asia/Jakarta", hour: "2-digit", minute: "2-digit", hour12: false });
+  return `${d} ${t} WIB`;
+}
+
+/* ----- LOGIKA PEMUATAN HARIAN (00.00 WIB) & INSTAN 0 DETIK ----- */
+function bootDailyDashboard() {
+  const todayWIB = getTodayWIB();
+  let savedPayload = null;
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) savedPayload = JSON.parse(raw);
+  } catch (e) {}
+
+  if (!window._uiBooted) {
+    window._uiBooted = true;
+    initApp();
+  }
+
+  if (savedPayload && savedPayload.data) {
+    // Langsung tampil instan (0 detik) dari cache browser
+    handleDataResponse(savedPayload.data, savedPayload.savedAtLabel || "Tersimpan");
+
+    // Jika sudah berganti hari (melewati pukul 00.00 WIB), tarik pembaruan harian
+    if (savedPayload.dateWIB !== todayWIB) {
+      fetchRealtimeData(true, true);
+    }
+  } else if (EMBEDDED_DATA && EMBEDDED_DATA.data) {
+    // Jika file ini hasil ekspor dengan data tertanam, langsung tampil instan
+    handleDataResponse(EMBEDDED_DATA.data, EMBEDDED_DATA.savedAtLabel || "Data Ekspor");
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(EMBEDDED_DATA));
+    } catch (e) {}
+    if (EMBEDDED_DATA.dateWIB !== todayWIB) {
+      fetchRealtimeData(true, true);
+    }
+  } else {
+    // Kunjungan pertama kali: render kerangka awal lalu tarik data hari ini
+    handleDataResponse(DEFAULT_DATA, "Data Awal");
+    fetchRealtimeData(true, true);
+  }
+}
+
+/* ----- EKSPOR FILE HTML MANDIRI DENGAN DATA TERBARU ----- */
+function exportStandaloneHTML() {
+  let payloadStr = "null";
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) payloadStr = raw;
+  } catch (e) {}
+
+  const docHtml = "<!doctype html>\n" + document.documentElement.outerHTML.replace(
+    /let EMBEDDED_DATA = [\s\S]*?;\s*\n/,
+    "let EMBEDDED_DATA = " + payloadStr + ";\n"
+  );
+
+  const blob = new Blob([docHtml], { type: "text/html;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "Dasbor_BGN_" + getTodayWIB() + ".html";
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    URL.revokeObjectURL(a.href);
+    a.remove();
+  }, 1000);
+}
+
+/* ----- KONEKSI REALTIME (GANTI HARI 00.00 WIB / TOMBOL SINKRON ULANG) ----- */
+async function fetchRealtimeData(forceRefresh = true, isAutoMidnight = false) {
+  const statusEl = document.getElementById("asofToday");
+  if (statusEl) {
+    statusEl.innerHTML = isAutoMidnight
+      ? "<span style='color:var(--warn)'>↻ Pembaruan harian (00.00 WIB)...</span>"
+      : "<span style='color:var(--warn)'>↻ Menyinkronkan ulang...</span>";
+  }
+
   if (!window._uiBooted) {
     window._uiBooted = true;
     initApp();
   }
 
   const url = API_URL + (forceRefresh ? "?nocache=1" : "");
-
-  // Metode 1: Fetch standar dengan timeout 10 detik
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+  const onSuccess = (data) => {
+    const todayWIB = getTodayWIB();
+    const waktuLabel = getFormattedTimeWIB();
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        dateWIB: todayWIB,
+        savedAtLabel: waktuLabel,
+        data: data
+      }));
+    } catch (e) {}
+    handleDataResponse(data, waktuLabel);
+  };
 
   try {
     const response = await fetch(url, {
@@ -501,18 +616,17 @@ async function fetchRealtimeData(forceRefresh = false) {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     if (data && data.error) throw new Error(data.error);
-    handleDataResponse(data);
+    onSuccess(data);
   } catch (err) {
     clearTimeout(timeoutId);
     console.warn("Beralih ke jalur JSONP:", err);
-    
-    // Metode 2: Fallback JSONP (kebal CORS redirect Google Apps Script)
+
     const cbName = "bgnCb_" + Date.now();
     const script = document.createElement("script");
     const jsonpTimer = setTimeout(() => {
       delete window[cbName];
       script.remove();
-      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Cek izin akses Apps Script ('Siapa saja').</span>";
+      if (statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Data terakhir dipertahankan.</span>";
     }, 15000);
 
     window[cbName] = function(data) {
@@ -520,9 +634,9 @@ async function fetchRealtimeData(forceRefresh = false) {
       delete window[cbName];
       script.remove();
       if (data && data.error) {
-        if(statusEl) statusEl.innerHTML = `<span style='color:var(--bad)'>Error Script: ${data.error}</span>`;
+        if (statusEl) statusEl.innerHTML = `<span style='color:var(--bad)'>Error Script: ${data.error}</span>`;
       } else {
-        handleDataResponse(data);
+        onSuccess(data);
       }
     };
 
@@ -531,7 +645,7 @@ async function fetchRealtimeData(forceRefresh = false) {
       clearTimeout(jsonpTimer);
       delete window[cbName];
       script.remove();
-      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Gagal terhubung. Klik Sinkron Ulang.</span>";
+      if (statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Gagal terhubung. Data terakhir dipertahankan.</span>";
     };
     document.body.appendChild(script);
   }
@@ -593,11 +707,10 @@ function parseGoogleDate(v, fallbackYear = 2026) {
   return null;
 }
 
-function handleDataResponse(resData) {
+function handleDataResponse(resData, savedTimeLabel) {
   const statusEl = document.getElementById("asofToday");
-  const now = new Date();
-  const timeString = now.getHours().toString().padStart(2,'0') + ":" + now.getMinutes().toString().padStart(2,'0');
-  if(statusEl) statusEl.innerHTML = `<span style='color:var(--ok)'>● Real-Time (${timeString})</span>`;
+  const label = savedTimeLabel || getFormattedTimeWIB();
+  if (statusEl) statusEl.innerHTML = `<span style='color:var(--ok)'>● Data Tersimpan (${label})</span>`;
 
   const getRows = arr => (Array.isArray(arr) && arr.length > 1) ? arr.slice(1) : [];
 
@@ -1193,8 +1306,18 @@ function initApp() {
   renderPks();
 }
 
-// Jalankan sinkronisasi otomatis saat halaman dibuka
-document.addEventListener('DOMContentLoaded', () => fetchRealtimeData(false));
+// Jalankan pemuatan instan & jadwal pembaruan harian pukul 00.00 WIB
+document.addEventListener('DOMContentLoaded', bootDailyDashboard);
+
+// Otomatis sinkron jika halaman dibiarkan terbuka melewati pukul 00.00 WIB
+setInterval(() => {
+  try {
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    if (raw.dateWIB && raw.dateWIB !== getTodayWIB()) {
+      fetchRealtimeData(true, true);
+    }
+  } catch (e) {}
+}, 60000);
 </script>
 </body>
 </html>
