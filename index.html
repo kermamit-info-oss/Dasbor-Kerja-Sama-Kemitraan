@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dasbor Kerja Sama BGN - Versi Final Mobile & Desktop</title>
+<title>Dasbor Kerja Sama BGN - Versi Final Mobile &amp; Desktop</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -292,13 +292,13 @@ footer{padding:26px 0 36px;color:var(--muted);font-size:12px;text-align:center}
     </div>
     <div class="hero-title">
       <div>
-        <h1>Dasbor Kerja Sama & Kemitraan</h1>
+        <h1>Dasbor Kerja Sama &amp; Kemitraan</h1>
         <p>Ringkasan Nota Kesepahaman (MoU), Perjanjian Kerja Sama (PKS), dan Agenda Kegiatan Unit Kerja Sama dan Kemitraan.</p>
       </div>
       <div class="asof">
         Sumber Data: <b>Internal Kerja Sama dan Kemitraan</b>
         <span id="asofToday" style="display:block; margin-top:2px;"><span style="color:var(--warn)">Menghubungkan...</span></span>
-        <button class="sync-btn" onclick="fetchRealtimeData()">🔄 Sinkron Ulang</button>
+        <button class="sync-btn" onclick="fetchRealtimeData(true)">🔄 Sinkron Ulang</button>
       </div>
     </div>
   </div>
@@ -474,23 +474,66 @@ let DATA = { mou: [], pks: [], timeline: [], kegiatan: [], tlStart: "2026-10-19"
   });
 })();
 
-async function fetchRealtimeData() {
+/* ----- KONEKSI REALTIME ANTI-MACET & ANTI-CORS ----- */
+async function fetchRealtimeData(forceRefresh = false) {
   const statusEl = document.getElementById("asofToday");
   if(statusEl) statusEl.innerHTML = "<span style='color:var(--warn)'>Menghubungkan...</span>";
 
-  try {
-    const response = await fetch(API_URL, {
-      method: 'GET',
-      mode: 'cors',
-      redirect: 'follow'
-    });
+  // Render kerangka UI/Kalender terlebih dahulu agar tidak blank saat menunggu data
+  if (!window._uiBooted) {
+    window._uiBooted = true;
+    initApp();
+  }
 
-    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+  const url = API_URL + (forceRefresh ? "?nocache=1" : "");
+
+  // Metode 1: Fetch standar dengan timeout 10 detik
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      redirect: 'follow',
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
+    if (data && data.error) throw new Error(data.error);
     handleDataResponse(data);
-  } catch (error) {
-    console.error("Detail Error Sinkronisasi:", error);
-    if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Gagal sinkron. Cek koneksi.</span>";
+  } catch (err) {
+    clearTimeout(timeoutId);
+    console.warn("Beralih ke jalur JSONP:", err);
+    
+    // Metode 2: Fallback JSONP (kebal CORS redirect Google Apps Script)
+    const cbName = "bgnCb_" + Date.now();
+    const script = document.createElement("script");
+    const jsonpTimer = setTimeout(() => {
+      delete window[cbName];
+      script.remove();
+      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Cek izin akses Apps Script ('Siapa saja').</span>";
+    }, 15000);
+
+    window[cbName] = function(data) {
+      clearTimeout(jsonpTimer);
+      delete window[cbName];
+      script.remove();
+      if (data && data.error) {
+        if(statusEl) statusEl.innerHTML = `<span style='color:var(--bad)'>Error Script: ${data.error}</span>`;
+      } else {
+        handleDataResponse(data);
+      }
+    };
+
+    script.src = API_URL + (API_URL.includes("?") ? "&" : "?") + "callback=" + cbName + (forceRefresh ? "&nocache=1" : "");
+    script.onerror = function() {
+      clearTimeout(jsonpTimer);
+      delete window[cbName];
+      script.remove();
+      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Gagal terhubung. Klik Sinkron Ulang.</span>";
+    };
+    document.body.appendChild(script);
   }
 }
 
@@ -531,7 +574,6 @@ function parseGoogleDate(v, fallbackYear = 2026) {
     }
   }
   
-  // Format Indonesia: "Rabu, 12 Agustus" atau "12 Agustus 2026"
   const blnMap = {'jan':1,'feb':2,'mar':3,'apr':4,'mei':5,'jun':6,'jul':7,'agu':8,'aug':8,'sep':9,'okt':10,'oct':10,'nov':11,'des':12,'dec':12};
   const mFull = s.match(/(\d{1,2})\s+([a-zA-Z]+)\s+(\d{4})/);
   if (mFull) {
@@ -555,7 +597,7 @@ function handleDataResponse(resData) {
   const statusEl = document.getElementById("asofToday");
   const now = new Date();
   const timeString = now.getHours().toString().padStart(2,'0') + ":" + now.getMinutes().toString().padStart(2,'0');
-  if(statusEl) statusEl.innerHTML = `<span style='color:var(--ok)'> Real-Time (${timeString})</span>`;
+  if(statusEl) statusEl.innerHTML = `<span style='color:var(--ok)'>● Real-Time (${timeString})</span>`;
 
   const getRows = arr => (Array.isArray(arr) && arr.length > 1) ? arr.slice(1) : [];
 
@@ -623,7 +665,6 @@ function handleDataResponse(resData) {
     };
   }).filter(t => t.kegiatan && t.kegiatan.trim() !== "");
 
-  // Parsing Sheet "Kegiatan Kermamit"
   DATA.kegiatan = getRows(resData.kegiatan).map(r => {
     const dObj = parseGoogleDate(r[1]) || parseGoogleDate(r[0], 2026);
     const lokRaw = r[10] || "";
@@ -656,7 +697,7 @@ window.closeMouModal = function() {
 
 function initApp() {
   const $ = s => document.querySelector(s);
-  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&','<':'<','>':'>','"':'"',"'":'''}[c]));
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const BLN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
   const BLN_L = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
   const fmtD = d => (d && d instanceof Date && !isNaN(d)) ? `${d.getDate()} ${BLN[d.getMonth()]} ${d.getFullYear()}` : '—';
@@ -822,7 +863,6 @@ function initApp() {
     calEvents[k].push(item);
   });
 
-  // Tentukan bulan awal kalender: jika hari ini ada agenda tampilkan hari ini, jika tidak arahkan ke bulan agenda terbaru/terdekat
   let calCur = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
   let calSelected = toYMD(TODAY);
 
@@ -927,7 +967,7 @@ function initApp() {
     renderCalDetail(calSelected);
   }
 
-  $('#calGrid').addEventListener('click', e => {
+  $('#calGrid').onclick = e => {
     const cell = e.target.closest('.cal-cell');
     if (!cell) return;
     calSelected = cell.dataset.date;
@@ -936,7 +976,7 @@ function initApp() {
       calCur = new Date(yy, mm - 1, 1);
     }
     renderCalendar();
-  });
+  };
   $('#calPrev').onclick = () => { calCur.setMonth(calCur.getMonth() - 1); renderCalendar(); };
   $('#calNext').onclick = () => { calCur.setMonth(calCur.getMonth() + 1); renderCalendar(); };
   $('#calToday').onclick = () => { calCur = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1); calSelected = toYMD(TODAY); renderCalendar(); };
@@ -1004,7 +1044,7 @@ function initApp() {
   const stCounts = countBy(DATA.timeline, t => t.status || 'Belum ada status');
   const tlOpts = ['Semua', 'Dijadwalkan', ...Object.keys(stCounts).sort((a, b) => stCounts[b] - stCounts[a])];
   $('#tlFilters').innerHTML = tlOpts.map(o => `<button class="pill" type="button" aria-pressed="${o===tlFilter}" data-f="${esc(o)}">${esc(o)} <span style="opacity:.7">${o==='Semua'?DATA.timeline.length:o==='Dijadwalkan'?DATA.timeline.filter(t=>t.rencana.length||t.realisasi.length).length:stCounts[o]}</span></button>`).join('');
-  $('#tlFilters').addEventListener('click', e => { const b = e.target.closest('.pill'); if (!b) return; tlFilter = b.dataset.f; document.querySelectorAll('#tlFilters .pill').forEach(p => p.setAttribute('aria-pressed', p === b)); renderGantt(); });
+  $('#tlFilters').onclick = e => { const b = e.target.closest('.pill'); if (!b) return; tlFilter = b.dataset.f; document.querySelectorAll('#tlFilters .pill').forEach(p => p.setAttribute('aria-pressed', p === b)); renderGantt(); };
 
   /* TABLES */
   const opt = (el, label, vals) => { el.innerHTML = `<option value="">${label}</option>` + vals.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join(''); };
@@ -1130,8 +1170,8 @@ function initApp() {
     } 
   };
 
-  ['#q','#fJenis','#fPks','#fTahun','#fBerlaku','#fLevel'].forEach(s => $(s).addEventListener('input', renderMou));
-  document.querySelectorAll('thead th[data-sort]').forEach(th => th.addEventListener('click', () => { const k = th.dataset.sort; if (sortK === k) sortDir *= -1; else { sortK = k; sortDir = k === 'tgl' ? -1 : 1; } renderMou(); }));
+  ['#q','#fJenis','#fPks','#fTahun','#fBerlaku','#fLevel'].forEach(s => { $(s).oninput = renderMou; });
+  document.querySelectorAll('thead th[data-sort]').forEach(th => { th.onclick = () => { const k = th.dataset.sort; if (sortK === k) sortDir *= https://github.com/kermamit-info-oss/Dasbor-Kerja-Sama-Kemitraan/blob/main/index.html-1; else { sortK = k; sortDir = k === 'tgl' ? -1 : 1; } renderMou(); }; });
 
   function renderPks(){
     const q = $('#q2').value.trim().toLowerCase();
@@ -1139,10 +1179,10 @@ function initApp() {
     $('#pksCount').textContent = `Menampilkan ${rows.length} dari ${DATA.pks.length} entri`;
     $('#pksBody').innerHTML = rows.map(p => `<tr><td class="num">${p.no ?? '—'}</td><td><div class="inst">${esc(p.inst)}</div>${p.ket?`<div class="sm">${esc(p.ket)}</div>`:''}${/tdk|tidak/i.test(p.db)?' <span class="chip warn" style="margin-top:4px">Belum di DB</span>':''}</td><td><span class="sm" style="white-space:nowrap">${esc(JENIS_LABEL[(p.jenis||'').toUpperCase()]||p.jenis||'—')}</span></td><td style="white-space:nowrap">${p.d?fmtD(p.d):'<span class="sm">—</span>'}</td><td><span class="sm">${esc(p.nomor||'—')}</span></td><td>${esc(p.unit||'—')}</td><td>${isUrl(p.url)?`<a class="doc-btn" href="${esc(p.url)}" target="_blank" rel="noopener">${docIcon}Buka</a>`:`<span class="sm">${esc(p.file||'—')}</span>`}</td></tr>`).join('') || `<tr><td colspan="7" class="empty">Tidak ada PKS yang cocok.</td></tr>`;
   }
-  $('#q2').addEventListener('input', renderPks);
+  $('#q2').oninput = renderPks;
 
   function renderCharts(){ renderTrend(); renderDonuts(); }
-  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(renderTrend, 120); });
+  let rt; window.onresize = () => { clearTimeout(rt); rt = setTimeout(renderTrend, 120); };
 
   renderCharts();
   renderBars();
@@ -1154,7 +1194,7 @@ function initApp() {
 }
 
 // Jalankan sinkronisasi otomatis saat halaman dibuka
-document.addEventListener('DOMContentLoaded', fetchRealtimeData);
+document.addEventListener('DOMContentLoaded', () => fetchRealtimeData(false));
 </script>
 </body>
 </html>
