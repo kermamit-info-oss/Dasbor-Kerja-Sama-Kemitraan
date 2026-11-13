@@ -452,22 +452,10 @@ const STORAGE_KEY = "BGN_DASBOR_WIB_DAILY_V1";
 let EMBEDDED_DATA = null;
 
 const DEFAULT_DATA = {
-  mou: [
-    ["No","Nama","Jenis","Tanggal","Judul","Nomor","Tentang","Jangka Waktu","File","DB","Lingkup","Status PKS","File PKS","Keterangan","Level","Pemrakarsa","Unit"],
-    [1,"Kementerian Kesehatan RI","KEMENTERIAN/LEMBAGA","2025-01-15","Nota Kesepahaman Sinergi Program Makan Bergizi Gratis","NK-01/BGN/2025","Sinergi Program MBG","3 Tahun","","Sudah","Intervensi gizi, standar keamanan pangan, dan edukasi kesehatan","Sudah ada PKS","","Aktif berjalan","Sangat Mendesak","Deputi Promosi & Kerja Sama","Direktorat Kerja Sama"]
-  ],
-  pks: [
-    ["No","Tanggal","Instansi","Jenis","Nomor","Unit Kerja","File","DB","Keterangan"],
-    [1,"2025-02-20","PKS BGN dengan Kementerian Kesehatan RI","KEMENTERIAN/LEMBAGA","PKS-01/BGN/2025","Direktorat Kerja Sama","","Sudah","Pengawasan Higiene Sanitasi SPPG"]
-  ],
-  timeline: [
-    ["No","Kegiatan","Materi","Inisiator","Level","Status","Rencana","Realisasi"],
-    [1,"Harmonisasi PKS Rantai Pasok","Draft PKS Komoditas Pangan","Direktorat Kemitraan","Mendesak","Berjalan","2,5,9","2,5"]
-  ],
-  kegiatan: [
-    ["Tanggal Teks","Tanggal","Mulai","Selesai","Undangan","Lampiran Undangan","Keterangan","Status","Kegiatan","PIC","Lokasi","Lampiran Laporan"],
-    ["13 Nov 2026","2026-11-13","09:00","11:30","Deputi Promosi & Kerja Sama","","Pembahasan finalisasi draf PKS","Terjadwal","Rapat Koordinasi Finalisasi Draf PKS","Tim Kermamit","Ruang Rapat BGN",""]
-  ]
+  mou: [],
+  pks: [],
+  timeline: [],
+  kegiatan: []
 };
 
 let DATA = { mou: [], pks: [], timeline: [], kegiatan: [], tlStart: "2026-10-19", tlDays: 74 };
@@ -544,8 +532,7 @@ function bootDailyDashboard() {
       fetchRealtimeData(true, true);
     }
   } else {
-    // Kunjungan pertama kali: render kerangka awal lalu tarik data hari ini
-    handleDataResponse(DEFAULT_DATA, "Data Awal");
+    // Kunjungan pertama kali: tarik data asli langsung tanpa menampilkan data contoh
     fetchRealtimeData(true, true);
   }
 }
