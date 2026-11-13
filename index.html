@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dasbor Kerja Sama BGN - Versi Final Mobile & Desktop</title>
+<title>Dasbor Kerja Sama BGN - Versi Final Mobile &amp; Desktop</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -292,7 +292,7 @@ footer{padding:26px 0 36px;color:var(--muted);font-size:12px;text-align:center}
     </div>
     <div class="hero-title">
       <div>
-        <h1>Dasbor Kerja Sama & Kemitraan</h1>
+        <h1>Dasbor Kerja Sama &amp; Kemitraan</h1>
         <p>Ringkasan Nota Kesepahaman (MoU), Perjanjian Kerja Sama (PKS), dan Agenda Kegiatan Unit Kerja Sama dan Kemitraan.</p>
       </div>
       <div class="asof">
@@ -474,58 +474,67 @@ let DATA = { mou: [], pks: [], timeline: [], kegiatan: [], tlStart: "2026-10-19"
   });
 })();
 
-/* ----- KONEKSI REALTIME INSTAN (CACHE LOKAL + JSONP LANGSUNG) ----- */
-function fetchRealtimeData(forceRefresh = false) {
+/* ----- KONEKSI REALTIME ANTI-MACET & ANTI-CORS ----- */
+async function fetchRealtimeData(forceRefresh = false) {
   const statusEl = document.getElementById("asofToday");
+  if(statusEl) statusEl.innerHTML = "<span style='color:var(--warn)'>Menghubungkan...</span>";
 
-  // 1. Tampilkan data terakhir dari memori browser seketika (0 detik)
+  // Render kerangka UI/Kalender terlebih dahulu agar tidak blank saat menunggu data
   if (!window._uiBooted) {
     window._uiBooted = true;
-    try {
-      const cached = localStorage.getItem("bgn_dasbor_snapshot");
-      if (cached) {
-        handleDataResponse(JSON.parse(cached), true);
-        if (statusEl) statusEl.innerHTML = "<span style='color:var(--warn)'>● Memperbarui data...</span>";
-      } else {
-        initApp();
-        if (statusEl) statusEl.innerHTML = "<span style='color:var(--warn)'>Menghubungkan...</span>";
-      }
-    } catch (e) {
-      initApp();
-    }
-  } else if (statusEl) {
-    statusEl.innerHTML = "<span style='color:var(--warn)'>Menyinkronkan...</span>";
+    initApp();
   }
 
-  // 2. Langsung gunakan JSONP (tanpa membuang waktu menunggu fetch CORS gagal)
-  const cbName = "bgnCb_" + Date.now();
-  const script = document.createElement("script");
-  const jsonpTimer = setTimeout(() => {
-    delete window[cbName];
-    script.remove();
-    if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Cek izin akses Apps Script ('Siapa saja').</span>";
-  }, 15000);
+  const url = API_URL + (forceRefresh ? "?nocache=1" : "");
 
-  window[cbName] = function(data) {
-    clearTimeout(jsonpTimer);
-    delete window[cbName];
-    script.remove();
-    if (data && data.error) {
-      if(statusEl) statusEl.innerHTML = `<span style='color:var(--bad)'>Error Script: ${data.error}</span>`;
-    } else {
-      try { localStorage.setItem("bgn_dasbor_snapshot", JSON.stringify(data)); } catch (e) {}
-      handleDataResponse(data, false);
-    }
-  };
+  // Metode 1: Fetch standar dengan timeout 10 detik
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-  script.src = API_URL + (API_URL.includes("?") ? "&" : "?") + "callback=" + cbName + (forceRefresh ? "&nocache=1" : "");
-  script.onerror = function() {
-    clearTimeout(jsonpTimer);
-    delete window[cbName];
-    script.remove();
-    if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Gagal terhubung. Klik Sinkron Ulang.</span>";
-  };
-  document.body.appendChild(script);
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      redirect: 'follow',
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    if (data && data.error) throw new Error(data.error);
+    handleDataResponse(data);
+  } catch (err) {
+    clearTimeout(timeoutId);
+    console.warn("Beralih ke jalur JSONP:", err);
+    
+    // Metode 2: Fallback JSONP (kebal CORS redirect Google Apps Script)
+    const cbName = "bgnCb_" + Date.now();
+    const script = document.createElement("script");
+    const jsonpTimer = setTimeout(() => {
+      delete window[cbName];
+      script.remove();
+      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Cek izin akses Apps Script ('Siapa saja').</span>";
+    }, 15000);
+
+    window[cbName] = function(data) {
+      clearTimeout(jsonpTimer);
+      delete window[cbName];
+      script.remove();
+      if (data && data.error) {
+        if(statusEl) statusEl.innerHTML = `<span style='color:var(--bad)'>Error Script: ${data.error}</span>`;
+      } else {
+        handleDataResponse(data);
+      }
+    };
+
+    script.src = API_URL + (API_URL.includes("?") ? "&" : "?") + "callback=" + cbName + (forceRefresh ? "&nocache=1" : "");
+    script.onerror = function() {
+      clearTimeout(jsonpTimer);
+      delete window[cbName];
+      script.remove();
+      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Gagal terhubung. Klik Sinkron Ulang.</span>";
+    };
+    document.body.appendChild(script);
+  }
 }
 
 function extractUrl(val) {
@@ -584,11 +593,11 @@ function parseGoogleDate(v, fallbackYear = 2026) {
   return null;
 }
 
-function handleDataResponse(resData, fromCache = false) {
+function handleDataResponse(resData) {
   const statusEl = document.getElementById("asofToday");
   const now = new Date();
   const timeString = now.getHours().toString().padStart(2,'0') + ":" + now.getMinutes().toString().padStart(2,'0');
-  if(statusEl && !fromCache) statusEl.innerHTML = `<span style='color:var(--ok)'>● Real-Time (${timeString})</span>`;
+  if(statusEl) statusEl.innerHTML = `<span style='color:var(--ok)'>● Real-Time (${timeString})</span>`;
 
   const getRows = arr => (Array.isArray(arr) && arr.length > 1) ? arr.slice(1) : [];
 
@@ -688,7 +697,7 @@ window.closeMouModal = function() {
 
 function initApp() {
   const $ = s => document.querySelector(s);
-  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&','<':'<','>':'>','"':'"',"'":'''}[c]));
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const BLN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
   const BLN_L = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
   const fmtD = d => (d && d instanceof Date && !isNaN(d)) ? `${d.getDate()} ${BLN[d.getMonth()]} ${d.getFullYear()}` : '—';
