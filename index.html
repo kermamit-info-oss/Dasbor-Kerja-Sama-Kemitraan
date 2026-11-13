@@ -532,7 +532,7 @@ function fetchRealtimeData(forceRefresh = false) {
     if (!settled && epoch === _syncEpoch && statusEl) {
       statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Cek izin Apps Script ('Siapa saja').</span>";
     }
-  }, 15000);
+  }, 30000);
 
   window[cbName] = function(data) {
     clearTimeout(timeoutTimer);
