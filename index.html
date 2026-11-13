@@ -1,909 +1,1200 @@
 <!DOCTYPE html>
 <html lang="id" data-theme="light">
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dasbor Kerja Sama BGN - Versi Final Mobile & Desktop</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>Dasbor Kerja Sama BGN - Versi Final Mobile &amp; Desktop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #f4f7fb;
-    --surface: #ffffff;
-    --surface-soft: #f8fafc;
-    --ink: #0f172a;
-    --muted: #64748b;
-    --line: #e2e8f0;
-    --brand: #0b2545;
-    --brand-2: #1d4ed8;
-    --gold: #c89d54;
-    --ok: #10b981;
-    --ok-soft: #ecfdf5;
-    --ok-ink: #047857;
-    --warn: #f59e0b;
-    --warn-soft: #fffbeb;
-    --warn-ink: #b45309;
-    --bad: #ef4444;
-    --bad-soft: #fef2f2;
-    --bad-ink: #b91c1c;
-    --info: #3b82f6;
-    --info-soft: #eff6ff;
-    --info-ink: #1d4ed8;
-    --purple: #8b5cf6;
-    --purple-soft: #f5f3ff;
-    --purple-ink: #6d28d9;
-    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
-    --shadow-md: 0 10px 25px rgba(15, 23, 42, 0.07);
-    --radius-lg: 18px;
-    --radius-md: 12px;
+:root{
+  --bg:#EEF7FD; --bg-2:#E2F1FB; --surface:#FFFFFF; --surface-2:#F4FAFE; --text:#0B2540; --muted:#5A718A; --border:#D3E6F4;
+  --primary:#0EA5E9; --primary-strong:#0369A1; --primary-soft:#E0F2FE; --navy:#0B3B6F;
+  --ok:#059669; --ok-soft:#D1FAE5; --warn:#D97706; --warn-soft:#FEF3C7; --bad:#DC2626; --bad-soft:#FEE2E2; --mute-soft:#EEF2F6;
+  --shadow:0 1px 2px rgba(11,59,111,.06),0 8px 24px -12px rgba(11,59,111,.18);
+  --grid:#E3EEF7;
+  --c1:#0284C7; --c2:#14B8A6; --c3:#F59E0B; --c4:#8B5CF6; --c5:#EC4899; --c6:#64748B; --c7:#22C55E; --c8:#EF4444;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#06131F; --bg-2:#0A1C2D; --surface:#0D2235; --surface-2:#112A42; --text:#E4F1FB; --muted:#8EA8C0; --border:#1D3A55;
+    --primary:#38BDF8; --primary-strong:#7DD3FC; --primary-soft:#0C3350; --navy:#BAE6FD;
+    --ok:#34D399; --ok-soft:#073B2C; --warn:#FBBF24; --warn-soft:#3D2C05; --bad:#F87171; --bad-soft:#431414; --mute-soft:#18304A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -12px rgba(0,0,0,.55);
+    --grid:#17324B;
+    --c1:#38BDF8; --c2:#2DD4BF; --c3:#FBBF24; --c4:#A78BFA; --c5:#F472B6; --c6:#94A3B8; --c7:#4ADE80; --c8:#F87171;
+    color-scheme:dark;
   }
+}
+:root[data-theme="dark"]{
+  --bg:#06131F; --bg-2:#0A1C2D; --surface:#0D2235; --surface-2:#112A42; --text:#E4F1FB; --muted:#8EA8C0; --border:#1D3A55;
+  --primary:#38BDF8; --primary-strong:#7DD3FC; --primary-soft:#0C3350; --navy:#BAE6FD;
+  --ok:#34D399; --ok-soft:#073B2C; --warn:#FBBF24; --warn-soft:#3D2C05; --bad:#F87171; --bad-soft:#431414; --mute-soft:#18304A;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -12px rgba(0,0,0,.55);
+  --grid:#17324B;
+  --c1:#38BDF8; --c2:#2DD4BF; --c3:#FBBF24; --c4:#A78BFA; --c5:#F472B6; --c6:#94A3B8; --c7:#4ADE80; --c8:#F87171;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;overflow-x:hidden}
+body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+a{color:var(--primary-strong)}
+.wrap{max-width:1320px;margin:0 auto;padding:0 24px}
 
-  [data-theme="dark"] {
-    --bg: #0b1120;
-    --surface: #111827;
-    --surface-soft: #1e293b;
-    --ink: #f8fafc;
-    --muted: #94a3b8;
-    --line: #334155;
-    --brand: #38bdf8;
-    --brand-2: #60a5fa;
-    --ok-soft: rgba(16, 185, 129, 0.15);
-    --ok-ink: #34d399;
-    --warn-soft: rgba(245, 158, 11, 0.15);
-    --warn-ink: #fbbf24;
-    --bad-soft: rgba(239, 68, 68, 0.15);
-    --bad-ink: #f87171;
-    --info-soft: rgba(59, 130, 246, 0.15);
-    --info-ink: #60a5fa;
-    --purple-soft: rgba(139, 92, 246, 0.15);
-    --purple-ink: #a78bfa;
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.4);
-  }
+/* HERO */
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,#0369A1 0%,#0EA5E9 55%,#7DD3FC 100%);color:#fff;padding:22px 0 84px}
+:root[data-theme="dark"] .hero{background:linear-gradient(120deg,#062A47 0%,#0B4A75 55%,#0E6FA3 100%)}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:18px 18px;mask-image:linear-gradient(90deg,transparent,#000 60%);opacity:.7}
+.hero::after{content:"";position:absolute;width:520px;height:520px;right:-140px;top:-220px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.28),transparent 65%)}
+.topbar{position:relative;z-index:1;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.logo-chip{background:#fff;border-radius:14px;padding:8px 14px;display:flex;align-items:center;box-shadow:0 6px 20px -8px rgba(0,0,0,.35);flex-shrink:0}
+.logo-chip img{height:44px;width:auto;display:block}
+.logo-fallback{display:none;font-weight:800;color:#0B3B6F;font-size:22px;letter-spacing:.04em}
+.deputi{border-left:1px solid rgba(255,255,255,.4);padding-left:14px;min-width:0}
+.deputi small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.85;font-weight:600}
+.deputi strong{display:block;font-size:15px;font-weight:700;line-height:1.3}
+.actions{display:flex;gap:8px;align-items:center}
+.theme-toggle{display:flex;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px;backdrop-filter:blur(6px)}
+.theme-toggle button{all:unset;cursor:pointer;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:600;color:#fff;opacity:.85}
+.theme-toggle button[aria-pressed="true"]{background:#fff;color:#0369A1;opacity:1}
+.theme-toggle button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.theme-toggle svg{width:15px;height:15px}
+.hero-title{position:relative;z-index:1;margin-top:34px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.hero-title h1{margin:0;font-size:clamp(22px,3.4vw,36px);line-height:1.2;font-weight:800;letter-spacing:-.02em;max-width:760px}
+.hero-title p{margin:8px 0 0;opacity:.9;max-width:640px;font-size:14px}
+.asof{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:10px 14px;font-size:12.5px;line-height:1.4}
+.asof b{display:block;font-size:15px}
+.sync-btn{all:unset;cursor:pointer;color:#fff;background:rgba(0,0,0,.25);padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;margin-top:6px;display:inline-flex;align-items:center;gap:6px;transition:background .2s}
+.sync-btn:hover,.sync-btn:active{background:rgba(0,0,0,.45)}
 
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--ink);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    transition: background-color 0.25s ease, color 0.25s ease;
-  }
+/* LAYOUT */
+main{margin-top:-60px;position:relative;z-index:2;padding-bottom:40px}
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);transition:background .25s,border-color .25s}
+.kpi{padding:16px 18px;position:relative;overflow:hidden}
+.kpi .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--primary-soft);color:var(--primary-strong);margin-bottom:10px}
+.kpi .ic svg{width:18px;height:18px}
+.kpi .lbl{font-size:12px;color:var(--muted);font-weight:600}
+.kpi .val{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-top:2px;font-variant-numeric:tabular-nums}
+.kpi .sub{font-size:12px;color:var(--muted);margin-top:4px}
+.kpi .bar{height:6px;border-radius:99px;background:var(--mute-soft);margin-top:10px;overflow:hidden}
+.kpi .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-strong));border-radius:99px}
+.grid{display:grid;gap:14px;margin-top:14px}
+.g-2-1{grid-template-columns:2fr 1fr}
+.g-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.panel{padding:18px 20px}
+.panel h2{margin:0;font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+.panel .hint{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.section-title{display:flex;align-items:center;gap:10px;margin:30px 0 4px;font-size:18px;font-weight:800;letter-spacing:-.01em}
+.section-title::before{content:"";width:6px;height:22px;border-radius:4px;background:linear-gradient(var(--primary),var(--primary-strong))}
+.section-sub{margin:0 0 4px 16px;color:var(--muted);font-size:13px}
 
-  /* Header */
-  .topbar {
-    background: linear-gradient(135deg, #071930 0%, #0f2c59 60%, #163e7a 100%);
-    color: #ffffff;
-    padding: 16px 24px;
-    position: sticky;
-    top: 0;
-    z-index: 40;
-    box-shadow: 0 4px 20px rgba(7, 25, 48, 0.25);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  .topbar-inner {
-    max-width: 1440px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .brand-group { display: flex; align-items: center; gap: 14px; }
-  .logo-box {
-    width: 46px; height: 46px; border-radius: 12px;
-    background: #ffffff; display: grid; place-items: center;
-    padding: 4px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); flex-shrink: 0;
-  }
-  .logo-box img { width: 100%; height: 100%; object-fit: contain; }
-  .logo-fallback {
-    font-weight: 800; font-size: 16px; color: #0b2545; letter-spacing: -0.5px;
-  }
-  .brand-text h1 { margin: 0; font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
-  .brand-text p { margin: 2px 0 0; font-size: 12.5px; color: #cbd5e1; font-weight: 500; }
+/* CHARTS */
+svg text{font-family:inherit}
+.chart-wrap{position:relative;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tip{position:fixed;pointer-events:none;z-index:50;background:var(--text);color:var(--surface);font-size:12px;padding:7px 10px;border-radius:8px;opacity:0;transition:opacity .12s;max-width:260px;line-height:1.4;box-shadow:0 8px 24px -8px rgba(0,0,0,.4)}
+.tip b{font-weight:700}
+.donut-box{display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:center}
+.donut-box svg{flex-shrink:0}
+.dlegend{display:flex;flex-direction:column;gap:7px;flex:1;min-width:140px;font-size:12.5px}
+.dlegend div{display:flex;align-items:center;gap:8px}
+.dlegend i{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.dlegend span{flex:1;color:var(--muted)}
+.dlegend b{font-variant-numeric:tabular-nums}
+.hbars{display:flex;flex-direction:column;gap:9px}
+.hbar{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:4px 10px;align-items:center;font-size:12.5px}
+.hbar .nm{grid-column:1/-1;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbar .tr{height:10px;background:var(--mute-soft);border-radius:99px;overflow:hidden}
+.hbar .tr i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--primary-strong));transform-origin:left;animation:grow .8s cubic-bezier(.2,.8,.2,1) both}
+.hbar b{text-align:right;font-variant-numeric:tabular-nums}
+@keyframes grow{from{transform:scaleX(0)}}
 
-  .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .sync-pill {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    padding: 7px 13px; border-radius: 999px; font-size: 12px; font-weight: 600;
-  }
-  .pulse-dot {
-    width: 8px; height: 8px; border-radius: 50%; background: #34d399;
-    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
-    70% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
-  }
+/* CHIPS */
+.chip{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.bad{background:var(--bad-soft);color:var(--bad)}
+.chip.info{background:var(--primary-soft);color:var(--primary-strong)}
+.chip.mute{background:var(--mute-soft);color:var(--muted)}
 
-  .btn-glass {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    color: #fff; padding: 7px 13px; border-radius: 10px;
-    font-size: 12.5px; font-weight: 600; cursor: pointer;
-    display: inline-flex; align-items: center; gap: 6px;
-    transition: all 0.2s; font-family: inherit;
-  }
-  .btn-glass:hover { background: rgba(255, 255, 255, 0.22); transform: translateY(-1px); }
+/* EXPIRING */
+.exp-list{display:flex;flex-direction:column;gap:2px;max-height:300px;overflow-y:auto;margin:0 -8px;padding:0 8px}
+.exp-item{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed var(--border);font-size:13px}
+.exp-item:last-child{border-bottom:0}
+.exp-item .n{font-weight:600}
+.exp-item .d{color:var(--muted);font-size:12px}
 
-  /* Main Container */
-  .container { max-width: 1440px; margin: 22px auto 48px; padding: 0 24px; }
+/* GANTT TIMELINE */
+.gantt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:14px;background:var(--surface-2)}
+.gantt{display:grid;min-width:max-content;font-size:12px}
+.g-cell{height:38px;border-bottom:1px solid var(--grid);display:flex;align-items:center;justify-content:center;position:relative}
+.g-label{position:sticky;left:0;z-index:2;background:var(--surface);justify-content:flex-start;padding:0 12px;gap:8px;border-right:1px solid var(--border);width:260px;max-width:55vw}
+.g-label .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;font-weight:500}
+.g-label .no{color:var(--muted);font-variant-numeric:tabular-nums;width:20px;flex-shrink:0}
+.g-head{height:auto;padding:6px 0;font-weight:700;color:var(--muted);background:var(--surface)}
+.g-month{justify-content:flex-start;padding-left:8px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--primary-strong);border-left:1px solid var(--border);background:var(--surface)}
+.g-day{width:22px;font-size:10px;color:var(--muted);flex-direction:column;line-height:1.1}
+.g-day.we{background:color-mix(in srgb,var(--mute-soft) 70%,transparent)}
+.g-day.today{background:color-mix(in srgb,var(--primary) 14%,transparent)}
+.g-day.today::after{content:"";position:absolute;top:0;bottom:-1px;left:50%;width:2px;margin-left:-1px;background:var(--primary)}
+.g-dot{width:14px;height:14px;border-radius:4px;background:var(--primary);box-shadow:0 2px 6px -2px var(--primary);position:relative;z-index:1}
+.g-dot.real{background:var(--ok);border-radius:50%;box-shadow:0 2px 6px -2px var(--ok);width:12px;height:12px;position:absolute;right:1px;bottom:3px;border:2px solid var(--surface);z-index:2}
+.g-dot.past{opacity:.55}
+.tl-filters{display:flex;gap:6px;flex-wrap:wrap}
+.pill{all:unset;cursor:pointer;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;background:var(--surface-2);border:1px solid var(--border);color:var(--muted)}
+.pill[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:#fff}
+.pill:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 
-  /* Filter Bar */
-  .filter-card {
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: var(--radius-lg); padding: 16px 20px;
-    box-shadow: var(--shadow-sm); margin-bottom: 20px;
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 12px; align-items: end;
-  }
-  .field label {
-    display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.04em; color: var(--muted); margin-bottom: 6px;
-  }
-  .input-ctrl, .select-ctrl {
-    width: 100%; height: 40px; padding: 0 12px;
-    border: 1px solid var(--line); border-radius: 10px;
-    background: var(--surface-soft); color: var(--ink);
-    font-family: inherit; font-size: 13.5px; font-weight: 500;
-    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .input-ctrl:focus, .select-ctrl:focus {
-    border-color: var(--brand-2); box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
-  }
-  .btn-reset {
-    height: 40px; padding: 0 16px; border-radius: 10px;
-    border: 1px solid var(--line); background: var(--surface);
-    color: var(--ink); font-family: inherit; font-size: 13px; font-weight: 700;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .btn-reset:hover { background: var(--surface-soft); border-color: var(--muted); }
+/* KALENDER KEGIATAN KERMAMIT */
+.cal-layout{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;align-items:start}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.cal-nav-btns{display:flex;align-items:center;gap:6px}
+.cal-btn{all:unset;cursor:pointer;padding:6px 12px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);font-size:12.5px;font-weight:600;color:var(--text);transition:all .15s}
+.cal-btn:hover{border-color:var(--primary);color:var(--primary-strong)}
+.cal-month-title{font-size:16px;font-weight:800;min-width:155px;text-align:center}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.cal-dow{text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--muted);padding:6px 0}
+.cal-cell{min-height:80px;border:1px solid var(--border);border-radius:12px;padding:6px 7px;background:var(--surface-2);cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:all .15s;position:relative}
+.cal-cell:hover{border-color:var(--primary);transform:translateY(-1px)}
+.cal-cell.other{opacity:.38;background:transparent}
+.cal-cell.we{background:color-mix(in srgb,var(--mute-soft) 65%,var(--surface-2))}
+.cal-cell.today{border:2px solid var(--primary);background:var(--primary-soft)}
+.cal-cell.selected{outline:2px solid var(--navy);background:color-mix(in srgb,var(--primary) 15%,var(--surface))}
+.cal-num{font-size:12.5px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.cal-cell.today .cal-num span{background:var(--primary);color:#fff;padding:1px 6px;border-radius:99px;font-size:11px}
+.cal-badges{display:flex;flex-wrap:wrap;gap:3px}
+.cal-dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.cal-tag{font-size:10px;font-weight:600;padding:1px 5px;border-radius:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.cal-tag.terlaksana{background:var(--ok-soft);color:var(--ok)}
+.cal-tag.terjadwal{background:var(--primary-soft);color:var(--primary-strong)}
+.cal-tag.libur{background:var(--bad-soft);color:var(--bad)}
+.cal-tag.rencana{background:var(--mute-soft);color:var(--text)}
+.cal-detail-box{background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:16px;min-height:460px;display:flex;flex-direction:column}
+.cal-detail-head{border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:12px}
+.cal-detail-head h3{margin:0;font-size:15px;font-weight:800;color:var(--primary-strong)}
+.cal-detail-head p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.cal-agenda-list{display:flex;flex-direction:column;gap:10px;overflow-y:auto;max-height:440px;padding-right:2px}
+.cal-agenda-item{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:10px;padding:11px 12px;font-size:12.5px}
+.cal-agenda-item.terlaksana{border-left-color:var(--ok)}
+.cal-agenda-item.libur{border-left-color:var(--bad)}
+.cal-agenda-item.rencana{border-left-color:var(--c6)}
+.cal-agenda-item .title{font-weight:700;font-size:13px;margin:4px 0;line-height:1.35}
+.cal-agenda-item .meta{font-size:11.5px;color:var(--muted);line-height:1.45;white-space:pre-line}
+.cal-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 
-  /* KPI Grid */
-  .kpi-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px;
-  }
-  .kpi-card {
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: var(--radius-lg); padding: 18px 20px;
-    box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-  .kpi-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-  .kpi-label { font-size: 12.5px; font-weight: 700; color: var(--muted); }
-  .kpi-icon {
-    width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
-    font-size: 16px; font-weight: 800; flex-shrink: 0;
-  }
-  .kpi-val { font-size: 28px; font-weight: 800; margin: 10px 0 4px; letter-spacing: -0.03em; }
-  .kpi-sub { font-size: 12px; color: var(--muted); font-weight: 500; }
+/* TABLE */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.search{flex:1;min-width:200px;position:relative;width:100%}
+.search input{width:100%;padding:10px 12px 10px 38px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font:inherit;outline:none}
+.search input:focus{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 22%,transparent)}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+select{padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font:inherit;outline:none;cursor:pointer;max-width:100%}
+select:focus{border-color:var(--primary)}
+.count{font-size:12.5px;color:var(--muted);margin-left:auto}
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-height:620px;border:1px solid var(--border);border-radius:14px}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:720px}
+thead th{position:sticky;top:0;z-index:1;background:var(--surface-2);text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
+thead th[data-sort]:hover{color:var(--primary-strong)}
+thead th .ar{opacity:.4;margin-left:3px}
+thead th.sorted .ar{opacity:1;color:var(--primary-strong)}
+tbody td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+tbody tr.row{cursor:pointer;transition:background .12s}
+tbody tr.row:hover{background:var(--surface-2)}
+tbody tr.row.open{background:var(--primary-soft)}
+td.num{font-variant-numeric:tabular-nums;color:var(--muted);width:40px}
+td .inst{font-weight:600;min-width:160px}
+td .sm{color:var(--muted);font-size:12px}
+.doc-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:8px;background:var(--primary-soft);color:var(--primary-strong);text-decoration:none;font-size:12px;font-weight:600;white-space:nowrap}
+.doc-btn:hover{filter:brightness(.96)}
+.doc-btn svg{width:13px;height:13px}
+tr.detail td{background:var(--surface-2);padding:14px 16px 18px}
+.dgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 22px}
+.dgrid .full{grid-column:1/-1}
+.dgrid h4{margin:0 0 2px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.dgrid p{margin:0;white-space:pre-line;font-size:13px}
+.empty{padding:40px;text-align:center;color:var(--muted)}
+footer{padding:26px 0 36px;color:var(--muted);font-size:12px;text-align:center}
 
-  /* Charts Row */
-  .charts-grid {
-    display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; margin-bottom: 20px;
-  }
-  .panel {
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm);
-  }
-  .panel-head {
-    display: flex; justify-content: space-between; align-items: center;
-    gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
-  }
-  .panel-title { margin: 0; font-size: 15.5px; font-weight: 800; letter-spacing: -0.01em; }
-  .panel-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+/* RESPONSIVE DESIGNS (HP & TABLET) */
+@media (max-width:1100px){
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .g-2-1{grid-template-columns:1fr}
+  .g-3{grid-template-columns:1fr 1fr}
+  .cal-layout{grid-template-columns:1fr}
+}
 
-  /* Horizontal Bar Chart */
-  .bar-list { display: flex; flex-direction: column; gap: 12px; }
-  .bar-item { display: flex; flex-direction: column; gap: 5px; }
-  .bar-meta { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 700; }
-  .bar-track {
-    height: 10px; background: var(--surface-soft); border-radius: 999px;
-    overflow: hidden; border: 1px solid var(--line);
-  }
-  .bar-fill {
-    height: 100%; border-radius: 999px; transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  }
+@media (max-width:768px){
+  .wrap{padding:0 14px}
+  .hero{padding-bottom:70px}
+  .topbar{flex-direction:row;justify-content:space-between;align-items:flex-start}
+  .brand{flex-direction:column;align-items:flex-start;gap:8px}
+  .deputi{border-left:0;padding-left:0}
+  .hero-title{margin-top:20px;flex-direction:column;align-items:flex-start;gap:14px}
+  .hero-title h1{font-size:22px}
+  .asof{width:100%;box-sizing:border-box}
+  
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .kpi{padding:12px 14px}
+  .kpi .val{font-size:22px}
 
-  /* Status Breakdown List */
-  .status-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .st-box {
-    background: var(--surface-soft); border: 1px solid var(--line);
-    border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px;
-  }
-  .st-box-top { display: flex; justify-content: space-between; align-items: center; }
-  .st-count { font-size: 20px; font-weight: 800; }
-  .st-name { font-size: 12px; font-weight: 600; color: var(--muted); }
+  .g-3{grid-template-columns:1fr}
+  .panel{padding:14px 16px}
+  .donut-box{flex-direction:column;align-items:center}
+  .dlegend{width:100%}
+  
+  .dgrid{grid-template-columns:1fr !important;}
+  .g-label{width:180px;max-width:45vw}
+  
+  .cal-cell{min-height:54px;padding:4px 5px}
+  .cal-tag{display:none}
+  
+  .toolbar{flex-direction:column;align-items:stretch;gap:8px}
+  .toolbar select, .search input{width:100%;max-width:100%}
+  .count{margin-left:0;width:100%;text-align:right}
+}
 
-  /* Tabs & Tables */
-  .tabs-bar {
-    display: flex; justify-content: space-between; align-items: center;
-    gap: 12px; margin-bottom: 14px; flex-wrap: wrap;
-  }
-  .tab-group {
-    display: inline-flex; background: var(--surface-soft); padding: 4px;
-    border-radius: 12px; border: 1px solid var(--line);
-  }
-  .tab-btn {
-    border: none; background: transparent; color: var(--muted);
-    padding: 8px 16px; border-radius: 9px; font-family: inherit;
-    font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;
-    display: inline-flex; align-items: center; gap: 7px;
-  }
-  .tab-btn.active {
-    background: var(--surface); color: var(--ink);
-    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
-  }
-  .count-chip {
-    background: var(--info-soft); color: var(--info-ink);
-    padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 800;
-  }
-
-  .table-wrap {
-    overflow-x: auto; border: 1px solid var(--line); border-radius: 14px;
-    background: var(--surface);
-  }
-  table { width: 100%; border-collapse: collapse; min-width: 880px; font-size: 13px; }
-  thead th {
-    background: var(--surface-soft); color: var(--muted);
-    font-size: 11.5px; font-weight: 800; text-transform: uppercase;
-    letter-spacing: 0.04em; text-align: left; padding: 13px 14px;
-    border-bottom: 1px solid var(--line); white-space: nowrap;
-  }
-  tbody td {
-    padding: 13px 14px; border-bottom: 1px solid var(--line);
-    vertical-align: top;
-  }
-  tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover { background: var(--surface-soft); }
-
-  .partner-name { font-weight: 700; color: var(--ink); font-size: 13.5px; }
-  .partner-sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
-
-  /* Badges */
-  .badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 4px 10px; border-radius: 999px; font-size: 11.5px;
-    font-weight: 700; white-space: nowrap;
-  }
-  .b-ok { background: var(--ok-soft); color: var(--ok-ink); }
-  .b-warn { background: var(--warn-soft); color: var(--warn-ink); }
-  .b-bad { background: var(--bad-soft); color: var(--bad-ink); }
-  .b-info { background: var(--info-soft); color: var(--info-ink); }
-  .b-purple { background: var(--purple-soft); color: var(--purple-ink); }
-  .b-neutral { background: var(--surface-soft); color: var(--muted); border: 1px solid var(--line); }
-
-  .btn-doc {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: 700;
-    text-decoration: none; background: var(--info-soft); color: var(--info-ink);
-    border: 1px solid transparent; transition: all 0.2s;
-  }
-  .btn-doc:hover { border-color: var(--info-ink); }
-
-  .btn-detail {
-    padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: 700;
-    background: var(--surface-soft); color: var(--ink); border: 1px solid var(--line);
-    cursor: pointer; font-family: inherit;
-  }
-  .btn-detail:hover { border-color: var(--brand-2); color: var(--brand-2); }
-
-  /* Modal */
-  .modal-backdrop {
-    position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55);
-    backdrop-filter: blur(4px); display: none; place-items: center;
-    padding: 20px; z-index: 100;
-  }
-  .modal-backdrop.open { display: grid; }
-  .modal-box {
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: 20px; max-width: 640px; width: 100%; max-height: 85vh;
-    overflow-y: auto; padding: 24px; box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
-  }
-  .modal-head {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line);
-  }
-  .modal-close {
-    background: var(--surface-soft); border: 1px solid var(--line);
-    color: var(--ink); width: 32px; height: 32px; border-radius: 8px;
-    font-size: 16px; font-weight: 700; cursor: pointer;
-  }
-  .detail-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px;
-  }
-  .detail-item {
-    background: var(--surface-soft); padding: 12px; border-radius: 12px;
-    border: 1px solid var(--line);
-  }
-  .detail-item.full { grid-column: 1 / -1; }
-  .detail-k { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--muted); }
-  .detail-v { font-size: 13.5px; font-weight: 600; margin-top: 4px; word-break: break-word; }
-
-  .empty-state {
-    text-align: center; padding: 40px 20px; color: var(--muted); font-weight: 600;
-  }
-
-  /* Responsive */
-  @media (max-width: 1100px) {
-    .filter-card { grid-template-columns: 1fr 1fr; }
-    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-    .charts-grid { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 640px) {
-    .topbar { padding: 14px 16px; }
-    .container { padding: 0 14px; margin-top: 16px; }
-    .filter-card { grid-template-columns: 1fr; }
-    .kpi-grid { grid-template-columns: 1fr; }
-    .status-cards { grid-template-columns: 1fr; }
-    .detail-grid { grid-template-columns: 1fr; }
-  }
+@media (max-width:480px){
+  .kpis{grid-template-columns:1fr}
+  .exp-item{flex-direction:column;gap:4px}
+  .exp-item > div:last-child{align-self:flex-start}
+}
 </style>
 </head>
 <body>
-
-<header class="topbar">
-  <div class="topbar-inner">
-    <div class="brand-group">
-      <div class="logo-box" id="logoContainer">
-        <img src="BGN_LOGO.png" alt="Logo BGN" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
-        <span id="logoFallback" class="logo-fallback" style="display:none;">BGN</span>
+<header class="hero">
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo-chip">
+          <img src="logo-bgn.png" alt="Logo Badan Gizi Nasional" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="logo-fallback">BGN</span>
+        </div>
+        <div class="deputi">
+          <small>Badan Gizi Nasional</small>
+          <strong>Deputi Bidang Promosi dan Kerja Sama</strong>
+          <small style="letter-spacing:.04em;text-transform:none;font-weight:500">Direktorat Kerja Sama dan Kemitraan · Unit Kerja Sama dan Kemitraan</small>
+        </div>
       </div>
-      <div class="brand-text">
-        <h1>Dasbor Monitoring Kerja Sama BGN</h1>
-        <p>Kedeputian Kerja Sama dan Kemitraan • Pemantauan Real-Time MoU & PKS</p>
+      <div class="actions">
+        <div class="theme-toggle" role="group" aria-label="Pilih tema">
+          <button type="button" data-t="light" aria-pressed="true" title="Mode terang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>Terang</button>
+          <button type="button" data-t="dark" aria-pressed="false" title="Mode gelap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>Gelap</button>
+        </div>
       </div>
     </div>
-
-    <div class="top-actions">
-      <div class="sync-pill">
-        <span class="pulse-dot"></span>
-        <span>Status: <strong id="asofToday">Memuat data...</strong></span>
+    <div class="hero-title">
+      <div>
+        <h1>Dasbor Kerja Sama &amp; Kemitraan</h1>
+        <p>Ringkasan Nota Kesepahaman (MoU), Perjanjian Kerja Sama (PKS), dan Agenda Kegiatan Unit Kerja Sama dan Kemitraan.</p>
       </div>
-      <button class="btn-glass" onclick="fetchRealtimeData()" title="Sinkronkan ulang dari Google Sheets">
-        ↻ Sinkronkan
-      </button>
-      <button class="btn-glass" onclick="toggleTheme()" id="themeBtn">
-        🌙 Mode Gelap
-      </button>
+      <div class="asof">
+        Sumber Data: <b>Internal Kerja Sama dan Kemitraan</b>
+        <span id="asofToday" style="display:block; margin-top:2px;"><span style="color:var(--warn)">Menghubungkan...</span></span>
+        <button class="sync-btn" onclick="fetchRealtimeData(true)">🔄 Sinkron Ulang</button>
+      </div>
     </div>
   </div>
 </header>
 
-<main class="container">
-  <!-- Filter Bar -->
-  <section class="filter-card">
-    <div class="field">
-      <label for="qSearch">Pencarian Mitra / Nomor / Ruang Lingkup</label>
-      <input type="text" id="qSearch" class="input-ctrl" placeholder="Ketik nama instansi, nomor dokumen, atau kata kunci..." oninput="applyFilters()">
-    </div>
-    <div class="field">
-      <label for="fKategori">Kategori Mitra</label>
-      <select id="fKategori" class="select-ctrl" onchange="applyFilters()">
-        <option value="ALL">Semua Kategori</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="fStatus">Status Dokumen</label>
-      <select id="fStatus" class="select-ctrl" onchange="applyFilters()">
-        <option value="ALL">Semua Status</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="fTahun">Tahun</label>
-      <select id="fTahun" class="select-ctrl" onchange="applyFilters()">
-        <option value="ALL">Semua Tahun</option>
-      </select>
-    </div>
-    <button class="btn-reset" onclick="resetFilters()">Reset</button>
-  </section>
+<main class="wrap">
+  <section class="kpis" id="kpis"></section>
 
-  <!-- KPI Summary -->
-  <section class="kpi-grid" id="kpis">
-    <div class="kpi-card">
-      <div class="kpi-top">
-        <span class="kpi-label">Total Dokumen Kerja Sama</span>
-        <span class="kpi-icon" style="background:var(--info-soft);color:var(--info-ink);">📄</span>
-      </div>
-      <div class="kpi-val" id="kpiTotal">0</div>
-      <div class="kpi-sub" id="kpiTotalSub">0 MoU • 0 PKS</div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-top">
-        <span class="kpi-label">Selesai / Ditandatangani</span>
-        <span class="kpi-icon" style="background:var(--ok-soft);color:var(--ok-ink);">✓</span>
-      </div>
-      <div class="kpi-val" id="kpiSigned" style="color:var(--ok-ink);">0</div>
-      <div class="kpi-sub" id="kpiSignedSub">0% dari total kerja sama</div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-top">
-        <span class="kpi-label">Dalam Proses / Pembahasan</span>
-        <span class="kpi-icon" style="background:var(--warn-soft);color:var(--warn-ink);">⏳</span>
-      </div>
-      <div class="kpi-val" id="kpiProcess" style="color:var(--warn-ink);">0</div>
-      <div class="kpi-sub" id="kpiProcessSub">Draf, harmonisasi & paraf</div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-top">
-        <span class="kpi-label">Perlu Perhatian / Segera Berakhir</span>
-        <span class="kpi-icon" style="background:var(--bad-soft);color:var(--bad-ink);">!</span>
-      </div>
-      <div class="kpi-val" id="kpiAlert" style="color:var(--bad-ink);">0</div>
-      <div class="kpi-sub" id="kpiAlertSub">Tenggat < 90 hari atau kedaluwarsa</div>
-    </div>
-  </section>
-
-  <!-- Visualisasi Grafik -->
-  <section class="charts-grid">
-    <div class="panel">
+  <div class="grid g-2-1">
+    <div class="card panel">
       <div class="panel-head">
-        <div>
-          <h2 class="panel-title">Sebaran Mitra Berdasarkan Kategori</h2>
-          <div class="panel-sub">Proporsi kerja sama aktif berdasarkan klasifikasi instansi</div>
+        <div><h2>Perkembangan penandatanganan</h2><p class="hint">Jumlah MoU dan PKS yang ditandatangan per kuartal</p></div>
+        <div class="legend"><span><i style="background:var(--primary)"></i>MoU</span><span><i style="background:var(--navy)"></i>PKS</span><span><i style="background:transparent;border:2px solid var(--c3);border-radius:50%"></i>Kumulatif MoU</span></div>
+      </div>
+      <div class="chart-wrap" id="trend"></div>
+    </div>
+    <div class="card panel">
+      <div class="panel-head"><div><h2>Jenis instansi mitra</h2><p class="hint">Sebaran MoU berdasarkan kategori mitra</p></div></div>
+      <div class="donut-box" id="jenis"></div>
+    </div>
+  </div>
+
+  <div class="grid g-3">
+    <div class="card panel">
+      <div class="panel-head"><div><h2>Keberlanjutan MoU ke PKS</h2><p class="hint">Berapa MoU yang sudah ditindaklanjuti dengan PKS</p></div></div>
+      <div class="donut-box" id="pksStatus"></div>
+    </div>
+    <div class="card panel">
+      <div class="panel-head"><div><h2>Masa berlaku MoU</h2><p class="hint">Dihitung dari tanggal tanda tangan + jangka waktu</p></div></div>
+      <div class="donut-box" id="berlaku"></div>
+    </div>
+    <div class="card panel">
+      <div class="panel-head"><div><h2>Tingkat urgensi</h2><p class="hint">Level prioritas tindak lanjut MoU</p></div></div>
+      <div class="hbars" id="level"></div>
+    </div>
+  </div>
+
+  <div class="grid g-2-1">
+    <div class="card panel">
+      <div class="panel-head"><div><h2>Bidang kerja sama</h2><p class="hint">Topik MoU terbanyak (kolom "Tentang")</p></div></div>
+      <div class="hbars" id="bidang"></div>
+    </div>
+    <div class="card panel">
+      <div class="panel-head"><div><h2>Perlu perhatian</h2><p class="hint">MoU yang berakhir dalam 12 bulan ke depan</p></div></div>
+      <div class="exp-list" id="expiring"></div>
+    </div>
+  </div>
+
+  <!-- FITUR KALENDER KEGIATAN KERMAMIT -->
+  <h2 class="section-title">Kalender Kegiatan Kermamit</h2>
+  <p class="section-sub">Bersumber langsung dari sheet <b>Kegiatan Kermamit</b>. Klik tanggal untuk melihat rincian rapat, undangan, PIC, lokasi/tautan Zoom, dan laporan.</p>
+  <div class="card panel" style="margin-top:12px">
+    <div class="cal-layout">
+      <div>
+        <div class="cal-nav">
+          <div class="cal-nav-btns">
+            <button type="button" class="cal-btn" id="calPrev" title="Bulan sebelumnya">◀</button>
+            <div class="cal-month-title" id="calTitle">Memuat...</div>
+            <button type="button" class="cal-btn" id="calNext" title="Bulan berikutnya">▶</button>
+            <button type="button" class="cal-btn" id="calToday">Hari Ini</button>
+          </div>
+          <div class="legend">
+            <span><i style="background:var(--ok);border-radius:50%"></i>Terlaksana</span>
+            <span><i style="background:var(--primary);border-radius:50%"></i>Terjadwal</span>
+            <span><i style="background:var(--c6);border-radius:50%"></i>Rencana</span>
+            <span><i style="background:var(--bad);border-radius:50%"></i>Libur / Batal</span>
+          </div>
         </div>
+        <div class="cal-grid" id="calGrid"></div>
       </div>
-      <div class="bar-list" id="catChart"></div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-head">
-        <div>
-          <h2 class="panel-title">Ringkasan Tahapan Status</h2>
-          <div class="panel-sub">Distribusi progres dokumen MoU & PKS</div>
+      <div class="cal-detail-box">
+        <div class="cal-detail-head">
+          <h3 id="calSelDate">Agenda Kegiatan Kermamit</h3>
+          <p id="calSelSub">Pilih tanggal pada kalender di samping</p>
         </div>
-      </div>
-      <div class="status-cards" id="statusBreakdown"></div>
-    </div>
-  </section>
-
-  <!-- Tabel Data -->
-  <section class="panel">
-    <div class="tabs-bar">
-      <div class="tab-group">
-        <button class="tab-btn active" id="tabMou" onclick="switchTab('MOU')">
-          Nota Kesepahaman (MoU) <span class="count-chip" id="cntMou">0</span>
-        </button>
-        <button class="tab-btn" id="tabPks" onclick="switchTab('PKS')">
-          Perjanjian Kerja Sama (PKS) <span class="count-chip" id="cntPks">0</span>
-        </button>
-      </div>
-      <div style="font-size:12px;color:var(--muted);font-weight:600;" id="tableInfo">
-        Menampilkan seluruh data terfilter
+        <div class="cal-agenda-list" id="calAgendaList"></div>
       </div>
     </div>
+  </div>
 
-    <div id="viewMou" class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th style="width:48px;">No</th>
-            <th>Mitra Kerja Sama</th>
-            <th>Kategori</th>
-            <th>Ruang Lingkup / Perihal</th>
-            <th>Nomor & Tanggal</th>
-            <th>Status</th>
-            <th>Dokumen</th>
-            <th style="width:80px;">Rincian</th>
-          </tr>
-        </thead>
-        <tbody id="mouBody">
-          <tr><td colspan="8" class="empty-state">Memuat data MoU dari Google Sheets...</td></tr>
-        </tbody>
-      </table>
+  <h2 class="section-title">Timeline kegiatan Oktober–Desember 2026</h2>
+  <p class="section-sub">Jadwal rencana dan realisasi pembahasan kerja sama. Garis biru = hari ini.</p>
+  <div class="card panel" style="margin-top:12px">
+    <div class="panel-head">
+      <div class="tl-filters" id="tlFilters"></div>
+      <div class="legend"><span><i style="background:var(--primary);border-radius:4px"></i>Rencana</span><span><i style="background:var(--ok);border-radius:50%"></i>Realisasi</span><span><i style="background:var(--mute-soft)"></i>Akhir pekan</span></div>
     </div>
+    <div class="gantt-scroll" id="ganttScroll"><div class="gantt" id="gantt"></div></div>
+  </div>
 
-    <div id="viewPks" class="table-wrap" style="display:none;">
-      <table>
-        <thead>
-          <tr>
-            <th style="width:48px;">No</th>
-            <th>Mitra Kerja Sama</th>
-            <th>Kategori</th>
-            <th>Ruang Lingkup / Perihal</th>
-            <th>Nomor & Tanggal</th>
-            <th>Status</th>
-            <th>Dokumen</th>
-            <th style="width:80px;">Rincian</th>
-          </tr>
-        </thead>
-        <tbody id="pksBody">
-          <tr><td colspan="8" class="empty-state">Memuat data PKS dari Google Sheets...</td></tr>
-        </tbody>
-      </table>
+  <h2 class="section-title">Daftar Nota Kesepahaman (MoU)</h2>
+  <p class="section-sub">Klik baris untuk melihat detail, nomor, dan dokumen.</p>
+  <div class="card panel" style="margin-top:12px">
+    <div class="toolbar">
+      <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input id="q" type="search" placeholder="Cari instansi, judul, nomor, ruang lingkup…" aria-label="Cari MoU"></label>
+      <select id="fJenis" aria-label="Filter jenis instansi"></select>
+      <select id="fPks" aria-label="Filter status PKS"></select>
+      <select id="fTahun" aria-label="Filter tahun"></select>
+      <select id="fBerlaku" aria-label="Filter masa berlaku"></select>
+      <select id="fLevel" aria-label="Filter level"></select>
+      <span class="count" id="mouCount">Memuat data...</span>
     </div>
-  </section>
+    <div class="tbl-wrap"><table>
+      <thead><tr>
+        <th data-sort="no" class="sorted">No<span class="ar">↑</span></th>
+        <th data-sort="inst">Instansi<span class="ar">↕</span></th>
+        <th data-sort="jenis">Jenis<span class="ar">↕</span></th>
+        <th data-sort="tgl">Tanggal<span class="ar">↕</span></th>
+        <th>Bidang</th>
+        <th data-sort="end">Masa berlaku<span class="ar">↕</span></th>
+        <th>PKS</th>
+        <th>Dokumen</th>
+      </tr></thead>
+      <tbody id="mouBody"></tbody>
+    </table></div>
+  </div>
+
+  <h2 class="section-title">Daftar Perjanjian Kerja Sama (PKS)</h2>
+  <p class="section-sub">Perjanjian turunan yang sudah ditandatangani.</p>
+  <div class="card panel" style="margin-top:12px">
+    <div class="toolbar">
+      <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input id="q2" type="search" placeholder="Cari instansi, nomor, unit kerja…" aria-label="Cari PKS"></label>
+      <span class="count" id="pksCount">Memuat data...</span>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>No</th><th>Instansi</th><th>Jenis</th><th>Tanggal</th><th>Nomor</th><th>Unit kerja</th><th>Dokumen</th></tr></thead>
+      <tbody id="pksBody"></tbody>
+    </table></div>
+  </div>
 </main>
 
-<!-- Modal Detail -->
-<div class="modal-backdrop" id="detailModal" onclick="if(event.target===this) closeModal()">
-  <div class="modal-box">
-    <div class="modal-head">
-      <div>
-        <span class="badge b-info" id="mType">MoU</span>
-        <h3 style="margin:8px 0 2px;font-size:18px;font-weight:800;" id="mTitle">Nama Mitra</h3>
-        <div style="font-size:12.5px;color:var(--muted);" id="mSub">Kategori</div>
-      </div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="detail-grid" id="mContent"></div>
+<footer class="wrap">Badan Gizi Nasional · Deputi Bidang Promosi dan Kerja Sama · Direktorat Kerja Sama dan Kemitraan</footer>
+<div class="tip" id="tip"></div>
+
+<!-- MODAL POPUP DETAIL MOU (KHUSUS TAMPILAN MOBILE) -->
+<div id="mouModal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:16px;">
+  <div style="background:var(--surface); color:var(--text); width:100%; max-width:550px; max-height:85vh; border-radius:18px; border:1px solid var(--border); overflow-y:auto; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.3); position:relative;">
+    <button onclick="closeMouModal()" style="position:absolute; right:14px; top:14px; border:none; background:var(--mute-soft); color:var(--text); width:32px; height:32px; border-radius:50%; font-weight:bold; cursor:pointer; font-size:16px;">✕</button>
+    <h3 style="margin-top:0; padding-right:30px; font-size:16px; color:var(--primary-strong);">Detail Nota Kesepahaman</h3>
+    <hr style="border:0; border-top:1px solid var(--border); margin:12px 0;">
+    <div id="modalContent" class="dgrid" style="grid-template-columns:1fr !important; gap:12px;"></div>
   </div>
 </div>
 
 <script>
-  // URL Web App Google Apps Script Anda
-  const API_URL = "https://script.google.com/macros/s/AKfycbz87_uG61l6f5g88d2A_lM8L_nU_Y1f92p_aW72d44lB_5284eR_X79G1w99S1q5v4Y/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwXXcQKoGNZ-Kv5uVGbWIQv6MVem-NUtsqiVQ7U5G4d1hDX_4vVs8bKFwGuqyqsN3iORA/exec";
+let DATA = { mou: [], pks: [], timeline: [], kegiatan: [], tlStart: "2026-10-19", tlDays: 74 };
 
-  let RAW_MOU = [];
-  let RAW_PKS = [];
-  let FILTERED_MOU = [];
-  let FILTERED_PKS = [];
-  let ACTIVE_TAB = "MOU";
-
-  // Helper mengambil nilai field fleksibel dari berbagai variasi nama kolom Google Sheets
-  function pick(obj, keys, fallback = "-") {
-    if (!obj) return fallback;
-    const objKeys = Object.keys(obj);
-    for (const k of keys) {
-      if (obj[k] !== undefined && String(obj[k]).trim() !== "") return String(obj[k]).trim();
-      const found = objKeys.find(ok => ok.toLowerCase().trim() === k.toLowerCase().trim());
-      if (found && String(obj[found]).trim() !== "") return String(obj[found]).trim();
-    }
-    return fallback;
+/* ----- SINKRONISASI TEMA TERANG / GELAP ----- */
+(function setupTheme() {
+  const root = document.documentElement;
+  let saved = null; 
+  try { saved = localStorage.getItem('bgn-theme'); } catch(e){}
+  
+  function applyTheme(t) {
+    root.setAttribute('data-theme', t);
+    document.querySelectorAll('.theme-toggle button').forEach(b => {
+      b.setAttribute('aria-pressed', b.dataset.t === t);
+    });
+    try { localStorage.setItem('bgn-theme', t); } catch(e){}
   }
 
-  // Perbaikan ekstraksi URL (menangani pemisah '|' seperti url1 | url2)
-  function extractUrl(val) {
-    if (!val || val === "-") return null;
-    const firstPart = String(val).split("|")[0].trim();
-    if (/^https?:\/\//i.test(firstPart)) return firstPart;
-    const match = firstPart.match(/(https?:\/\/[^\s"'<>|]+)/i);
-    return match ? match[1] : null;
+  const sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(saved === 'light' || saved === 'dark' ? saved : (sysDark ? 'dark' : 'light'));
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.theme-toggle button').forEach(b => {
+      b.addEventListener('click', (e) => {
+        e.preventDefault();
+        applyTheme(b.dataset.t);
+      });
+    });
+  });
+})();
+
+/* ----- KONEKSI REALTIME ANTI-MACET & ANTI-CORS ----- */
+async function fetchRealtimeData(forceRefresh = false) {
+  const statusEl = document.getElementById("asofToday");
+  if(statusEl) statusEl.innerHTML = "<span style='color:var(--warn)'>Menghubungkan...</span>";
+
+  // Render kerangka UI/Kalender terlebih dahulu agar tidak blank saat menunggu data
+  if (!window._uiBooted) {
+    window._uiBooted = true;
+    initApp();
   }
 
-  function normalizeRecord(row, jenis) {
-    const mitra = pick(row, ["Mitra", "Nama Mitra", "Instansi", "Nama Instansi", "Pihak Kedua", "Lembaga"], "Mitra Tanpa Nama");
-    const kategori = pick(row, ["Kategori", "Kategori Mitra", "Jenis Mitra", "Klaster", "Sektor"], "Lainnya");
-    const perihal = pick(row, ["Ruang Lingkup", "Perihal", "Tentang", "Judul", "Objek Kerja Sama", "Keterangan"], "-");
-    const nomor = pick(row, ["Nomor", "Nomor Dokumen", "Nomor MoU", "Nomor PKS", "No. Dokumen"], "-");
-    const tanggal = pick(row, ["Tanggal", "Tanggal TTD", "Tanggal Penandatanganan", "Tgl TTD", "Mulai"], "-");
-    const berakhir = pick(row, ["Berakhir", "Tanggal Berakhir", "Masa Berlaku", "Jangka Waktu", "Selesai"], "-");
-    const status = pick(row, ["Status", "Progres", "Tahapan", "Keterangan Status"], "Dalam Proses");
-    const pic = pick(row, ["PIC", "Penanggung Jawab", "Unit Pengampu", "Deputi / Direktorat"], "-");
-    const rawLink = pick(row, ["Dokumen", "Link", "Link Dokumen", "Tautan", "URL", "File", "Drive"], "");
-    const url = extractUrl(rawLink);
+  const url = API_URL + (forceRefresh ? "?nocache=1" : "");
 
-    // Ekstrak tahun dari tanggal atau nomor
-    let tahun = pick(row, ["Tahun"], "");
-    if (!tahun) {
-      const mYear = (tanggal + " " + nomor).match(/\b(202[0-9])\b/);
-      tahun = mYear ? mYear[1] : "Lainnya";
-    }
+  // Metode 1: Fetch standar dengan timeout 10 detik
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-    return {
-      jenis,
-      mitra,
-      kategori,
-      perihal,
-      nomor,
-      tanggal,
-      berakhir,
-      status,
-      pic,
-      url,
-      tahun,
-      raw: row
-    };
-  }
-
-  // Ambil data via JSONP (100% bebas blokir CORS di GitHub Pages)
-  function fetchRealtimeData() {
-    const statusEl = document.getElementById("asofToday");
-    if (statusEl) statusEl.innerHTML = "<span style='color:#fbbf24;'>Menyinkronkan...</span>";
-
-    const oldScript = document.getElementById("gas-jsonp-loader");
-    if (oldScript) oldScript.remove();
-
-    const cbName = "bgnGasCb_" + Date.now();
-    const timeoutTimer = setTimeout(() => {
-      delete window[cbName];
-      if (statusEl) statusEl.innerHTML = "<span style='color:#f87171;'>Timeout koneksi</span>";
-    }, 18000);
-
-    window[cbName] = function(payload) {
-      clearTimeout(timeoutTimer);
-      delete window[cbName];
-      processApiPayload(payload);
-    };
-
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      redirect: 'follow',
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    if (data && data.error) throw new Error(data.error);
+    handleDataResponse(data);
+  } catch (err) {
+    clearTimeout(timeoutId);
+    console.warn("Beralih ke jalur JSONP:", err);
+    
+    // Metode 2: Fallback JSONP (kebal CORS redirect Google Apps Script)
+    const cbName = "bgnCb_" + Date.now();
     const script = document.createElement("script");
-    script.id = "gas-jsonp-loader";
-    script.src = `${API_URL}?callback=${cbName}&_t=${Date.now()}`;
-    script.onerror = function() {
-      clearTimeout(timeoutTimer);
+    const jsonpTimer = setTimeout(() => {
       delete window[cbName];
-      if (statusEl) statusEl.innerHTML = "<span style='color:#f87171;'>Gagal terhubung</span>";
+      script.remove();
+      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Cek izin akses Apps Script ('Siapa saja').</span>";
+    }, 15000);
+
+    window[cbName] = function(data) {
+      clearTimeout(jsonpTimer);
+      delete window[cbName];
+      script.remove();
+      if (data && data.error) {
+        if(statusEl) statusEl.innerHTML = `<span style='color:var(--bad)'>Error Script: ${data.error}</span>`;
+      } else {
+        handleDataResponse(data);
+      }
+    };
+
+    script.src = API_URL + (API_URL.includes("?") ? "&" : "?") + "callback=" + cbName + (forceRefresh ? "&nocache=1" : "");
+    script.onerror = function() {
+      clearTimeout(jsonpTimer);
+      delete window[cbName];
+      script.remove();
+      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Gagal terhubung. Klik Sinkron Ulang.</span>";
     };
     document.body.appendChild(script);
   }
+}
 
-  function processApiPayload(data) {
-    const statusEl = document.getElementById("asofToday");
-    if (!data || data.status === "error") {
-      if (statusEl) statusEl.innerHTML = "<span style='color:#f87171;'>Error Apps Script</span>";
-      console.error("Apps Script Error:", data);
-      return;
+function extractUrl(val) {
+  if (!val) return null;
+  val = String(val).trim();
+  if (/^https?:\/\//i.test(val)) return val;
+  const match = val.match(/(https?:\/\/[^\s"'<>]+)/i);
+  return match ? match[1] : null;
+}
+
+function cleanText(val) {
+  if (!val) return "";
+  return String(val).split('|')[0].trim();
+}
+
+function parseGoogleDate(v, fallbackYear = 2026) {
+  if (!v) return null;
+  const s = String(v).trim();
+  if (!s || s === '-' || s.toLowerCase() === 'null') return null;
+  
+  if (s.includes('T')) return new Date(s.split('T')[0] + 'T00:00:00');
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) {
+    const parts = s.split(' ')[0].split('-');
+    return new Date(`${parts[0]}-${parts[1].padStart(2,'0')}-${parts[2].padStart(2,'0')}T00:00:00`);
+  }
+  if (s.includes('-')) {
+    const parts = s.split(' ')[0].split('-');
+    if (parts.length === 3 && parts[2].length === 4) {
+      return new Date(`${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}T00:00:00`);
     }
-
-    const mouArr = Array.isArray(data.mou) ? data.mou : [];
-    const pksArr = Array.isArray(data.pks) ? data.pks : [];
-
-    RAW_MOU = mouArr.map(r => normalizeRecord(r, "MoU"));
-    RAW_PKS = pksArr.map(r => normalizeRecord(r, "PKS"));
-
-    populateFilterOptions();
-    applyFilters();
-
-    const now = new Date();
-    const jam = now.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
-    const tgl = now.toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" });
-    if (statusEl) statusEl.textContent = `${tgl}, ${jam} WIB`;
   }
-
-  function populateFilterOptions() {
-    const all = [...RAW_MOU, ...RAW_PKS];
-    const cats = [...new Set(all.map(x => x.kategori).filter(Boolean))].sort();
-    const stats = [...new Set(all.map(x => x.status).filter(Boolean))].sort();
-    const years = [...new Set(all.map(x => x.tahun).filter(Boolean))].sort().reverse();
-
-    fillSelect("fKategori", cats, "Semua Kategori");
-    fillSelect("fStatus", stats, "Semua Status");
-    fillSelect("fTahun", years, "Semua Tahun");
+  if (s.includes('/')) {
+    const p = s.split('/');
+    if(p.length === 3) {
+      if (p[2].length === 4) return new Date(`${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}T00:00:00`);
+      if (p[0].length === 4) return new Date(`${p[0]}-${p[1].padStart(2,'0')}-${p[2].padStart(2,'0')}T00:00:00`);
+    }
   }
-
-  function fillSelect(id, items, defaultLabel) {
-    const sel = document.getElementById(id);
-    const prev = sel.value;
-    sel.innerHTML = `<option value="ALL">${defaultLabel}</option>` +
-      items.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("");
-    if (items.includes(prev)) sel.value = prev;
+  
+  const blnMap = {'jan':1,'feb':2,'mar':3,'apr':4,'mei':5,'jun':6,'jul':7,'agu':8,'aug':8,'sep':9,'okt':10,'oct':10,'nov':11,'des':12,'dec':12};
+  const mFull = s.match(/(\d{1,2})\s+([a-zA-Z]+)\s+(\d{4})/);
+  if (mFull) {
+    const mi = blnMap[mFull[2].toLowerCase().slice(0,3)];
+    if (mi) return new Date(`${mFull[3]}-${String(mi).padStart(2,'0')}-${mFull[1].padStart(2,'0')}T00:00:00`);
   }
+  const mNoYear = s.match(/(\d{1,2})\s+([a-zA-Z]+)/);
+  if (mNoYear) {
+    const mi = blnMap[mNoYear[2].toLowerCase().slice(0,3)];
+    if (mi) return new Date(`${fallbackYear}-${String(mi).padStart(2,'0')}-${mNoYear[1].padStart(2,'0')}T00:00:00`);
+  }
+  
+  if (!isNaN(v) && Number(v) > 30000) {
+    const d = new Date((v - (25567 + 2)) * 86400 * 1000);
+    return new Date(d.toISOString().split('T')[0] + 'T00:00:00');
+  }
+  return null;
+}
 
-  function applyFilters() {
-    const q = document.getElementById("qSearch").value.toLowerCase().trim();
-    const cat = document.getElementById("fKategori").value;
-    const st = document.getElementById("fStatus").value;
-    const yr = document.getElementById("fTahun").value;
+function handleDataResponse(resData) {
+  const statusEl = document.getElementById("asofToday");
+  const now = new Date();
+  const timeString = now.getHours().toString().padStart(2,'0') + ":" + now.getMinutes().toString().padStart(2,'0');
+  if(statusEl) statusEl.innerHTML = `<span style='color:var(--ok)'>● Real-Time (${timeString})</span>`;
 
-    const filterFn = (item) => {
-      if (cat !== "ALL" && item.kategori !== cat) return false;
-      if (st !== "ALL" && item.status !== st) return false;
-      if (yr !== "ALL" && item.tahun !== yr) return false;
-      if (q) {
-        const hay = `${item.mitra} ${item.kategori} ${item.perihal} ${item.nomor} ${item.status} ${item.pic}`.toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
+  const getRows = arr => (Array.isArray(arr) && arr.length > 1) ? arr.slice(1) : [];
+
+  DATA.mou = getRows(resData.mou).map((r, i) => {
+    let linkDoc = extractUrl(r[8]) || extractUrl(r[4]) || extractUrl(r[2]);
+    let linkPks = extractUrl(r[12]);
+    let jenis = r[2] || "BELUM DIISI";
+    if (extractUrl(jenis)) jenis = "BELUM DIISI";
+
+    return {
+      no: r[0] || (i + 1),
+      nama: r[1] || "",
+      jenis: jenis,
+      d: parseGoogleDate(r[3]),
+      tgl: r[3] || "",
+      judul: r[4] || "",
+      nomor: r[5] || "",
+      tentang: r[6] || "",
+      jangka: r[7] || "",
+      file: r[8] || "",
+      url: linkDoc,
+      db: r[9] || "",
+      lingkup: r[10] || "",
+      pks: r[11] || "BELUM ADA PKS",
+      pksFile: r[12] || "",
+      pksUrl: linkPks,
+      ket: r[13] || "",
+      level: r[14] || "",
+      pemrakarsa: r[15] || "",
+      unit: r[16] || ""
     };
+  }).filter(m => m.nama && !extractUrl(m.nama));
 
-    FILTERED_MOU = RAW_MOU.filter(filterFn);
-    FILTERED_PKS = RAW_PKS.filter(filterFn);
+  DATA.pks = getRows(resData.pks).map((r, i) => {
+    let pksUrl = extractUrl(r[6]);
+    return {
+      no: r[0] || (i + 1),
+      d: parseGoogleDate(r[1]),
+      tgl: r[1] || "",
+      instansi: r[2] || "",
+      jenis: r[3] || "",
+      nomor: r[4] || "",
+      unit: r[5] || "",
+      file: r[6] || "",
+      url: pksUrl,
+      db: r[7] || "",
+      ket: r[8] || ""
+    };
+  }).filter(p => p.instansi);
 
-    renderDashboard();
+  DATA.timeline = getRows(resData.timeline).map((r, i) => {
+    const parseIdx = val => {
+      if (val === null || val === undefined) return [];
+      return String(val).split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+    };
+    return {
+      no: r[0] || (i + 1),
+      kegiatan: r[1] || "",
+      materi: r[2] || "",
+      inisiator: r[3] || "",
+      level: r[4] || "",
+      status: r[5] || "Belum ada status",
+      rencana: parseIdx(r[6]),
+      realisasi: parseIdx(r[7])
+    };
+  }).filter(t => t.kegiatan && t.kegiatan.trim() !== "");
+
+  DATA.kegiatan = getRows(resData.kegiatan).map(r => {
+    const dObj = parseGoogleDate(r[1]) || parseGoogleDate(r[0], 2026);
+    const lokRaw = r[10] || "";
+    return {
+      tglTeks: r[0] || "",
+      d: dObj,
+      mulai: r[2] || "",
+      selesai: r[3] || "",
+      undangan: r[4] || "",
+      lampUndanganText: cleanText(r[5]),
+      lampUndanganUrl: extractUrl(r[5]),
+      keterangan: r[6] || "",
+      status: r[7] || "Rencana",
+      kegiatan: r[8] || "",
+      pic: r[9] || "",
+      lokasiText: cleanText(lokRaw),
+      lokasiUrl: extractUrl(lokRaw),
+      lampLaporanText: cleanText(r[11]),
+      lampLaporanUrl: extractUrl(r[11])
+    };
+  }).filter(k => k.kegiatan && k.d);
+
+  initApp();
+}
+
+window.closeMouModal = function() {
+  const m = document.getElementById('mouModal');
+  if(m) m.style.display = 'none';
+};
+
+function initApp() {
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const BLN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  const BLN_L = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const fmtD = d => (d && d instanceof Date && !isNaN(d)) ? `${d.getDate()} ${BLN[d.getMonth()]} ${d.getFullYear()}` : '—';
+  const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+  const isUrl = u => /^https?:\/\//i.test(u||'');
+
+  /* DERIVE DATA */
+  const shortName = n => String(n||'').replace(/^\s*(nota kesepahaman|mou|nk)\s+(antara\s+)?(bgn|badan gizi nasional)?\s*(dengan|dan)\s+/i,'').replace(/\s+/g,' ').trim() || n;
+  const normJenis = j => { j = (j||'').toUpperCase().trim(); return j ? j : 'BELUM DIISI'; };
+  const JENIS_LABEL = {'KEMENTRIAN/LEMBAGA':'Kementerian/Lembaga','KEMENTERIAN/LEMBAGA':'Kementerian/Lembaga','BUMN/BUMD':'BUMN/BUMD','ORMAS':'Ormas','SWASTA':'Swasta','PEMPROV/PEMDA':'Pemprov/Pemda','PERGURUAN TINGGI':'Perguruan Tinggi','INTERNASIONAL':'Internasional','BELUM DIISI':'Belum diisi'};
+  
+  function endDate(m){
+    const d = m.d; const j = (m.jangka||'').toLowerCase();
+    let r;
+    if ((r = j.match(/hingga\s+(\d{1,2})\s+([a-z]+)\s+(\d{4})/))) { const mi = BLN_L.findIndex(b => b.toLowerCase() === r[2]); if (mi >= 0) return new Date(+r[3], mi, +r[1]); }
+    if (!d || !(d instanceof Date) || isNaN(d)) return null;
+    if ((r = j.match(/(\d+)\s*tahun/))) { const e = new Date(d); e.setFullYear(e.getFullYear() + +r[1]); return e; }
+    if ((r = j.match(/(\d+)\s*bulan/))) { const e = new Date(d); e.setMonth(e.getMonth() + +r[1]); return e; }
+    return null;
   }
-
-  function resetFilters() {
-    document.getElementById("qSearch").value = "";
-    document.getElementById("fKategori").value = "ALL";
-    document.getElementById("fStatus").value = "ALL";
-    document.getElementById("fTahun").value = "ALL";
-    applyFilters();
-  }
-
-  function classifyStatus(st) {
-    const s = String(st || "").toLowerCase();
-    if (s.includes("ttd") || s.includes("selesai") || s.includes("aktif") || s.includes("signed") || s.includes("berlaku")) {
-      return { group: "SIGNED", cls: "b-ok" };
-    }
-    if (s.includes("berakhir") || s.includes("expired") || s.includes("batal") || s.includes("habis") || s.includes("kendala")) {
-      return { group: "ALERT", cls: "b-bad" };
-    }
-    if (s.includes("paraf") || s.includes("final") || s.includes("harmonisasi") || s.includes("review") || s.includes("proses") || s.includes("draf")) {
-      return { group: "PROCESS", cls: "b-warn" };
-    }
-    return { group: "OTHER", cls: "b-info" };
-  }
-
-  function renderDashboard() {
-    const combined = [...FILTERED_MOU, ...FILTERED_PKS];
-    const total = combined.length;
-    const signed = combined.filter(x => classifyStatus(x.status).group === "SIGNED").length;
-    const process = combined.filter(x => classifyStatus(x.status).group === "PROCESS").length;
-    const alert = combined.filter(x => classifyStatus(x.status).group === "ALERT").length;
-
-    document.getElementById("kpiTotal").textContent = total;
-    document.getElementById("kpiTotalSub").textContent = `${FILTERED_MOU.length} MoU • ${FILTERED_PKS.length} PKS`;
-
-    document.getElementById("kpiSigned").textContent = signed;
-    const pct = total ? Math.round((signed / total) * 100) : 0;
-    document.getElementById("kpiSignedSub").textContent = `${pct}% dari total kerja sama`;
-
-    document.getElementById("kpiProcess").textContent = process;
-    document.getElementById("kpiAlert").textContent = alert;
-
-    document.getElementById("cntMou").textContent = FILTERED_MOU.length;
-    document.getElementById("cntPks").textContent = FILTERED_PKS.length;
-
-    renderCategoryChart(combined);
-    renderStatusBreakdown(combined);
-    renderTable("mouBody", FILTERED_MOU, "MOU");
-    renderTable("pksBody", FILTERED_PKS, "PKS");
-  }
-
-  function renderCategoryChart(items) {
-    const el = document.getElementById("catChart");
-    if (!items.length) {
-      el.innerHTML = `<div class="empty-state" style="padding:20px;">Tidak ada data untuk ditampilkan</div>`;
-      return;
-    }
-
-    const map = {};
-    items.forEach(i => {
-      map[i.kategori] = (map[i.kategori] || 0) + 1;
-    });
-
-    const sorted = Object.entries(map).sort((a, b) => b[1] - a[1]);
-    const maxVal = sorted[0][1] || 1;
-    const colors = ["#1d4ed8", "#0ea5e9", "#10b981", "#8b5cf6", "#f59e0b", "#64748b"];
-
-    el.innerHTML = sorted.map(([name, count], idx) => {
-      const w = Math.round((count / maxVal) * 100);
-      const color = colors[idx % colors.length];
-      return `
-        <div class="bar-item">
-          <div class="bar-meta">
-            <span>${escapeHtml(name)}</span>
-            <span>${count} dokumen</span>
-          </div>
-          <div class="bar-track">
-            <div class="bar-fill" style="width:${w}%;background:${color};"></div>
-          </div>
-        </div>
-      `;
-    }).join("");
-  }
-
-  function renderStatusBreakdown(items) {
-    const el = document.getElementById("statusBreakdown");
-    if (!items.length) {
-      el.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:20px;">Tidak ada data status</div>`;
-      return;
-    }
-
-    const map = {};
-    items.forEach(i => {
-      map[i.status] = (map[i.status] || 0) + 1;
-    });
-
-    const sorted = Object.entries(map).sort((a, b) => b[1] - a[1]);
-    el.innerHTML = sorted.map(([st, count]) => {
-      const info = classifyStatus(st);
-      return `
-        <div class="st-box">
-          <div class="st-box-top">
-            <span class="st-count">${count}</span>
-            <span class="badge ${info.cls}">${escapeHtml(st)}</span>
-          </div>
-          <div class="st-name">Dokumen berstatus ${escapeHtml(st)}</div>
-        </div>
-      `;
-    }).join("");
-  }
-
-  function renderTable(tbodyId, rows, typeKey) {
-    const tbody = document.getElementById(tbodyId);
-    if (!rows.length) {
-      tbody.innerHTML = `<tr><td colspan="8" class="empty-state">Tidak ditemukan data yang sesuai dengan filter.</td></tr>`;
-      return;
-    }
-
-    tbody.innerHTML = rows.map((r, idx) => {
-      const stInfo = classifyStatus(r.status);
-      const docBtn = r.url
-        ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer" class="btn-doc">📄 Lihat</a>`
-        : `<span style="color:var(--muted);font-size:12px;">-</span>`;
-
-      return `
-        <tr>
-          <td style="font-weight:700;color:var(--muted);">${idx + 1}</td>
-          <td>
-            <div class="partner-name">${escapeHtml(r.mitra)}</div>
-            <div class="partner-sub">PIC: ${escapeHtml(r.pic)}</div>
-          </td>
-          <td><span class="badge b-neutral">${escapeHtml(r.kategori)}</span></td>
-          <td style="max-width:300px;">${escapeHtml(r.perihal)}</td>
-          <td>
-            <div style="font-weight:600;">${escapeHtml(r.nomor)}</div>
-            <div class="partner-sub">Tgl: ${escapeHtml(r.tanggal)}</div>
-          </td>
-          <td><span class="badge ${stInfo.cls}">${escapeHtml(r.status)}</span></td>
-          <td>${docBtn}</td>
-          <td><button class="btn-detail" onclick="openDetail('${typeKey}', ${idx})">Detail</button></td>
-        </tr>
-      `;
-    }).join("");
-  }
-
-  function switchTab(tab) {
-    ACTIVE_TAB = tab;
-    document.getElementById("tabMou").classList.toggle("active", tab === "MOU");
-    document.getElementById("tabPks").classList.toggle("active", tab === "PKS");
-    document.getElementById("viewMou").style.display = tab === "MOU" ? "block" : "none";
-    document.getElementById("viewPks").style.display = tab === "PKS" ? "block" : "none";
-  }
-
-  function openDetail(typeKey, idx) {
-    const item = typeKey === "MOU" ? FILTERED_MOU[idx] : FILTERED_PKS[idx];
-    if (!item) return;
-
-    document.getElementById("mType").textContent = item.jenis;
-    document.getElementById("mTitle").textContent = item.mitra;
-    document.getElementById("mSub").textContent = `${item.kategori} • Tahun ${item.tahun}`;
-
-    const rawEntries = Object.entries(item.raw || {}).filter(([k, v]) => String(v).trim() !== "");
-    document.getElementById("mContent").innerHTML = rawEntries.map(([k, v]) => {
-      const url = extractUrl(v);
-      const valHtml = url
-        ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="btn-doc">Buka Tautan Dokumen ↗</a>`
-        : escapeHtml(String(v));
-      const isLong = String(v).length > 60;
-      return `
-        <div class="detail-item ${isLong ? "full" : ""}">
-          <div class="detail-k">${escapeHtml(k)}</div>
-          <div class="detail-v">${valHtml}</div>
-        </div>
-      `;
-    }).join("");
-
-    document.getElementById("detailModal").classList.add("open");
-  }
-
-  function closeModal() {
-    document.getElementById("detailModal").classList.remove("open");
-  }
-
-  function toggleTheme() {
-    const html = document.documentElement;
-    const isDark = html.getAttribute("data-theme") === "dark";
-    html.setAttribute("data-theme", isDark ? "light" : "dark");
-    document.getElementById("themeBtn").textContent = isDark ? "🌙 Mode Gelap" : "☀️ Mode Terang";
-  }
-
-  function escapeHtml(str) {
-    return String(str || "")
-      .replace(/&/g, "&")
-      .replace(/</g, "<")
-      .replace(/>/g, ">")
-      .replace(/"/g, """)
-      .replace(/'/g, "'");
-  }
-
-  // Muat data otomatis saat halaman dibuka & perbarui setiap 5 menit
-  document.addEventListener("DOMContentLoaded", () => {
-    fetchRealtimeData();
-    setInterval(fetchRealtimeData, 300000);
+  const DAY = 864e5;
+  DATA.mou.forEach(m => {
+    m.inst = shortName(m.nama); m.J = normJenis(m.jenis); m.e = endDate(m);
+    m.hasPks = /sudah/i.test(m.pks); m.pksLbl = m.hasPks ? 'Sudah ada PKS' : (/belum/i.test(m.pks) ? 'Belum ada PKS' : 'Belum diisi');
+    if (!m.e) m.berlaku = 'Tidak diketahui';
+    else { const left = (m.e - TODAY) / DAY; m.left = left; m.berlaku = left < 0 ? 'Berakhir' : left <= 180 ? 'Segera berakhir' : 'Aktif'; }
   });
+  DATA.pks.forEach(p => { p.inst = String(p.instansi).replace(/^PKS\s+(BGN\s+)?(dengan|dan)\s+/i,'').replace(/\s+dengan\s+BGN$/i,'').trim(); });
+  const MOU = DATA.mou, PKS = DATA.pks.filter(p => p.d || p.nomor !== '-');
+  const countBy = (arr, f) => arr.reduce((a, x) => { const k = f(x); a[k] = (a[k]||0) + 1; return a; }, {});
+
+  /* KPIS */
+  const ic = {
+    doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>',
+    hand:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.9-3.9a2 2 0 0 0-2.8 0l-.9.9a1 1 0 1 1-3-3l2.8-2.8a5 5 0 0 1 6 .8L21 7"/><path d="m21 3-2 2M3 3l2 2M3 14l6 6"/></svg>',
+    link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>',
+    cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>',
+    shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>',
+    alert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>'
+  };
+  const nPksLinked = MOU.filter(m => m.hasPks).length;
+  const thisYear = TODAY.getFullYear();
+  const nYear = MOU.filter(m => m.d && m.d.getFullYear() === thisYear).length;
+  const nAktif = MOU.filter(m => m.berlaku === 'Aktif' || m.berlaku === 'Segera berakhir').length;
+  const nUrgent = MOU.filter(m => /mendesak/i.test(m.level)).length;
+  const kpis = [
+    {i:'doc', l:'Total MoU', v:MOU.length, s:`${MOU.filter(m=>m.d).length} bertanggal · sejak ${fmtD(MOU.filter(m=>m.d).sort((a,b)=>a.d-b.d)[0]?.d)}`},
+    {i:'hand', l:'Total PKS', v:PKS.length, s:`${PKS.filter(p=>p.d&&p.d.getFullYear()===thisYear).length} ditandatangani tahun ${thisYear}`},
+    {i:'link', l:'MoU berlanjut ke PKS', v:nPksLinked, s:`${Math.round(nPksLinked/(MOU.length||1)*100)}% dari seluruh MoU`, bar:nPksLinked/(MOU.length||1)},
+    {i:'cal', l:`MoU tahun ${thisYear}`, v:nYear, s:`dari ${MOU.length} MoU tercatat`, bar:nYear/(MOU.length||1)},
+    {i:'shield', l:'MoU masih berlaku', v:nAktif, s:`${MOU.filter(m=>m.berlaku==='Segera berakhir').length} berakhir ≤ 6 bulan`, bar:nAktif/(MOU.length||1)},
+    {i:'alert', l:'Mendesak', v:nUrgent, s:`${MOU.filter(m=>/sangat/i.test(m.level)).length} sangat mendesak`}
+  ];
+  $('#kpis').innerHTML = kpis.map(k => `<div class="card kpi"><div class="ic">${ic[k.i]}</div><div class="lbl">${k.l}</div><div class="val" data-v="${k.v}">0</div><div class="sub">${esc(k.s)}</div>${k.bar!=null?`<div class="bar"><i style="width:${(k.bar*100).toFixed(1)}%"></i></div>`:''}</div>`).join('');
+  document.querySelectorAll('.kpi .val').forEach(el => { const t = +el.dataset.v, t0 = performance.now(); const step = n => { const p = Math.min(1,(n-t0)/700); el.textContent = Math.round(t*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(step); }; requestAnimationFrame(step); });
+
+  /* TOOLTIP */
+  const tip = $('#tip');
+  function showTip(e, html){ tip.innerHTML = html; tip.style.opacity = 1; moveTip(e); }
+  function moveTip(e){ const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8); tip.style.left = x + 'px'; tip.style.top = (e.clientY - tip.offsetHeight - 12) + 'px'; }
+  function hideTip(){ tip.style.opacity = 0; }
+  function bindTips(scope){ scope.querySelectorAll('[data-tip]').forEach(el => { el.addEventListener('mouseenter', e => showTip(e, el.dataset.tip)); el.addEventListener('mousemove', moveTip); el.addEventListener('mouseleave', hideTip); }); }
+
+  /* TREND CHART */
+  function renderTrend(){
+    const box = $('#trend'); const W = Math.max(300, box.clientWidth), H = 240, P = {l:34, r:38, t:14, b:34};
+    const qs = [
+      {y:2024, q:2, m:0, p:0}, {y:2024, q:3, m:0, p:0},
+      {y:2025, q:0, m:0, p:0}, {y:2025, q:1, m:0, p:0}, {y:2025, q:2, m:0, p:0}, {y:2025, q:3, m:0, p:0},
+      {y:2026, q:0, m:0, p:0}, {y:2026, q:1, m:0, p:0}, {y:2026, q:2, m:0, p:0}, {y:2026, q:3, m:0, p:0}
+    ];
+    const key = d => qs.findIndex(x => x.y === d.getFullYear() && x.q === Math.floor(d.getMonth()/3));
+    MOU.forEach(m => { if (m.d && m.d instanceof Date && !isNaN(m.d)) { const k = key(m.d); if (k >= 0) qs[k].m++; } });
+    PKS.forEach(p => { if (p.d && p.d instanceof Date && !isNaN(p.d)) { const k = key(p.d); if (k >= 0) qs[k].p++; } });
+    let cum = MOU.filter(m => !m.d).length; qs.forEach(x => { cum += x.m; x.c = cum; });
+    
+    const maxV = Math.max(24, Math.max(...qs.map(x => Math.max(x.m, x.p))) * 1.15);
+    const maxC = Math.max(MOU.length, 117);
+    const iw = W - P.l - P.r, ih = H - P.t - P.b, bw = iw / (qs.length||1), gw = Math.min(12, bw * .30);
+    const y = v => P.t + ih - v / maxV * ih; const yc = v => P.t + ih - v / maxC * ih;
+    
+    let s = `<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}" role="img" preserveAspectRatio="none">`;
+    const ticks = 4;
+    for (let i = 0; i <= ticks; i++) {
+      const v = Math.round(maxV / ticks * i); const yy = y(v);
+      s += `<line x1="${P.l}" x2="${W-P.r}" y1="${yy}" y2="${yy}" stroke="var(--grid)"/><text x="${P.l-8}" y="${yy+4}" text-anchor="end" font-size="10.5" fill="var(--muted)">${v}</text>`;
+      s += `<text x="${W-P.r+8}" y="${yc(maxC/ticks*i)+4}" font-size="10.5" fill="var(--c3)">${Math.round(maxC/ticks*i)}</text>`;
+    }
+    let line = '';
+    qs.forEach((x, i) => {
+      const cx = P.l + bw * i + bw / 2;
+      const t = `<b>Q${x.q+1} ${x.y}</b><br>MoU: ${x.m}<br>PKS: ${x.p}<br>Kumulatif MoU: ${x.c}`;
+      s += `<rect x="${P.l+bw*i}" y="${P.t}" width="${bw}" height="${ih}" fill="transparent" data-tip="${esc(t)}"/>`;
+      if (x.m > 0) s += `<rect x="${cx-gw-1}" y="${y(x.m)}" width="${gw}" height="${Math.max(0,P.t+ih-y(x.m))}" rx="3" fill="var(--primary)" pointer-events="none"/>`;
+      if (x.p > 0) s += `<rect x="${cx+1}" y="${y(x.p)}" width="${gw}" height="${Math.max(0,P.t+ih-y(x.p))}" rx="3" fill="var(--navy)" pointer-events="none"/>`;
+      s += `<text x="${cx}" y="${H-P.b+14}" text-anchor="middle" font-size="10" fill="var(--muted)">Q${x.q+1}</text>`;
+      if (x.q === 0 || i === 0) s += `<text x="${cx}" y="${H-P.b+27}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--text)">${x.y}</text>`;
+      line += `${i ? 'L' : 'M'}${cx},${yc(x.c)}`;
+    });
+    s += `<path d="${line}" fill="none" stroke="var(--c3)" stroke-width="2.5" stroke-linejoin="round" pointer-events="none"/>`;
+    qs.forEach((x, i) => { const cx = P.l + bw * i + bw / 2; s += `<circle cx="${cx}" cy="${yc(x.c)}" r="3.5" fill="var(--surface)" stroke="var(--c3)" stroke-width="2" pointer-events="none"/>`; });
+    box.innerHTML = s + '</svg>'; bindTips(box);
+  }
+
+  /* DONUT */
+  function donut(el, entries, center, colors){
+    const tot = entries.reduce((a, e) => a + e[1], 0) || 1, R = 65, r = 44, S = 150, c = S / 2;
+    let a0 = -Math.PI / 2, s = `<svg width="${S}" height="${S}" viewBox="0 0 ${S} ${S}" role="img">`;
+    entries.forEach((e, i) => {
+      const a1 = a0 + e[1] / tot * Math.PI * 2, large = a1 - a0 > Math.PI ? 1 : 0, gap = entries.length > 1 ? .012 : 0;
+      const p = (ang, rad) => `${c + rad * Math.cos(ang)},${c + rad * Math.sin(ang)}`;
+      const A = a0 + gap, B = a1 - gap;
+      s += e[1] / tot >= .9999 ? `<circle cx="${c}" cy="${c}" r="${(R+r)/2}" fill="none" stroke="${colors[i]}" stroke-width="${R-r}" data-tip="${esc(`<b>${e[0]}</b><br>${e[1]} (100%)`)}"/>`
+        : `<path d="M${p(A,R)} A${R},${R} 0 ${large} 1 ${p(B,R)} L${p(B,r)} A${r},${r} 0 ${large} 0 ${p(A,r)}Z" fill="${colors[i]}" data-tip="${esc(`<b>${e[0]}</b><br>${e[1]} MoU (${Math.round(e[1]/tot*100)}%)`)}" style="cursor:default"/>`;
+      a0 = a1;
+    });
+    s += `<text x="${c}" y="${c+2}" text-anchor="middle" font-size="24" font-weight="800" fill="var(--text)">${center[0]}</text><text x="${c}" y="${c+18}" text-anchor="middle" font-size="10.5" fill="var(--muted)">${center[1]}</text></svg>`;
+    el.innerHTML = s + `<div class="dlegend">${entries.map((e, i) => `<div><i style="background:${colors[i]}"></i><span>${esc(e[0])}</span><b>${e[1]}</b></div>`).join('')}</div>`;
+    bindTips(el);
+  }
+  const PAL = ['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)','var(--c7)','var(--c8)','var(--c6)'];
+  function renderDonuts(){
+    const j = Object.entries(countBy(MOU, m => JENIS_LABEL[m.J] || m.J)).sort((a, b) => (a[0]==='Belum diisi') - (b[0]==='Belum diisi') || b[1] - a[1]);
+    donut($('#jenis'), j, [MOU.length, 'MoU'], j.map((e, i) => e[0] === 'Belum diisi' ? 'var(--c6)' : PAL[i % PAL.length]));
+    const ps = countBy(MOU, m => m.pksLbl); const pe = ['Sudah ada PKS','Belum ada PKS','Belum diisi'].filter(k => ps[k]).map(k => [k, ps[k]]);
+    donut($('#pksStatus'), pe, [Math.round(nPksLinked/(MOU.length||1)*100) + '%', 'sudah PKS'], pe.map(e => e[0]==='Sudah ada PKS' ? 'var(--ok)' : e[0]==='Belum ada PKS' ? 'var(--c3)' : 'var(--c6)'));
+    const bl = countBy(MOU, m => m.berlaku); const order = ['Aktif','Segera berakhir','Berakhir','Tidak diketahui']; const be = order.filter(k => bl[k]).map(k => [k, bl[k]]);
+    const bc = {'Aktif':'var(--c1)','Segera berakhir':'var(--c3)','Berakhir':'var(--c8)','Tidak diketahui':'var(--c6)'};
+    donut($('#berlaku'), be, [nAktif, 'berlaku'], be.map(e => bc[e[0]]));
+  }
+  function hbars(el, entries){
+    const max = Math.max(1, ...entries.map(e => e[1]));
+    el.innerHTML = entries.map((e, i) => `<div class="hbar" title="${esc(e[0])}"><span class="nm">${esc(e[0])}</span><span class="tr"><i style="width:${e[1]/max*100}%;animation-delay:${i*40}ms${e[2]?';background:'+e[2]:''}"></i></span><b>${e[1]}</b></div>`).join('');
+  }
+  function renderBars(){
+    const lv = countBy(MOU, m => m.level || 'Belum ditentukan');
+    hbars($('#level'), ['Sangat Mendesak','Mendesak','Biasa','Belum ditentukan'].filter(k => lv[k]).map(k => [k, lv[k], k==='Sangat Mendesak'?'var(--bad)':k==='Mendesak'?'var(--c3)':k==='Biasa'?'':'var(--c6)']));
+    const normT = t => { t = (t||'').trim(); if (!t) return 'Belum dikategorikan'; if (/^sinergi(sitas)? tugas dan fungsi/i.test(t)) return 'Sinergi Tugas dan Fungsi'; if (/makan bergizi|program mbg/i.test(t)) return 'Sinergi Program MBG'; return t; };
+    const bt = Object.entries(countBy(MOU, m => normT(m.tentang))).sort((a, b) => (a[0]==='Belum dikategorikan') - (b[0]==='Belum dikategorikan') || b[1] - a[1]);
+    const top = bt.filter(e => e[0] !== 'Belum dikategorikan').slice(0, 12), rest = bt.filter(e => e[0] !== 'Belum dikategorikan').slice(12).reduce((a, e) => a + e[1], 0), un = bt.find(e => e[0] === 'Belum dikategorikan');
+    if (rest) top.push(['Topik lainnya', rest, 'var(--c6)']); if (un) top.push([un[0], un[1], 'var(--c6)']);
+    hbars($('#bidang'), top);
+  }
+  function renderExpiring(){
+    const lst = MOU.filter(m => m.e && m.left >= -90 && m.left <= 365).sort((a, b) => a.e - b.e);
+    $('#expiring').innerHTML = lst.length ? lst.map(m => {
+      const c = m.left < 0 ? 'bad' : m.left <= 180 ? 'warn' : 'info';
+      const t = m.left < 0 ? `Berakhir ${Math.round(-m.left)} hr lalu` : `${Math.round(m.left)} hr lagi`;
+      return `<div class="exp-item"><div><div class="n">${esc(m.inst)}</div><div class="d">Berakhir ${fmtD(m.e)}</div></div><div><span class="chip ${c}">${t}</span></div></div>`;
+    }).join('') : '<div class="empty">Tidak ada MoU yang berakhir dalam 12 bulan.</div>';
+  }
+
+  /* =========================================================
+     KALENDER INTERAKTIF BERSUMBER DARI SHEET "Kegiatan Kermamit"
+     ========================================================= */
+  const docIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></svg>';
+  const toYMD = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  
+  const calEvents = {};
+  DATA.kegiatan.forEach(item => {
+    const k = toYMD(item.d);
+    if (!calEvents[k]) calEvents[k] = [];
+    calEvents[k].push(item);
+  });
+
+  let calCur = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
+  let calSelected = toYMD(TODAY);
+
+  function statusType(st) {
+    const s = (st || '').toLowerCase();
+    if (s.includes('terlaksana') || s.includes('selesai')) return 'terlaksana';
+    if (s.includes('terjadwal')) return 'terjadwal';
+    if (s.includes('libur') || s.includes('batal')) return 'libur';
+    return 'rencana';
+  }
+
+  function renderCalDetail(ymd) {
+    const parts = ymd.split('-').map(Number);
+    const dObj = new Date(parts[0], parts[1]-1, parts[2]);
+    const HARI_L = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+    $('#calSelDate').textContent = `${HARI_L[dObj.getDay()]}, ${dObj.getDate()} ${BLN_L[dObj.getMonth()]} ${dObj.getFullYear()}`;
+    
+    const list = calEvents[ymd] || [];
+    $('#calSelSub').textContent = list.length ? `${list.length} agenda kegiatan tercatat pada tanggal ini` : 'Tidak ada jadwal kegiatan pada tanggal ini';
+
+    if (!list.length) {
+      $('#calAgendaList').innerHTML = `<div class="empty" style="padding:36px 12px">Tidak ada kegiatan pada tanggal ini.<br><span style="font-size:12px">Klik tanggal lain yang memiliki titik warna pada kalender.</span></div>`;
+      return;
+    }
+
+    $('#calAgendaList').innerHTML = list.map(ev => {
+      const stCls = statusType(ev.status);
+      const chipCls = stCls === 'terlaksana' ? 'ok' : stCls === 'terjadwal' ? 'info' : stCls === 'libur' ? 'bad' : 'mute';
+      const waktu = (ev.mulai || ev.selesai) ? `🕒 ${ev.mulai || '—'} – ${ev.selesai || 'Selesai'}` : '';
+      const und = ev.undangan ? `📩 Undangan dari: <b>${esc(ev.undangan)}</b>` : '';
+      const pic = ev.pic ? `👤 PIC: <b>${esc(ev.pic)}</b>` : '';
+      const lok = ev.lokasiText ? `📍 Lokasi/Tautan: ${esc(ev.lokasiText)}` : '';
+      const ket = ev.keterangan ? `📝 Keterangan: ${esc(ev.keterangan)}` : '';
+
+      let btns = '';
+      if (isUrl(ev.lokasiUrl)) btns += `<a class="doc-btn" href="${esc(ev.lokasiUrl)}" target="_blank" rel="noopener">${docIcon}Link Meeting</a>`;
+      if (isUrl(ev.lampUndanganUrl)) btns += `<a class="doc-btn" href="${esc(ev.lampUndanganUrl)}" target="_blank" rel="noopener">${docIcon}Undangan</a>`;
+      if (isUrl(ev.lampLaporanUrl)) btns += `<a class="doc-btn" href="${esc(ev.lampLaporanUrl)}" target="_blank" rel="noopener">${docIcon}Laporan</a>`;
+
+      return `<div class="cal-agenda-item ${stCls}">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+          <span class="chip ${chipCls}">${esc(ev.status)}</span>
+          ${waktu ? `<span style="font-size:11.5px;font-weight:700;color:var(--primary-strong)">${esc(waktu)}</span>` : ''}
+        </div>
+        <div class="title">${esc(ev.kegiatan)}</div>
+        <div class="meta">${[und, pic, lok, ket].filter(Boolean).join('\n')}</div>
+        ${btns ? `<div class="cal-links">${btns}</div>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  function renderCalendar() {
+    const y = calCur.getFullYear(), m = calCur.getMonth();
+    $('#calTitle').textContent = `${BLN_L[m]} ${y}`;
+    const firstDay = new Date(y, m, 1).getDay();
+    const startOffset = (firstDay === 0 ? 6 : firstDay - 1);
+    const daysInMonth = new Date(y, m + 1, 0).getDate();
+    const prevMonthDays = new Date(y, m, 0).getDate();
+
+    const dows = ['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
+    let html = dows.map(d => `<div class="cal-dow">${d}</div>`).join('');
+
+    const totalCells = Math.ceil((startOffset + daysInMonth) / 7) * 7;
+    const todayStr = toYMD(TODAY);
+
+    for (let i = 0; i < totalCells; i++) {
+      let cellDate, isOther = false;
+      if (i < startOffset) {
+        cellDate = new Date(y, m - 1, prevMonthDays - startOffset + i + 1);
+        isOther = true;
+      } else if (i >= startOffset + daysInMonth) {
+        cellDate = new Date(y, m + 1, i - (startOffset + daysInMonth) + 1);
+        isOther = true;
+      } else {
+        cellDate = new Date(y, m, i - startOffset + 1);
+      }
+
+      const ymd = toYMD(cellDate);
+      const isWe = cellDate.getDay() === 0 || cellDate.getDay() === 6;
+      const isToday = ymd === todayStr;
+      const isSel = ymd === calSelected;
+      const evs = calEvents[ymd] || [];
+
+      const dots = evs.slice(0, 5).map(e => {
+        const st = statusType(e.status);
+        const col = st === 'terlaksana' ? 'var(--ok)' : st === 'terjadwal' ? 'var(--primary)' : st === 'libur' ? 'var(--bad)' : 'var(--c6)';
+        return `<i class="cal-dot" style="background:${col}"></i>`;
+      }).join('');
+
+      const tags = evs.slice(0, 2).map(e => {
+        const st = statusType(e.status);
+        return `<div class="cal-tag ${st}">${e.mulai ? e.mulai + ' · ' : ''}${esc(e.kegiatan)}</div>`;
+      }).join('') + (evs.length > 2 ? `<div class="cal-tag rencana">+${evs.length-2} kegiatan lagi</div>` : '');
+
+      html += `<div class="cal-cell${isOther?' other':''}${isWe?' we':''}${isToday?' today':''}${isSel?' selected':''}" data-date="${ymd}">
+        <div class="cal-num"><span>${cellDate.getDate()}</span><div class="cal-badges">${dots}</div></div>
+        <div style="display:flex;flex-direction:column;gap:2px;margin-top:4px">${tags}</div>
+      </div>`;
+    }
+
+    $('#calGrid').innerHTML = html;
+    renderCalDetail(calSelected);
+  }
+
+  $('#calGrid').onclick = e => {
+    const cell = e.target.closest('.cal-cell');
+    if (!cell) return;
+    calSelected = cell.dataset.date;
+    const [yy, mm] = calSelected.split('-').map(Number);
+    if (yy !== calCur.getFullYear() || (mm - 1) !== calCur.getMonth()) {
+      calCur = new Date(yy, mm - 1, 1);
+    }
+    renderCalendar();
+  };
+  $('#calPrev').onclick = () => { calCur.setMonth(calCur.getMonth() - 1); renderCalendar(); };
+  $('#calNext').onclick = () => { calCur.setMonth(calCur.getMonth() + 1); renderCalendar(); };
+  $('#calToday').onclick = () => { calCur = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1); calSelected = toYMD(TODAY); renderCalendar(); };
+
+  /* GANTT TIMELINE */
+  let tlFilter = 'Semua';
+  function renderGantt(){
+    const start = new Date(DATA.tlStart + 'T00:00:00'), N = DATA.tlDays;
+    const days = [...Array(N)].map((_, i) => { const d = new Date(start); d.setDate(d.getDate() + i); return d; });
+    const todayIdx = Math.round((TODAY - start) / DAY);
+    
+    const rows = DATA.timeline.filter(t => {
+      if (tlFilter === 'Semua') return true;
+      if (tlFilter === 'Dijadwalkan') return (t.rencana.length > 0 || t.realisasi.length > 0);
+      return (t.status || 'Belum ada status') === tlFilter;
+    });
+
+    const g = $('#gantt'); 
+    g.style.gridTemplateColumns = `minmax(180px, 260px) repeat(${N}, 22px)`;
+    
+    let h = `<div class="g-cell g-label g-head" style="grid-row:span 2">Kegiatan</div>`;
+    let i = 0; 
+    while (i < N) { 
+      const m = days[i].getMonth(); 
+      let j = i; 
+      while (j < N && days[j].getMonth() === m) j++; 
+      h += `<div class="g-cell g-month" style="grid-column:span ${j-i}">${BLN_L[m]} ${days[i].getFullYear()}</div>`; 
+      i = j; 
+    }
+    
+    const HARI = ['M','S','S','R','K','J','S'];
+    days.forEach((d, k) => { 
+      const we = d.getDay() === 0 || d.getDay() === 6; 
+      h += `<div class="g-cell g-day g-head${we?' we':''}${k===todayIdx?' today':''}"><span>${HARI[d.getDay()]}</span><b style="color:var(--text)">${d.getDate()}</b></div>`; 
+    });
+    
+    rows.forEach(t => {
+      const st = t.status ? `<span class="chip ${t.status==='Selesai'?'ok':t.status==='Usulan'?'mute':t.status==='Piloting'?'warn':'info'}">${esc(t.status)}</span>` : '';
+      const lt = `<b>${esc(t.kegiatan)}</b>${t.status?`<br>Status: ${esc(t.status)}`:''}${t.inisiator?`<br>Inisiator: ${esc(t.inisiator)}`:''}${t.materi?`<br>Materi: ${esc(t.materi)}`:''}`;
+      
+      h += `<div class="g-cell g-label" data-tip="${esc(lt)}"><span class="no">${t.no}</span><span class="t">${esc(t.kegiatan)}</span>${st}</div>`;
+      
+      days.forEach((d, k) => {
+        const we = d.getDay() === 0 || d.getDay() === 6;
+        const R = t.rencana.includes(k);
+        const X = t.realisasi.includes(k);
+        const tp = (R || X) ? `data-tip="${esc(`<b>${esc(t.kegiatan)}</b><br>${d.getDate()} ${BLN_L[d.getMonth()]} ${d.getFullYear()}<br>${R?'Rencana':''}${R&&X?' · ':''}${X?'Realisasi ✓':''}`)}"` : '';
+        
+        let dotsHtml = '';
+        if (R) dotsHtml += `<span class="g-dot${k<todayIdx&&!X?' past':''}"></span>`;
+        if (X) dotsHtml += `<span class="g-dot real"></span>`;
+
+        h += `<div class="g-cell g-day${we?' we':''}${k===todayIdx?' today':''}" ${tp}>${dotsHtml}</div>`;
+      });
+    });
+    
+    if (!rows.length) h += `<div class="empty" style="grid-column:1/-1">Tidak ada kegiatan pada filter ini.</div>`;
+    g.innerHTML = h; 
+    bindTips(g);
+    
+    const sc = $('#ganttScroll'); 
+    if (todayIdx > 6 && todayIdx < N) sc.scrollLeft = Math.max(0, (todayIdx - 6) * 22);
+  }
+
+  const stCounts = countBy(DATA.timeline, t => t.status || 'Belum ada status');
+  const tlOpts = ['Semua', 'Dijadwalkan', ...Object.keys(stCounts).sort((a, b) => stCounts[b] - stCounts[a])];
+  $('#tlFilters').innerHTML = tlOpts.map(o => `<button class="pill" type="button" aria-pressed="${o===tlFilter}" data-f="${esc(o)}">${esc(o)} <span style="opacity:.7">${o==='Semua'?DATA.timeline.length:o==='Dijadwalkan'?DATA.timeline.filter(t=>t.rencana.length||t.realisasi.length).length:stCounts[o]}</span></button>`).join('');
+  $('#tlFilters').onclick = e => { const b = e.target.closest('.pill'); if (!b) return; tlFilter = b.dataset.f; document.querySelectorAll('#tlFilters .pill').forEach(p => p.setAttribute('aria-pressed', p === b)); renderGantt(); };
+
+  /* TABLES */
+  const opt = (el, label, vals) => { el.innerHTML = `<option value="">${label}</option>` + vals.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join(''); };
+  opt($('#fJenis'), 'Semua jenis', [...new Set(MOU.map(m => JENIS_LABEL[m.J] || m.J))].sort());
+  opt($('#fPks'), 'Semua status PKS', ['Sudah ada PKS','Belum ada PKS','Belum diisi']);
+  opt($('#fTahun'), 'Semua tahun', [...new Set(MOU.filter(m => m.d).map(m => m.d.getFullYear()))].sort().map(String));
+  opt($('#fBerlaku'), 'Semua masa berlaku', ['Aktif','Segera berakhir','Berakhir','Tidak diketahui']);
+  opt($('#fLevel'), 'Semua level', [...new Set(MOU.map(m => m.level).filter(Boolean))].sort());
+
+  let sortK = 'no', sortDir = 1; const openRows = new Set();
+  const berlakuChip = m => `<span class="chip ${{'Aktif':'info','Segera berakhir':'warn','Berakhir':'bad'}[m.berlaku]||'mute'}">${m.berlaku}</span>${m.e?`<div class="sm" style="margin-top:3px">s.d. ${fmtD(m.e)}</div>`:''}`;
+
+  function renderMou(){
+    const q = $('#q').value.trim().toLowerCase(), 
+          fj = $('#fJenis').value, 
+          fp = $('#fPks').value, 
+          ft = $('#fTahun').value, 
+          fb = $('#fBerlaku').value,
+          fl = $('#fLevel').value;
+    
+    let rows = MOU.filter(m => (!fj || (JENIS_LABEL[m.J]||m.J) === fj) 
+      && (!fp || m.pksLbl === fp) 
+      && (!ft || (m.d && String(m.d.getFullYear()) === ft)) 
+      && (!fb || m.berlaku === fb)
+      && (!fl || m.level === fl)
+      && (!q || [m.nama, m.judul, m.nomor, m.lingkup, m.tentang, m.pemrakarsa, m.unit, m.level].join(' ').toLowerCase().includes(q)));
+    
+    const val = { 
+      no: m => isNaN(Number(m.no)) ? 0 : Number(m.no), 
+      inst: m => m.inst.toLowerCase(), 
+      jenis: m => m.J, 
+      tgl: m => m.d ? +m.d : 0, 
+      end: m => m.e ? +m.e : 9e15 
+    };
+    
+    rows.sort((a, b) => { const x = val[sortK](a), y = val[sortK](b); return (x > y ? 1 : x < y ? -1 : 0) * sortDir; });
+    $('#mouCount').textContent = `Menampilkan ${rows.length} dari ${MOU.length} MoU`;
+    document.querySelectorAll('thead th[data-sort]').forEach(th => { const on = th.dataset.sort === sortK; th.classList.toggle('sorted', on); th.querySelector('.ar').textContent = on ? (sortDir > 0 ? '↑' : '↓') : '↕'; });
+    
+    $('#mouBody').innerHTML = rows.length ? rows.map(m => {
+      const mId = String(m.no);
+      const open = openRows.has(mId);
+      const doc = isUrl(m.url) ? `<a class="doc-btn" href="${esc(m.url)}" target="_blank" rel="noopener">${docIcon}MoU</a>` : '<span class="sm">—</span>';
+      const pdoc = isUrl(m.pksUrl) ? ` <a class="doc-btn" href="${esc(m.pksUrl)}" target="_blank" rel="noopener">${docIcon}PKS</a>` : '';
+      
+      let r = `<tr class="row${open?' open':''}" data-no="${mId}" tabindex="0" aria-expanded="${open}">
+        <td class="num" data-no="${mId}">${m.no}</td>
+        <td data-no="${mId}">
+          <div class="inst" data-no="${mId}">${esc(m.inst)}</div>
+          ${m.judul?`<div class="sm" data-no="${mId}">${esc(m.judul.length>90?m.judul.slice(0,90)+'…':m.judul)}</div>`:''}
+        </td>
+        <td data-no="${mId}"><span class="sm" style="white-space:nowrap" data-no="${mId}">${esc(JENIS_LABEL[m.J]||m.J)}</span></td>
+        <td style="white-space:nowrap" data-no="${mId}">${m.d?fmtD(m.d):'<span class="sm">—</span>'}</td>
+        <td data-no="${mId}"><span class="sm" data-no="${mId}">${esc(m.tentang||'—')}</span></td>
+        <td data-no="${mId}">${berlakuChip(m)}</td>
+        <td data-no="${mId}"><span class="chip ${m.hasPks?'ok':m.pksLbl==='Belum ada PKS'?'warn':'mute'}" data-no="${mId}">${m.pksLbl}</span></td>
+        <td style="white-space:nowrap">${doc}${pdoc}</td>
+      </tr>`;
+      
+      if (open) r += `<tr class="detail"><td></td><td colspan="7"><div class="dgrid">
+        <div class="full"><h4>Judul</h4><p>${esc(m.judul||'—')}</p></div>
+        <div><h4>Nomor</h4><p>${esc(m.nomor||'—')}</p></div>
+        <div><h4>Jangka waktu</h4><p>${esc(m.jangka||'—')}</p></div>
+        <div><h4>Level</h4><p>${esc(m.level||'—')}</p></div>
+        <div><h4>Pemrakarsa</h4><p>${esc(m.pemrakarsa||'—')}</p></div>
+        <div><h4>Unit teknis pemrakarsa</h4><p>${esc(m.unit||'—')}</p></div>
+        <div><h4>DB Kermamit</h4><p>${esc(m.db||'—')}</p></div>
+        <div class="full"><h4>Ruang lingkup</h4><p>${esc(m.lingkup||'—')}</p></div>
+        ${m.ket?`<div class="full"><h4>Keterangan</h4><p>${esc(m.ket)}</p></div>`:''}
+        ${m.pksFile?`<div class="full"><h4>Dokumen PKS</h4><p>${isUrl(m.pksUrl)?`<a href="${esc(m.pksUrl)}" target="_blank" rel="noopener">${esc(m.pksFile)}</a>`:esc(m.pksFile)}</p></div>`:''}
+      </div></td></tr>`;
+      return r;
+    }).join('') : `<tr><td colspan="8" class="empty">Tidak ada MoU yang cocok dengan pencarian.</td></tr>`;
+  }
+
+  function handleRowClick(e) {
+    if (e.target.closest('a')) return; 
+    const targetEl = e.target.closest('[data-no]');
+    if (!targetEl) return;
+    const nId = String(targetEl.getAttribute('data-no'));
+    if (!nId) return;
+    const mData = DATA.mou.find(x => String(x.no) === nId);
+    if (!mData) return;
+    
+    if (window.innerWidth <= 768) {
+      let html = `
+        <div class="full"><h4>Instansi</h4><p><b>${esc(mData.inst)}</b></p></div>
+        <div class="full"><h4>Judul</h4><p>${esc(mData.judul||'—')}</p></div>
+        <div><h4>Nomor</h4><p>${esc(mData.nomor||'—')}</p></div>
+        <div><h4>Masa Berlaku</h4><p>${esc(mData.berlaku)} ${mData.e ? '(s.d. '+fmtD(mData.e)+')' : ''}</p></div>
+        <div><h4>Jangka Waktu</h4><p>${esc(mData.jangka||'—')}</p></div>
+        <div><h4>Level Prioritas</h4><p>${esc(mData.level||'—')}</p></div>
+        <div><h4>Pemrakarsa</h4><p>${esc(mData.pemrakarsa||'—')}</p></div>
+        <div><h4>Unit Teknis</h4><p>${esc(mData.unit||'—')}</p></div>
+        <div><h4>Status PKS</h4><p>${esc(mData.pksLbl)}</p></div>
+        <div><h4>DB Kermamit</h4><p>${esc(mData.db||'—')}</p></div>
+        <div class="full"><h4>Ruang Lingkup</h4><p>${esc(mData.lingkup||'—')}</p></div>
+        ${mData.ket ? `<div class="full"><h4>Keterangan</h4><p>${esc(mData.ket)}</p></div>` : ''}
+        <div class="full" style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+          ${isUrl(mData.url) ? `<a class="doc-btn" href="${esc(mData.url)}" target="_blank" rel="noopener">📄 Buka Dokumen MoU</a>` : ''}
+          ${isUrl(mData.pksUrl) ? `<a class="doc-btn" href="${esc(mData.pksUrl)}" target="_blank" rel="noopener">📄 Buka Dokumen PKS</a>` : ''}
+        </div>
+      `;
+      const modalEl = document.getElementById('mouModal');
+      const contentEl = document.getElementById('modalContent');
+      if (modalEl && contentEl) {
+        contentEl.innerHTML = html;
+        modalEl.style.display = 'flex';
+      }
+    } else {
+      openRows.has(nId) ? openRows.delete(nId) : openRows.add(nId); 
+      renderMou(); 
+    }
+  }
+
+  const tbody = $('#mouBody');
+  if (tbody) tbody.onclick = handleRowClick;
+
+  $('#mouBody').onkeydown = function(e) {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr.row')) { 
+      e.preventDefault(); 
+      e.target.click(); 
+    } 
+  };
+
+  ['#q','#fJenis','#fPks','#fTahun','#fBerlaku','#fLevel'].forEach(s => { $(s).oninput = renderMou; });
+  document.querySelectorAll('thead th[data-sort]').forEach(th => { th.onclick = () => { const k = th.dataset.sort; if (sortK === k) sortDir *= -1; else { sortK = k; sortDir = k === 'tgl' ? -1 : 1; } renderMou(); }; });
+
+  function renderPks(){
+    const q = $('#q2').value.trim().toLowerCase();
+    const rows = DATA.pks.filter(p => !q || [p.instansi, p.nomor, p.unit, p.jenis, p.ket].join(' ').toLowerCase().includes(q));
+    $('#pksCount').textContent = `Menampilkan ${rows.length} dari ${DATA.pks.length} entri`;
+    $('#pksBody').innerHTML = rows.map(p => `<tr><td class="num">${p.no ?? '—'}</td><td><div class="inst">${esc(p.inst)}</div>${p.ket?`<div class="sm">${esc(p.ket)}</div>`:''}${/tdk|tidak/i.test(p.db)?' <span class="chip warn" style="margin-top:4px">Belum di DB</span>':''}</td><td><span class="sm" style="white-space:nowrap">${esc(JENIS_LABEL[(p.jenis||'').toUpperCase()]||p.jenis||'—')}</span></td><td style="white-space:nowrap">${p.d?fmtD(p.d):'<span class="sm">—</span>'}</td><td><span class="sm">${esc(p.nomor||'—')}</span></td><td>${esc(p.unit||'—')}</td><td>${isUrl(p.url)?`<a class="doc-btn" href="${esc(p.url)}" target="_blank" rel="noopener">${docIcon}Buka</a>`:`<span class="sm">${esc(p.file||'—')}</span>`}</td></tr>`).join('') || `<tr><td colspan="7" class="empty">Tidak ada PKS yang cocok.</td></tr>`;
+  }
+  $('#q2').oninput = renderPks;
+
+  function renderCharts(){ renderTrend(); renderDonuts(); }
+  let rt; window.onresize = () => { clearTimeout(rt); rt = setTimeout(renderTrend, 120); };
+
+  renderCharts();
+  renderBars();
+  renderExpiring();
+  renderCalendar();
+  renderGantt();
+  renderMou();
+  renderPks();
+}
+
+// Jalankan sinkronisasi otomatis saat halaman dibuka
+document.addEventListener('DOMContentLoaded', () => fetchRealtimeData(false));
 </script>
 </body>
 </html>
