@@ -474,11 +474,9 @@ let DATA = { mou: [], pks: [], timeline: [], kegiatan: [], tlStart: "2026-10-19"
   });
 })();
 
-/* ----- KONEKSI REALTIME INSTAN + FETCH UTAMA + FALLBACK JSONP ----- */
 async function fetchRealtimeData(forceRefresh = false) {
   const statusEl = document.getElementById("asofToday");
 
-  // 1. Tampilkan data terakhir dari memori browser seketika (0 detik) agar tidak blank/angka 0
   if (!window._uiBooted) {
     window._uiBooted = true;
     try {
@@ -499,10 +497,8 @@ async function fetchRealtimeData(forceRefresh = false) {
   }
 
   const url = API_URL + (forceRefresh ? "?nocache=1" : "");
-
-  // Metode 1: Fetch standar dengan timeout 15 detik
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 15000);
+  const timeoutId = setTimeout(() => controller.abort(), 4000); // Hanya tunggu 4 detik sebelum fallback
 
   try {
     const response = await fetch(url, {
@@ -518,15 +514,12 @@ async function fetchRealtimeData(forceRefresh = false) {
     handleDataResponse(data, false);
   } catch (err) {
     clearTimeout(timeoutId);
-    console.warn("Beralih ke jalur JSONP:", err);
-    
-    // Metode 2: Fallback JSONP (kebal CORS redirect Google Apps Script)
     const cbName = "bgnCb_" + Date.now();
     const script = document.createElement("script");
     const jsonpTimer = setTimeout(() => {
       delete window[cbName];
       script.remove();
-      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Cek izin akses Apps Script ('Siapa saja').</span>";
+      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Klik Sinkron Ulang.</span>";
     }, 15000);
 
     window[cbName] = function(data) {
