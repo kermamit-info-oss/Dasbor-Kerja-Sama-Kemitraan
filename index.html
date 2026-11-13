@@ -474,8 +474,8 @@ let DATA = { mou: [], pks: [], timeline: [], kegiatan: [], tlStart: "2026-10-19"
   });
 })();
 
-/* ----- KONEKSI REALTIME INSTAN + FETCH UTAMA + FALLBACK JSONP ----- */
-async function fetchRealtimeData(forceRefresh = false) {
+/* ----- KONEKSI REALTIME TERCEPAT (INSTANT CACHE + PARALLEL RACE FETCH & JSONP) ----- */
+function fetchRealtimeData(forceRefresh = false) {
   const statusEl = document.getElementById("asofToday");
 
   // 1. Tampilkan data terakhir dari memori browser seketika (0 detik)
@@ -497,58 +497,50 @@ async function fetchRealtimeData(forceRefresh = false) {
     statusEl.innerHTML = "<span style='color:var(--warn)'>Menyinkronkan...</span>";
   }
 
-  const url = API_URL + (forceRefresh ? "?nocache=1" : "");
-
-  // 2. Jalur utama: Fetch standar (paling stabil untuk Google Apps Script)
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      redirect: 'follow',
-      signal: controller.signal
-    });
-    clearTimeout(timeoutId);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
-    if (data && data.error) throw new Error(data.error);
+  let settled = false;
+  const finish = (data) => {
+    if (settled) return;
+    settled = true;
     try { localStorage.setItem("bgn_dasbor_snapshot", JSON.stringify(data)); } catch (e) {}
     handleDataResponse(data, false);
-  } catch (err) {
-    clearTimeout(timeoutId);
-    console.warn("Beralih ke jalur JSONP:", err);
-    
-    // 3. Fallback JSONP
-    const cbName = "bgnCb_" + Date.now();
-    const script = document.createElement("script");
-    const jsonpTimer = setTimeout(() => {
-      delete window[cbName];
-      script.remove();
-      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Cek izin akses Apps Script ('Siapa saja').</span>";
-    }, 15000);
+  };
 
-    window[cbName] = function(data) {
-      clearTimeout(jsonpTimer);
-      delete window[cbName];
-      script.remove();
-      if (data && data.error) {
-        if(statusEl) statusEl.innerHTML = `<span style='color:var(--bad)'>Error Script: ${data.error}</span>`;
-      } else {
-        try { localStorage.setItem("bgn_dasbor_snapshot", JSON.stringify(data)); } catch (e) {}
-        handleDataResponse(data, false);
-      }
-    };
+  // Jalur A: Fetch standar
+  const url = API_URL + (forceRefresh ? "?nocache=1" : "");
+  fetch(url, { method: "GET", redirect: "follow" })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(data => { if (data && !data.error) finish(data); })
+    .catch(() => {});
 
-    script.src = API_URL + (API_URL.includes("?") ? "&" : "?") + "callback=" + cbName + (forceRefresh ? "&nocache=1" : "");
-    script.onerror = function() {
-      clearTimeout(jsonpTimer);
-      delete window[cbName];
-      script.remove();
-      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Gagal terhubung. Klik Sinkron Ulang.</span>";
-    };
-    document.body.appendChild(script);
-  }
+  // Jalur B: JSONP ditembak bersamaan (tidak menunggu Jalur A gagal)
+  const cbName = "bgnCb_" + Date.now();
+  const script = document.createElement("script");
+  const timer = setTimeout(() => {
+    delete window[cbName];
+    script.remove();
+    if (!settled && statusEl) {
+      statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Klik Sinkron Ulang.</span>";
+    }
+  }, 15000);
+
+  window[cbName] = function(data) {
+    clearTimeout(timer);
+    delete window[cbName];
+    script.remove();
+    if (data && data.error) {
+      if (!settled && statusEl) statusEl.innerHTML = `<span style='color:var(--bad)'>Error: ${data.error}</span>`;
+    } else {
+      finish(data);
+    }
+  };
+
+  script.src = API_URL + (API_URL.includes("?") ? "&" : "?") + "callback=" + cbName + (forceRefresh ? "&nocache=1" : "");
+  script.onerror = function() {
+    clearTimeout(timer);
+    delete window[cbName];
+    script.remove();
+  };
+  document.body.appendChild(script);
 }
 
 function extractUrl(val) {
