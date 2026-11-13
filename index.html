@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
 <title>Dasbor Kerja Sama BGN - Versi Final Mobile &amp; Desktop</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
@@ -474,67 +475,69 @@ let DATA = { mou: [], pks: [], timeline: [], kegiatan: [], tlStart: "2026-10-19"
   });
 })();
 
-/* ----- KONEKSI REALTIME ANTI-MACET & ANTI-CORS ----- */
-async function fetchRealtimeData(forceRefresh = false) {
-  const statusEl = document.getElementById("asofToday");
-  if(statusEl) statusEl.innerHTML = "<span style='color:var(--warn)'>Menghubungkan...</span>";
+/* ----- KONEKSI REALTIME JSONP LANGSUNG + AUTO-REFRESH ----- */
+let _activeJsonpScript = null;
+let _activeJsonpTimer = null;
 
-  // Render kerangka UI/Kalender terlebih dahulu agar tidak blank saat menunggu data
+function fetchRealtimeData(forceRefresh = false, isSilent = false) {
+  const statusEl = document.getElementById("asofToday");
+  if (statusEl && !isSilent) {
+    statusEl.innerHTML = "<span style='color:var(--warn)'>Menghubungkan...</span>";
+  }
+
+  // Render kerangka UI/Kalender terlebih dahulu agar tidak blank
   if (!window._uiBooted) {
     window._uiBooted = true;
     initApp();
   }
 
-  const url = API_URL + (forceRefresh ? "?nocache=1" : "");
-
-  // Metode 1: Fetch standar dengan timeout 10 detik
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
-
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      redirect: 'follow',
-      signal: controller.signal
-    });
-    clearTimeout(timeoutId);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
-    if (data && data.error) throw new Error(data.error);
-    handleDataResponse(data);
-  } catch (err) {
-    clearTimeout(timeoutId);
-    console.warn("Beralih ke jalur JSONP:", err);
-    
-    // Metode 2: Fallback JSONP (kebal CORS redirect Google Apps Script)
-    const cbName = "bgnCb_" + Date.now();
-    const script = document.createElement("script");
-    const jsonpTimer = setTimeout(() => {
-      delete window[cbName];
-      script.remove();
-      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Cek izin akses Apps Script ('Siapa saja').</span>";
-    }, 15000);
-
-    window[cbName] = function(data) {
-      clearTimeout(jsonpTimer);
-      delete window[cbName];
-      script.remove();
-      if (data && data.error) {
-        if(statusEl) statusEl.innerHTML = `<span style='color:var(--bad)'>Error Script: ${data.error}</span>`;
-      } else {
-        handleDataResponse(data);
-      }
-    };
-
-    script.src = API_URL + (API_URL.includes("?") ? "&" : "?") + "callback=" + cbName + (forceRefresh ? "&nocache=1" : "");
-    script.onerror = function() {
-      clearTimeout(jsonpTimer);
-      delete window[cbName];
-      script.remove();
-      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Gagal terhubung. Klik Sinkron Ulang.</span>";
-    };
-    document.body.appendChild(script);
+  // Bersihkan request sebelumnya jika masih menggantung
+  if (_activeJsonpTimer) clearTimeout(_activeJsonpTimer);
+  if (_activeJsonpScript) {
+    try { _activeJsonpScript.remove(); } catch(e) {}
   }
+
+  const cbName = "bgnCb_" + Date.now() + "_" + Math.floor(Math.random() * 1000);
+  const script = document.createElement("script");
+  _activeJsonpScript = script;
+
+  _activeJsonpTimer = setTimeout(() => {
+    delete window[cbName];
+    try { script.remove(); } catch(e) {}
+    if (statusEl) {
+      statusEl.innerHTML = "<span style='color:var(--bad)'>Timeout (25dtk). Pastikan Deploy Apps Script = Siapa Saja.</span>";
+    }
+  }, 25000);
+
+  window[cbName] = function(data) {
+    clearTimeout(_activeJsonpTimer);
+    delete window[cbName];
+    try { script.remove(); } catch(e) {}
+    if (data && data.error) {
+      if (statusEl) statusEl.innerHTML = `<span style='color:var(--bad)'>Error Script: ${data.error}</span>`;
+    } else if (data) {
+      handleDataResponse(data);
+    }
+  };
+
+  // Tambahkan timestamp (_t) agar browser tidak pernah menggunakan cache lama
+  const params = [
+    "callback=" + cbName,
+    "_t=" + Date.now(),
+    forceRefresh ? "nocache=1" : ""
+  ].filter(Boolean).join("&");
+
+  script.referrerPolicy = "no-referrer";
+  script.src = API_URL + (API_URL.includes("?") ? "&" : "?") + params;
+  script.onerror = function() {
+    clearTimeout(_activeJsonpTimer);
+    delete window[cbName];
+    try { script.remove(); } catch(e) {}
+    if (statusEl) {
+      statusEl.innerHTML = "<span style='color:var(--bad)'>Koneksi ditolak Google. Cek akses 'Siapa saja' di Apps Script.</span>";
+    }
+  };
+  document.body.appendChild(script);
 }
 
 function extractUrl(val) {
@@ -1171,7 +1174,7 @@ function initApp() {
   };
 
   ['#q','#fJenis','#fPks','#fTahun','#fBerlaku','#fLevel'].forEach(s => { $(s).oninput = renderMou; });
-  document.querySelectorAll('thead th[data-sort]').forEach(th => { th.onclick = () => { const k = th.dataset.sort; if (sortK === k) sortDir *= https://github.com/kermamit-info-oss/Dasbor-Kerja-Sama-Kemitraan/blob/main/index.html-1; else { sortK = k; sortDir = k === 'tgl' ? -1 : 1; } renderMou(); }; });
+  document.querySelectorAll('thead th[data-sort]').forEach(th => { th.onclick = () => { const k = th.dataset.sort; if (sortK === k) sortDir *= -1; else { sortK = k; sortDir = k === 'tgl' ? -1 : 1; } renderMou(); }; });
 
   function renderPks(){
     const q = $('#q2').value.trim().toLowerCase();
@@ -1193,8 +1196,13 @@ function initApp() {
   renderPks();
 }
 
-// Jalankan sinkronisasi otomatis saat halaman dibuka
-document.addEventListener('DOMContentLoaded', () => fetchRealtimeData(false));
+// Jalankan sinkronisasi otomatis saat halaman dibuka & auto-refresh tiap 60 detik
+document.addEventListener('DOMContentLoaded', () => {
+  fetchRealtimeData(false, false);
+  setInterval(() => {
+    if (!document.hidden) fetchRealtimeData(false, true);
+  }, 60000);
+});
 </script>
 </body>
 </html>
