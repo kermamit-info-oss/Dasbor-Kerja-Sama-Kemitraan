@@ -474,13 +474,18 @@ let DATA = { mou: [], pks: [], timeline: [], kegiatan: [], tlStart: "2026-10-19"
   });
 })();
 
-async function fetchRealtimeData(forceRefresh = false) {
+/* ----- KONEKSI REALTIME SUPER CEPAT (CACHE INSTAN + BALAPAN FETCH & JSONP) ----- */
+let _syncEpoch = 0;
+function fetchRealtimeData(forceRefresh = false) {
   const statusEl = document.getElementById("asofToday");
+  const epoch = ++_syncEpoch;
+  let settled = false;
 
+  // 1. Tampilkan cache browser seketika (0 detik) saat pertama buka
   if (!window._uiBooted) {
     window._uiBooted = true;
     try {
-      const cached = localStorage.getItem("bgn_dasbor_cache_v1");
+      const cached = localStorage.getItem("bgn_dasbor_cache_v5");
       if (cached) {
         handleDataResponse(JSON.parse(cached), true);
         if (statusEl) statusEl.innerHTML = "<span style='color:var(--warn)'>● Memperbarui data...</span>";
@@ -496,53 +501,53 @@ async function fetchRealtimeData(forceRefresh = false) {
     statusEl.innerHTML = "<span style='color:var(--warn)'>Menyinkronkan...</span>";
   }
 
-  const url = API_URL + (forceRefresh ? "?nocache=1" : "");
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 4000); // Hanya tunggu 4 detik sebelum fallback
-
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      redirect: 'follow',
-      signal: controller.signal
-    });
-    clearTimeout(timeoutId);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
-    if (data && data.error) throw new Error(data.error);
-    try { localStorage.setItem("bgn_dasbor_cache_v1", JSON.stringify(data)); } catch (e) {}
+  function onSuccess(data) {
+    if (settled || epoch !== _syncEpoch) return;
+    if (!data || data.error) {
+      settled = true;
+      if (statusEl) statusEl.innerHTML = `<span style='color:var(--bad)'>Error Script: ${data ? data.error : 'Kosong'}</span>`;
+      return;
+    }
+    settled = true;
+    try { localStorage.setItem("bgn_dasbor_cache_v5", JSON.stringify(data)); } catch (e) {}
     handleDataResponse(data, false);
-  } catch (err) {
-    clearTimeout(timeoutId);
-    const cbName = "bgnCb_" + Date.now();
-    const script = document.createElement("script");
-    const jsonpTimer = setTimeout(() => {
-      delete window[cbName];
-      script.remove();
-      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Klik Sinkron Ulang.</span>";
-    }, 15000);
-
-    window[cbName] = function(data) {
-      clearTimeout(jsonpTimer);
-      delete window[cbName];
-      script.remove();
-      if (data && data.error) {
-        if(statusEl) statusEl.innerHTML = `<span style='color:var(--bad)'>Error Script: ${data.error}</span>`;
-      } else {
-        try { localStorage.setItem("bgn_dasbor_cache_v1", JSON.stringify(data)); } catch (e) {}
-        handleDataResponse(data, false);
-      }
-    };
-
-    script.src = API_URL + (API_URL.includes("?") ? "&" : "?") + "callback=" + cbName + (forceRefresh ? "&nocache=1" : "");
-    script.onerror = function() {
-      clearTimeout(jsonpTimer);
-      delete window[cbName];
-      script.remove();
-      if(statusEl) statusEl.innerHTML = "<span style='color:var(--bad)'>Gagal terhubung. Klik Sinkron Ulang.</span>";
-    };
-    document.body.appendChild(script);
   }
+
+  const baseUrl = API_URL + (forceRefresh ? "?nocache=1" : "");
+
+  // 2A. Jalur Fetch Paralel
+  const controller = new AbortController();
+  fetch(baseUrl, { method: 'GET', redirect: 'follow', signal: controller.signal })
+    .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+    .then(onSuccess)
+    .catch(() => {});
+
+  // 2B. Jalur JSONP Paralel (kebal CORS redirect Google Apps Script)
+  const cbName = "bgnCb_" + epoch + "_" + Date.now();
+  const script = document.createElement("script");
+  const timeoutTimer = setTimeout(() => {
+    controller.abort();
+    delete window[cbName];
+    if (script.parentNode) script.remove();
+    if (!settled && epoch === _syncEpoch && statusEl) {
+      statusEl.innerHTML = "<span style='color:var(--bad)'>Waktu habis. Cek izin Apps Script ('Siapa saja').</span>";
+    }
+  }, 15000);
+
+  window[cbName] = function(data) {
+    clearTimeout(timeoutTimer);
+    controller.abort();
+    delete window[cbName];
+    if (script.parentNode) script.remove();
+    onSuccess(data);
+  };
+
+  script.src = baseUrl + (baseUrl.includes("?") ? "&" : "?") + "callback=" + cbName;
+  script.onerror = function() {
+    delete window[cbName];
+    if (script.parentNode) script.remove();
+  };
+  document.body.appendChild(script);
 }
 
 function extractUrl(val) {
